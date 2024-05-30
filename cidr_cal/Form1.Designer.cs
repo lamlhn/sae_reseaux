@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
-            radioButton2 = new RadioButton();
             radioButton1 = new RadioButton();
+            radioButton2 = new RadioButton();
             btnCalcul = new Button();
             txtOct1 = new TextBox();
             label1 = new Label();
@@ -79,35 +79,20 @@
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(radioButton2);
             groupBox1.Controls.Add(radioButton1);
-            groupBox1.Location = new Point(189, 12);
+            groupBox1.Controls.Add(radioButton2);
+            groupBox1.Location = new Point(172, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(217, 51);
+            groupBox1.Size = new Size(251, 48);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
-            // 
-            // radioButton2
-            // 
-            radioButton2.Appearance = Appearance.Button;
-            radioButton2.AutoSize = true;
-            radioButton2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            radioButton2.Location = new Point(107, 7);
-            radioButton2.MinimumSize = new Size(110, 40);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(110, 40);
-            radioButton2.TabIndex = 1;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "BINAIRE";
-            radioButton2.TextAlign = ContentAlignment.MiddleCenter;
-            radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
             // 
             radioButton1.Appearance = Appearance.Button;
             radioButton1.AutoSize = true;
             radioButton1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            radioButton1.Location = new Point(-1, 7);
+            radioButton1.Location = new Point(6, 7);
             radioButton1.MinimumSize = new Size(110, 40);
             radioButton1.Name = "radioButton1";
             radioButton1.Size = new Size(110, 40);
@@ -116,6 +101,21 @@
             radioButton1.Text = "DECIMAL";
             radioButton1.TextAlign = ContentAlignment.MiddleCenter;
             radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            radioButton2.Appearance = Appearance.Button;
+            radioButton2.AutoSize = true;
+            radioButton2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton2.Location = new Point(135, 7);
+            radioButton2.MinimumSize = new Size(110, 40);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(110, 40);
+            radioButton2.TabIndex = 1;
+            radioButton2.TabStop = true;
+            radioButton2.Text = "BINAIRE";
+            radioButton2.TextAlign = ContentAlignment.MiddleCenter;
+            radioButton2.UseVisualStyleBackColor = true;
             // 
             // btnCalcul
             // 
@@ -662,6 +662,8 @@
             Controls.Add(txtOct1);
             Controls.Add(btnCalcul);
             Controls.Add(groupBox1);
+            MaximumSize = new Size(611, 672);
+            MinimumSize = new Size(611, 672);
             Name = "Form1";
             Text = "Form1";
             groupBox1.ResumeLayout(false);

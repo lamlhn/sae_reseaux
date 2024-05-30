@@ -73,23 +73,42 @@ namespace cidr_cal
             return false;
         }
 
-        public char[] ConvertBinaire(int val)
+        public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire de type string
         {
-            char[] binaire = ['0', '0', '0', '0', '0', '0', '0', '0'];
-            for (int i = 0; i < binaire.Length; i++)
+
+            if (decimale > 255 || decimale < 0)
             {
-                if (val % 2 == 1)
+                throw new Exception("Le nombre doit être compris entre 0 et 255");
+            }
+
+            string binaire = "";
+            for (int i = 0; i < 8; i++)
+            {
+                if (decimale % 2 == 0)
                 {
-                    binaire[binaire.Length - 1 - i] = '1';
+                    binaire = "0" + binaire;
                 }
                 else
                 {
-                    binaire[binaire.Length - 1 - i] = '0';
+                    binaire = "1" + binaire;
                 }
-                val /= 2;
-                if (val == 0) break;
+                decimale = decimale / 2;
             }
+
             return binaire;
+        }
+
+        public static string ConvertDecimal(string binaire) // Convertit un nombre binaire en décimal
+        {
+            int decimale = 0;
+            for (int i = 0; i < binaire.Length; i++)
+            {
+                if (binaire[i] == '1')
+                {
+                    decimale += Convert.ToInt32(Math.Pow(2, binaire.Length - 1 - i));
+                }
+            }
+            return decimale.ToString();
         }
 
         private void txtCidr_TextChanged(object sender, EventArgs e)
@@ -164,27 +183,27 @@ namespace cidr_cal
         {
             // octet 1
             int valIp1 = Convert.ToInt32(txtOct1.Text);
-            char[] valIpBi1 = ConvertBinaire(valIp1);
+            string valIpBi1 = ConvertBinaire(valIp1);
             int valMasque1 = Convert.ToInt32(txtCidrOct1.Text);
-            char[] valMasqueBi1 = ConvertBinaire(valMasque1);
+            string valMasqueBi1 = ConvertBinaire(valMasque1);
 
             // octet 2
             int valIp2 = Convert.ToInt32(txtOct2.Text);
-            char[] valIpBi2 = ConvertBinaire(valIp2);
+            string valIpBi2 = ConvertBinaire(valIp2);
             int valMasque2 = Convert.ToInt32(txtCidrOct2.Text);
-            char[] valMasqueBi2 = ConvertBinaire(valMasque2);
+            string valMasqueBi2 = ConvertBinaire(valMasque2);
 
             // octet 3
             int valIp3 = Convert.ToInt32(txtOct3.Text);
-            char[] valIpBi3 = ConvertBinaire(valIp3);
+            string valIpBi3 = ConvertBinaire(valIp3);
             int valMasque3 = Convert.ToInt32(txtCidrOct3.Text);
-            char[] valMasqueBi3 = ConvertBinaire(valMasque3);
+            string valMasqueBi3 = ConvertBinaire(valMasque3);
 
             // octet 4
             int valIp4 = Convert.ToInt32(txtOct4.Text);
-            char[] valIpBi4 = ConvertBinaire(valIp4);
+            string valIpBi4 = ConvertBinaire(valIp4);
             int valMasque4 = Convert.ToInt32(txtCidrOct4.Text);
-            char[] valMasqueBi4 = ConvertBinaire(valMasque4);
+            string valMasqueBi4 = ConvertBinaire(valMasque4);
 
             // result octet 1
             txtOctNet1.Text = ConvertDecimal(CalculateNet(valIpBi1, valMasqueBi1));
@@ -221,37 +240,63 @@ namespace cidr_cal
             txtNbMachine.Text = (nbIps - 2).ToString();
         }
 
-        public char[] CalculateNet(char[] ip, char[] mask)
+        public static string CalculateNet(string ip, string masque) // Calculer le net (ip ET masque)
         {
-            char[] result = new char[ip.Length];
+            string net = "";
+
             for (int i = 0; i < ip.Length; i++)
             {
-                result[i] = (ip[i] == '1' && mask[i] == '1') ? '1' : '0';
-            }
-            return result;
-        }
-
-        public char[] CalculateBroadcast(char[] ip, char[] mask)
-        {
-            char[] result = new char[ip.Length];
-            for (int i = 0; i < 8; i++)
-            {
-                result[i] = (mask[i] == '0') ? '1' : ip[i];
-            }
-            return result;
-        }
-
-        public string ConvertDecimal(char[] binary)
-        {
-            int val = 0;
-            for (int i = 0; i < binary.Length; i++)
-            {
-                if (binary[i] == '1')
+                if (ip[i].Equals('1') && masque[i].Equals('1'))
                 {
-                    val += (int)Math.Pow(2, 7 - i);
+                    net += "1";
+                }
+                else
+                {
+                    net += "0";
                 }
             }
-            return val.ToString();
+
+            return net;
+        }
+
+        public static string non(string binaire) // Retourne le complément à 1 du binaire
+        {
+            string nonBinaire = "";
+
+            for (int i = 0; i < binaire.Length; i++)
+            {
+                if (binaire[i].Equals('0'))
+                {
+                    nonBinaire += "1";
+                }
+                else
+                {
+                    nonBinaire += "0";
+                }
+            }
+
+            return nonBinaire;
+        }
+
+        public static string CalculateBroadcast(string net, string masque) // Calculer le broadcast (net OU non(masque))
+        {
+            string broadcast = "";
+
+            string nonMasque = non(masque);
+
+            for (int i = 0; i < net.Length; i++)
+            {
+                if (net[i].Equals('1') || nonMasque[i].Equals('1'))
+                {
+                    broadcast += "1";
+                }
+                else
+                {
+                    broadcast += "0";
+                }
+            }
+
+            return broadcast;
         }
     }
 }
