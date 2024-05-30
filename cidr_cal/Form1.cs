@@ -27,12 +27,34 @@ namespace cidr_cal
             {
                 txtCidr.Enabled = true;
             }
+        }
 
-            if(val > 255 || val < 0)
+        private void GestionErreurIp(TextBox textDec)
+        {
+            try
             {
-                MessageBox.Show("Invalid Input");
-                textHexa.Text = "0";
-            } 
+                if (int.Parse(textDec.Text) > 255)
+                {
+                    lblInfoIp.Text = "Doit etre compris entre 0 et 255";
+                    textDec.Text = "255";
+                }
+                else if (int.Parse(textDec.Text) < 0)
+                {
+                    lblInfoIp.Text = "Doit etre compris entre 0 et 255";
+                    textDec.Text = "255";
+                }
+            }
+            catch
+            {
+                lblInfoIp.Text = "Doit etre un NOMBRE entre 0 et 255";
+                textDec.Text = "255";
+            }
+        }
+
+        private void txtOctBinaire_Leave(object sender, EventArgs e)
+        {
+            TextBox textHexa = (TextBox)sender;
+            GestionErreurIp(textHexa);
         }
 
         private bool checkIp()
@@ -73,24 +95,19 @@ namespace cidr_cal
             return false;
         }
 
-        public char[] ConvertBinaire(int val)
+        public string ConvertBinaire(int val)
         {
             char[] binaire = ['0', '0', '0', '0', '0', '0', '0', '0'];
-            for (int i = 0; i < binaire.Length; i++)
+            for (int i = binaire.Length - 1; i >= 0; i--)
             {
                 if (val % 2 == 1)
-                {
-                    binaire[binaire.Length - 1 - i] = '1';
-                }
-                else
-                {
-                    binaire[binaire.Length - 1 - i] = '0';
-                }
+                    binaire[i] = '1';
                 val /= 2;
                 if (val == 0) break;
             }
-            return binaire;
+            return new string(binaire);
         }
+
 
         private void txtCidr_TextChanged(object sender, EventArgs e)
         {
@@ -107,7 +124,7 @@ namespace cidr_cal
                     {
                         hexa[i] = (Math.Pow(2, 8) - 1).ToString();
                         val -= 8;
-                }
+                    }
                     else
                     {
                         int val2 = 0;
@@ -164,27 +181,27 @@ namespace cidr_cal
         {
             // octet 1
             int valIp1 = Convert.ToInt32(txtOct1.Text);
-            char[] valIpBi1 = ConvertBinaire(valIp1);
+            string valIpBi1 = ConvertBinaire(valIp1);
             int valMasque1 = Convert.ToInt32(txtCidrOct1.Text);
-            char[] valMasqueBi1 = ConvertBinaire(valMasque1);
+            string valMasqueBi1 = ConvertBinaire(valMasque1);
 
             // octet 2
             int valIp2 = Convert.ToInt32(txtOct2.Text);
-            char[] valIpBi2 = ConvertBinaire(valIp2);
+            string valIpBi2 = ConvertBinaire(valIp2);
             int valMasque2 = Convert.ToInt32(txtCidrOct2.Text);
-            char[] valMasqueBi2 = ConvertBinaire(valMasque2);
+            string valMasqueBi2 = ConvertBinaire(valMasque2);
 
             // octet 3
             int valIp3 = Convert.ToInt32(txtOct3.Text);
-            char[] valIpBi3 = ConvertBinaire(valIp3);
+            string valIpBi3 = ConvertBinaire(valIp3);
             int valMasque3 = Convert.ToInt32(txtCidrOct3.Text);
-            char[] valMasqueBi3 = ConvertBinaire(valMasque3);
+            string valMasqueBi3 = ConvertBinaire(valMasque3);
 
             // octet 4
             int valIp4 = Convert.ToInt32(txtOct4.Text);
-            char[] valIpBi4 = ConvertBinaire(valIp4);
+            string valIpBi4 = ConvertBinaire(valIp4);
             int valMasque4 = Convert.ToInt32(txtCidrOct4.Text);
-            char[] valMasqueBi4 = ConvertBinaire(valMasque4);
+            string valMasqueBi4 = ConvertBinaire(valMasque4);
 
             // result octet 1
             txtOctNet1.Text = ConvertDecimal(CalculateNet(valIpBi1, valMasqueBi1));
@@ -209,8 +226,6 @@ namespace cidr_cal
             txtOctBroad4.Text = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
             txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
             txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
-
-
         }
 
         private void CalculateNumberOfIPs()
@@ -221,27 +236,27 @@ namespace cidr_cal
             txtNbMachine.Text = (nbIps - 2).ToString();
         }
 
-        public char[] CalculateNet(char[] ip, char[] mask)
+        public string CalculateNet(string ip, string mask)
         {
             char[] result = new char[ip.Length];
             for (int i = 0; i < ip.Length; i++)
             {
                 result[i] = (ip[i] == '1' && mask[i] == '1') ? '1' : '0';
             }
-            return result;
+            return new string(result);
         }
 
-        public char[] CalculateBroadcast(char[] ip, char[] mask)
+        public string CalculateBroadcast(string ip, string mask)
         {
             char[] result = new char[ip.Length];
             for (int i = 0; i < 8; i++)
             {
                 result[i] = (mask[i] == '0') ? '1' : ip[i];
             }
-            return result;
+            return new string(result);
         }
 
-        public string ConvertDecimal(char[] binary)
+        public string ConvertDecimal(string binary)
         {
             int val = 0;
             for (int i = 0; i < binary.Length; i++)
