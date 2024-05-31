@@ -15,11 +15,11 @@ namespace cidr_cal
 
         private void txtOctBinaire_TextChanged(object sender, EventArgs e)
         {
-            TextBox textHexa = (TextBox)sender;
+            TextBox textDec = (TextBox)sender;
 
-            TextBox textBinaire = (TextBox)textHexa.Tag;
+            TextBox textBinaire = (TextBox)textDec.Tag;
 
-            int val = Convert.ToInt32(textHexa.Text);
+            int val = Convert.ToInt32(textDec.Text);
 
             textBinaire.Text = new string(ConvertBinaire(val));
 
@@ -27,12 +27,31 @@ namespace cidr_cal
             {
                 txtCidr.Enabled = true;
             }
+        }
 
-            if(val > 255 || val < 0)
+        private void GestionErreurIP(TextBox textDec)
+        {
+            try
             {
-                MessageBox.Show("Invalid Input");
-                textHexa.Text = "0";
-            } 
+                if(int.Parse(textDec.Text) > 255)
+                {
+                    textDec.Text = "255";
+                }
+                if (int.Parse(textDec.Text) < 0)
+                {
+                    textDec.Text = "0";
+                }
+            }
+            catch
+            {
+                textDec.Text = "255";
+            }
+        }
+
+        private void txtOctBinaire_Leave(object sender, EventArgs e)
+        {
+            TextBox textDec = (TextBox)sender;
+            GestionErreurIP(textDec);
         }
 
         private bool checkIp()
@@ -76,10 +95,10 @@ namespace cidr_cal
         public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire de type string
         {
 
-            if (decimale > 255 || decimale < 0)
-            {
-                throw new Exception("Le nombre doit être compris entre 0 et 255");
-            }
+            //if (decimale > 255 || decimale < 0)
+            //{
+            //    throw new Exception("Le nombre doit être compris entre 0 et 255");
+            //}
 
             string binaire = "";
             for (int i = 0; i < 8; i++)
