@@ -15,24 +15,31 @@ namespace cidr_cal
 
         private void txtOctBinaire_TextChanged(object sender, EventArgs e)
         {
-            TextBox textHexa = (TextBox)sender;
-
-            TextBox textBinaire = (TextBox)textHexa.Tag;
-
-            int val = Convert.ToInt32(textHexa.Text);
-
-            textBinaire.Text = new string(ConvertBinaire(val));
-
-            if (!string.IsNullOrEmpty(txtOct1.Text))
+            try
             {
-                txtCidr.Enabled = true;
+                lblErrorIP.Hide();
+                TextBox textHexa = (TextBox)sender;
+
+                TextBox textBinaire = (TextBox)textHexa.Tag;
+
+                int val = Convert.ToInt32(textHexa.Text);
+
+                if (val < 0 || val > 255)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
+                textBinaire.Text = new string(ConvertBinaire(val));
+
+                if (!string.IsNullOrEmpty(txtOct1.Text) && !string.IsNullOrEmpty(txtOct2.Text) && !string.IsNullOrEmpty(txtOct3.Text) && !string.IsNullOrEmpty(txtOct4.Text))
+                {
+                    txtCidr.Enabled = true;
+                }
             }
-
-            if(val > 255 || val < 0)
+            catch (Exception)
             {
-                MessageBox.Show("Invalid Input");
-                textHexa.Text = "0";
-            } 
+                lblErrorIP.Show();
+            }
         }
 
         private bool checkIp()
@@ -113,43 +120,51 @@ namespace cidr_cal
 
         private void txtCidr_TextChanged(object sender, EventArgs e)
         {
-            int val = Convert.ToInt32(txtCidr.Text);
-
-            if (val > 8)
+            try
             {
-                string[] hexa = ["0", "0", "0", "0"];
+                lblErrorCidr.Hide();
+                int val = Convert.ToInt32(txtCidr.Text);
 
-                int i = 0;
-                while (val > 0)
+                if (val > 8)
                 {
-                    if (val >= 8)
-                    {
-                        hexa[i] = (Math.Pow(2, 8) - 1).ToString();
-                        val -= 8;
-                }
-                    else
-                    {
-                        int val2 = 0;
-                        for (int j = 7; j >= 8 - val; j--)
-                        {
-                            val2 += (int)Math.Pow(2, j);
-                        }
-                        hexa[i] = val2.ToString();
-                        val = 0;
-                    }
-                    i++;
-                }
-                txtCidrOct1.Text = hexa[0];
-                txtCidrOct2.Text = hexa[1];
-                txtCidrOct3.Text = hexa[2];
-                txtCidrOct4.Text = hexa[3];
-            }
-            if (!string.IsNullOrEmpty(txtCidr.Text))
-            {
-                btnCalcul.Enabled = true;
+                    string[] hexa = ["0", "0", "0", "0"];
 
-                //them border cho button
+                    int i = 0;
+                    while (val > 0)
+                    {
+                        if (val >= 8)
+                        {
+                            hexa[i] = (Math.Pow(2, 8) - 1).ToString();
+                            val -= 8;
+                        }
+                        else
+                        {
+                            int val2 = 0;
+                            for (int j = 7; j >= 8 - val; j--)
+                            {
+                                val2 += (int)Math.Pow(2, j);
+                            }
+                            hexa[i] = val2.ToString();
+                            val = 0;
+                        }
+                        i++;
+                    }
+                    txtCidrOct1.Text = hexa[0];
+                    txtCidrOct2.Text = hexa[1];
+                    txtCidrOct3.Text = hexa[2];
+                    txtCidrOct4.Text = hexa[3];
+                }
+                if (!string.IsNullOrEmpty(txtCidr.Text) && !string.IsNullOrEmpty(txtOct1.Text) && !string.IsNullOrEmpty(txtOct2.Text) && !string.IsNullOrEmpty(txtOct3.Text) && !string.IsNullOrEmpty(txtOct4.Text))
+                {
+                    btnCalcul.Enabled = true;
+                }
             }
+            catch (Exception)
+            {
+                lblErrorCidr.Show();
+                txtCidr.Text = "";
+            }
+
         }
 
         private void btnCalcul_Click(object sender, EventArgs e)

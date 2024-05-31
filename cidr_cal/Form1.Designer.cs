@@ -74,6 +74,8 @@
             txtPreIp4 = new TextBox();
             txtOctBroad4 = new TextBox();
             txtOctNet4 = new TextBox();
+            lblErrorCidr = new Label();
+            lblErrorIP = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -613,11 +615,37 @@
             txtOctNet4.TabIndex = 33;
             txtOctNet4.TextAlign = HorizontalAlignment.Center;
             // 
+            // lblErrorCidr
+            // 
+            lblErrorCidr.AutoSize = true;
+            lblErrorCidr.BackColor = Color.FromArgb(255, 128, 128);
+            lblErrorCidr.BorderStyle = BorderStyle.FixedSingle;
+            lblErrorCidr.Location = new Point(263, 214);
+            lblErrorCidr.Name = "lblErrorCidr";
+            lblErrorCidr.Size = new Size(324, 17);
+            lblErrorCidr.TabIndex = 44;
+            lblErrorCidr.Text = "La valeur du CIDR doit être comprise entre 0 et 32 et sans '/'.";
+            lblErrorCidr.Visible = false;
+            // 
+            // lblErrorIP
+            // 
+            lblErrorIP.AutoSize = true;
+            lblErrorIP.BackColor = Color.FromArgb(255, 128, 128);
+            lblErrorIP.BorderStyle = BorderStyle.FixedSingle;
+            lblErrorIP.Location = new Point(32, 62);
+            lblErrorIP.Name = "lblErrorIP";
+            lblErrorIP.Size = new Size(333, 17);
+            lblErrorIP.TabIndex = 45;
+            lblErrorIP.Text = "Chaque case doit être comprise entre 0 et 255 sans caractères.";
+            lblErrorIP.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(595, 633);
+            Controls.Add(lblErrorIP);
+            Controls.Add(lblErrorCidr);
             Controls.Add(txtDerIp4);
             Controls.Add(txtPreIp4);
             Controls.Add(txtOctBroad4);
@@ -720,5 +748,7 @@
         private TextBox txtPreIp4;
         private TextBox txtOctBroad4;
         private TextBox txtOctNet4;
+        private Label lblErrorCidr;
+        private Label lblErrorIP;
     }
 }
