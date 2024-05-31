@@ -19,13 +19,47 @@ namespace cidr_cal
 
             TextBox textBinaire = (TextBox)textDec.Tag;
 
-            int val = Convert.ToInt32(textDec.Text);
+            if (rdoDec.Checked)
+            {
+                int val;
+                if (int.TryParse(textDec.Text, out val))
+                    textBinaire.Text = new string(ConvertBinaire(val));
+                else
+                    textBinaire.Text = string.Empty;
+            }
+            else
+            {
+                if(!string.IsNullOrEmpty(textDec.Text))
+                    textBinaire.Text = ConvertDecimal(textDec.Text).ToString();
+                else
+                    textBinaire.Text = string.Empty;
+            }
 
-            textBinaire.Text = new string(ConvertBinaire(val));
 
-            if (!string.IsNullOrEmpty(txtOct1.Text))
+            if (!string.IsNullOrEmpty(textDec.Text))
             {
                 txtCidr.Enabled = true;
+            }
+        }
+
+        private void Radio_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rdoButton = (RadioButton)sender;
+            if(rdoButton.Checked)
+            {
+                txtOct1.Clear();
+                txtOct2.Clear();
+                txtOct3.Clear();
+                txtOct4.Clear();
+                txtOctCp1.Clear();
+                txtOctCp2.Clear();
+                txtOctCp3.Clear();
+                txtOctCp4.Clear();
+                txtCidr.Clear();
+                txtCidrOct1.Clear();
+                txtCidrOct2.Clear();
+                txtCidrOct3.Clear();
+                txtCidrOct4.Clear();
             }
         }
 
@@ -33,18 +67,27 @@ namespace cidr_cal
         {
             try
             {
-                if(int.Parse(textDec.Text) > 255)
+                if (rdoDec.Checked)
                 {
-                    textDec.Text = "255";
+                    if (int.Parse(textDec.Text) > 255)
+                        textDec.Text = "255";
+                    if (int.Parse(textDec.Text) < 0)
+                        textDec.Text = "0";
                 }
-                if (int.Parse(textDec.Text) < 0)
+                else
                 {
-                    textDec.Text = "0";
+                    string valBin = textDec.Text;
+                    for (int i = 0; i < valBin.Length; i++)
+                        if (valBin[i] != '0' || valBin[i] != '1')
+                            textDec.Text = "11111111";
                 }
             }
             catch
             {
-                textDec.Text = "255";
+                if (rdoDec.Checked)
+                    textDec.Text = "255";
+                else
+                    textDec.Text = "11111111";
             }
         }
 

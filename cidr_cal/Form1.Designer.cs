@@ -101,6 +101,7 @@
             rdoDec.Text = "DECIMAL";
             rdoDec.TextAlign = ContentAlignment.MiddleCenter;
             rdoDec.UseVisualStyleBackColor = true;
+            rdoDec.CheckedChanged += Radio_CheckedChanged;
             // 
             // rdoBin
             // 
@@ -116,6 +117,7 @@
             rdoBin.Text = "BINAIRE";
             rdoBin.TextAlign = ContentAlignment.MiddleCenter;
             rdoBin.UseVisualStyleBackColor = true;
+            rdoBin.CheckedChanged += Radio_CheckedChanged;
             // 
             // btnCalcul
             // 
@@ -139,6 +141,7 @@
             txtOct1.TabIndex = 1;
             txtOct1.TextAlign = HorizontalAlignment.Center;
             txtOct1.TextChanged += txtOctBinaire_TextChanged;
+            txtOct1.Leave += txtOctBinaire_Leave;
             // 
             // lblTitreMasque
             // 
@@ -172,6 +175,7 @@
             txtOct2.TabIndex = 3;
             txtOct2.TextAlign = HorizontalAlignment.Center;
             txtOct2.TextChanged += txtOctBinaire_TextChanged;
+            txtOct2.Leave += txtOctBinaire_Leave;
             // 
             // txtOct4
             // 
@@ -183,6 +187,7 @@
             txtOct4.TabIndex = 7;
             txtOct4.TextAlign = HorizontalAlignment.Center;
             txtOct4.TextChanged += txtOctBinaire_TextChanged;
+            txtOct4.Leave += txtOctBinaire_Leave;
             // 
             // txtOct3
             // 
@@ -194,6 +199,7 @@
             txtOct3.TabIndex = 5;
             txtOct3.TextAlign = HorizontalAlignment.Center;
             txtOct3.TextChanged += txtOctBinaire_TextChanged;
+            txtOct3.Leave += txtOctBinaire_Leave;
             // 
             // txtOctCp4
             // 
