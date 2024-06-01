@@ -1,5 +1,5 @@
 using System.Runtime.Intrinsics.X86;
-
+using System.Threading.Tasks;
 namespace cidr_cal
 {
     public partial class Form1 : Form
@@ -59,6 +59,22 @@ namespace cidr_cal
             }
         }
 
+        private void StyleError()
+        {
+            txtCidr.Font = new Font(txtCidr.Font, FontStyle.Bold);
+
+            lblErrorCidr.ForeColor = Color.Red;
+            lblErrorCidr.Font = new Font(lblErrorCidr.Font, FontStyle.Italic);
+        }
+
+        private void ResetStyleError()
+        {
+            txtCidr.Font = new Font(txtCidr.Font, FontStyle.Regular);
+
+            lblErrorCidr.ForeColor = Color.Black;
+            lblErrorCidr.Font = new Font(lblErrorCidr.Font, FontStyle.Regular);
+        }
+
         private void GestionErreurIP(TextBox textDec)
         {
             try
@@ -97,7 +113,7 @@ namespace cidr_cal
         {
             try
             {
-                lblErrorCidr.Hide();
+                //lblErrorCidr.Hide();
                 int val = Convert.ToInt32(txtCidr.Text);
 
                 if (val >= 8 && val <= 32)
@@ -136,7 +152,7 @@ namespace cidr_cal
             }
             catch (Exception)
             {
-                lblErrorCidr.Show();
+                //lblErrorCidr.Show();
                 txtCidr.Text = string.Empty;
             }
         }
@@ -146,13 +162,19 @@ namespace cidr_cal
             try
             {
                 if (int.Parse(txtCidr.Text) > 32 || int.Parse(txtCidr.Text) < 8)
+                {
                     txtCidr.Text = "24";
-                lblErrorCidr.Show();
+                    StyleError();
+                    Task.Delay(2000);
+                    ResetStyleError();
+                }
             }
             catch
             {
                 txtCidr.Text = "24";
-                lblErrorCidr.Show();
+                StyleError();
+                Task.Delay(2000);
+                ResetStyleError();
             }
         }
 
@@ -292,9 +314,9 @@ namespace cidr_cal
             if (rdoDec.Checked)
             {
                 valIpBi1 = txtOctCp1.Text;
-                valIpBi2 = txtOctCp1.Text;
-                valIpBi3 = txtOctCp1.Text;
-                valIpBi4 = txtOctCp1.Text;
+                valIpBi2 = txtOctCp2.Text;
+                valIpBi3 = txtOctCp3.Text;
+                valIpBi4 = txtOctCp4.Text;
             }
             else
             {
@@ -305,20 +327,20 @@ namespace cidr_cal
             }
 
             // octet 1
-            int valMasque1 = Convert.ToInt32(txtCidrOct1.Text);
-            string valMasqueBi1 = ConvertBinaire(valMasque1);
+            //int valMasque1 = Convert.ToInt32(txtCidrOct1.Text);
+            string valMasqueBi1 = ConvertBinaire(Convert.ToInt32(txtCidrOct1.Text));
 
             // octet 2
-            int valMasque2 = Convert.ToInt32(txtCidrOct2.Text);
-            string valMasqueBi2 = ConvertBinaire(valMasque2);
+            //int valMasque2 = Convert.ToInt32(txtCidrOct2.Text);
+            string valMasqueBi2 = ConvertBinaire(Convert.ToInt32(txtCidrOct2.Text));
 
             // octet 3
-            int valMasque3 = Convert.ToInt32(txtCidrOct3.Text);
-            string valMasqueBi3 = ConvertBinaire(valMasque3);
+            //int valMasque3 = Convert.ToInt32(txtCidrOct3.Text);
+            string valMasqueBi3 = ConvertBinaire(Convert.ToInt32(txtCidrOct3.Text));
 
             // octet 4
-            int valMasque4 = Convert.ToInt32(txtCidrOct4.Text);
-            string valMasqueBi4 = ConvertBinaire(valMasque4);
+            //int valMasque4 = Convert.ToInt32(txtCidrOct4.Text);
+            string valMasqueBi4 = ConvertBinaire(Convert.ToInt32(txtCidrOct4.Text));
 
             // result octet 1
             txtOctNet1.Text = ConvertDecimal(CalculateNet(valIpBi1, valMasqueBi1));
