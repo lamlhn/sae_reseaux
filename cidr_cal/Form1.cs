@@ -44,6 +44,7 @@ namespace cidr_cal
         private void Radio_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton rdoButton = (RadioButton)sender;
+
             if (rdoButton.Checked)
             {
                 ClearAllTextBox();
@@ -247,41 +248,6 @@ namespace cidr_cal
             return false;
         }
 
-        public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire de type string
-        {
-            string binaire = "";
-
-            for (int i = 0; i < 8; i++)
-            {
-                if (decimale % 2 == 0)
-                {
-                    binaire = "0" + binaire;
-                }
-                else
-                {
-                    binaire = "1" + binaire;
-                }
-                decimale = decimale / 2;
-            }
-
-            return binaire;
-        }
-
-        public static string ConvertDecimal(string binaire) // Convertit un nombre binaire en décimal
-        {
-            int decimale = 0;
-
-            for (int i = 0; i < binaire.Length; i++)
-            {
-                if (binaire[i] == '1')
-                {
-                    decimale += Convert.ToInt32(Math.Pow(2, binaire.Length - 1 - i));
-                }
-            }
-
-            return decimale.ToString();
-        }
-
         private void CalculateNetworkAndBroadcast()
         {
             string valIpBi1; 
@@ -351,6 +317,41 @@ namespace cidr_cal
             int nbIps = (int)Math.Pow(2, 32 - valCidr);
             txtNbIp.Text = nbIps.ToString();
             txtNbMachine.Text = (nbIps - 2).ToString();
+        }
+
+        public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire de type string
+        {
+            string binaire = "";
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (decimale % 2 == 0)
+                {
+                    binaire = "0" + binaire;
+                }
+                else
+                {
+                    binaire = "1" + binaire;
+                }
+                decimale = decimale / 2;
+            }
+
+            return binaire;
+        }
+
+        public static string ConvertDecimal(string binaire) // Convertit un nombre binaire en décimal
+        {
+            int decimale = 0;
+
+            for (int i = 0; i < binaire.Length; i++)
+            {
+                if (binaire[i] == '1')
+                {
+                    decimale += Convert.ToInt32(Math.Pow(2, binaire.Length - 1 - i));
+                }
+            }
+
+            return decimale.ToString();
         }
 
         public static string CalculateNet(string ip, string masque) // Calculer le net (ip ET masque)
