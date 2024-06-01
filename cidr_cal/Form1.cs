@@ -162,13 +162,44 @@ namespace cidr_cal
             }
         }
 
+        private void btnCalcul_Click(object sender, EventArgs e)
+        {
+            if (checkIp() && checkCidr())
+            {
+                int valClass;
+                if (rdoDec.Checked)
+                    valClass = Convert.ToInt32(txtOct1.Text);
+                else
+                    valClass = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
+
+                if (valClass >= 240 && valClass <= 255)
+                    txtClass.Text = "E";
+                else if (valClass >= 224)
+                    txtClass.Text = "D";
+                else if (valClass >= 192)
+                    txtClass.Text = "C";
+                else if (valClass >= 128)
+                    txtClass.Text = "B";
+                else if (valClass >= 0)
+                    txtClass.Text = "A";
+
+                CalculateNetworkAndBroadcast();
+                CalculateNumberOfIPs();
+            }
+            else if (!checkIp() && !checkCidr())
+                MessageBox.Show("Invalid Adresse IP et CIDR");
+            else if (!checkIp())
+                MessageBox.Show("Invalid Adresse IP");
+            else
+                MessageBox.Show("Invalid CIDR");
+        }
+
         private bool checkIp()
         {
             int Oct1;
             int Oct2;
             int Oct3;
             int Oct4;
-
 
             if (rdoDec.Checked)
             {
@@ -253,58 +284,43 @@ namespace cidr_cal
             return decimale.ToString();
         }
 
-        
-
-        private void btnCalcul_Click(object sender, EventArgs e)
-        {
-            if (checkIp() && checkCidr())
-            {
-                int valClass = Convert.ToInt32(txtOct1.Text);
-                if (valClass >= 240 && valClass <= 255)
-                    txtClass.Text = "E";
-                else if (valClass >= 224)
-                    txtClass.Text = "D";
-                else if (valClass >= 192)
-                    txtClass.Text = "C";
-                else if (valClass >= 128)
-                    txtClass.Text = "B";
-                else if (valClass >= 0)
-                    txtClass.Text = "A";
-
-                CalculateNetworkAndBroadcast();
-                CalculateNumberOfIPs();
-            }
-            else if (!checkIp() && !checkCidr())
-                MessageBox.Show("Invalid Adresse IP et CIDR");
-            else if (!checkIp())
-                MessageBox.Show("Invalid Adresse IP");
-            else
-                MessageBox.Show("Invalid CIDR");
-        }
-
         private void CalculateNetworkAndBroadcast()
         {
+            string valIpBi1; 
+            string valIpBi2; 
+            string valIpBi3;
+            string valIpBi4;
+
+            if (rdoDec.Checked)
+            {
+                valIpBi1 = txtOctCp1.Text;
+                valIpBi2 = txtOctCp1.Text;
+                valIpBi3 = txtOctCp1.Text;
+                valIpBi4 = txtOctCp1.Text;
+            }
+            else
+            {
+                valIpBi1 = txtOct1.Text;
+                valIpBi2 = txtOct2.Text;
+                valIpBi3 = txtOct3.Text;
+                valIpBi4 = txtOct4.Text;
+            }
+
+
             // octet 1
-            int valIp1 = Convert.ToInt32(txtOct1.Text);
-            string valIpBi1 = ConvertBinaire(valIp1);
             int valMasque1 = Convert.ToInt32(txtCidrOct1.Text);
             string valMasqueBi1 = ConvertBinaire(valMasque1);
 
             // octet 2
-            int valIp2 = Convert.ToInt32(txtOct2.Text);
-            string valIpBi2 = ConvertBinaire(valIp2);
             int valMasque2 = Convert.ToInt32(txtCidrOct2.Text);
             string valMasqueBi2 = ConvertBinaire(valMasque2);
 
             // octet 3
-            int valIp3 = Convert.ToInt32(txtOct3.Text);
-            string valIpBi3 = ConvertBinaire(valIp3);
             int valMasque3 = Convert.ToInt32(txtCidrOct3.Text);
             string valMasqueBi3 = ConvertBinaire(valMasque3);
 
             // octet 4
-            int valIp4 = Convert.ToInt32(txtOct4.Text);
-            string valIpBi4 = ConvertBinaire(valIp4);
+
             int valMasque4 = Convert.ToInt32(txtCidrOct4.Text);
             string valMasqueBi4 = ConvertBinaire(valMasque4);
 
@@ -331,8 +347,6 @@ namespace cidr_cal
             txtOctBroad4.Text = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
             txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
             txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
-
-
         }
 
         private void CalculateNumberOfIPs()
@@ -398,7 +412,6 @@ namespace cidr_cal
                     broadcast += "0";
                 }
             }
-
             return broadcast;
         }
     }
