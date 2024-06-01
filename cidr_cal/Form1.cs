@@ -11,6 +11,7 @@ namespace cidr_cal
             txtOct2.Tag = txtOctCp2;
             txtOct3.Tag = txtOctCp3;
             txtOct4.Tag = txtOctCp4;
+            lblErrorCidr.Hide();
         }
 
         private void txtOctBinaire_TextChanged(object sender, EventArgs e)
@@ -29,7 +30,7 @@ namespace cidr_cal
             }
             else
             {
-                if(!string.IsNullOrEmpty(textDec.Text))
+                if (!string.IsNullOrEmpty(textDec.Text))
                     textBinaire.Text = ConvertDecimal(textDec.Text).ToString();
                 else
                     textBinaire.Text = string.Empty;
@@ -45,7 +46,7 @@ namespace cidr_cal
         private void Radio_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton rdoButton = (RadioButton)sender;
-            if(rdoButton.Checked)
+            if (rdoButton.Checked)
             {
                 txtOct1.Clear();
                 txtOct2.Clear();
@@ -78,7 +79,7 @@ namespace cidr_cal
                 {
                     string valBin = textDec.Text;
                     for (int i = 0; i < valBin.Length; i++)
-                        if (valBin[i] != '0' || valBin[i] != '1')
+                        if (valBin[i] != '0' && valBin[i] != '1')
                             textDec.Text = "11111111";
                 }
             }
@@ -97,12 +98,92 @@ namespace cidr_cal
             GestionErreurIP(textDec);
         }
 
+        private void txtCidr_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int val = Convert.ToInt32(txtCidr.Text);
+
+                if (val >= 8 && val <= 32)
+                {
+                    string[] hexa = ["0", "0", "0", "0"];
+
+                    int i = 0;
+                    while (val > 0)
+                    {
+                        if (val >= 8)
+                        {
+                            hexa[i] = (Math.Pow(2, 8) - 1).ToString();
+                            val -= 8;
+                        }
+                        else
+                        {
+                            int val2 = 0;
+                            for (int j = 7; j >= 8 - val; j--)
+                            {
+                                val2 += (int)Math.Pow(2, j);
+                            }
+                            hexa[i] = val2.ToString();
+                            val = 0;
+                        }
+                        i++;
+                    }
+                    txtCidrOct1.Text = hexa[0];
+                    txtCidrOct2.Text = hexa[1];
+                    txtCidrOct3.Text = hexa[2];
+                    txtCidrOct4.Text = hexa[3];
+                }
+                if (!string.IsNullOrEmpty(txtCidr.Text))
+                {
+                    btnCalcul.Enabled = true;
+
+                    //them border cho button
+                }
+            }
+            catch (Exception)
+            {
+                lblErrorCidr.Show();
+                txtCidr.Text = string.Empty;
+            }
+        }
+
+        private void txtCidr_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (int.Parse(txtCidr.Text) > 32 || int.Parse(txtCidr.Text) < 8)
+                    txtCidr.Text = "24";
+                lblErrorCidr.Show();
+            }
+            catch
+            {
+                txtCidr.Text = "24";
+                lblErrorCidr.Show();
+            }
+        }
+
         private bool checkIp()
         {
-            int Oct1 = Convert.ToInt32(txtOct1.Text);
-            int Oct2 = Convert.ToInt32(txtOct2.Text);
-            int Oct3 = Convert.ToInt32(txtOct3.Text);
-            int Oct4 = Convert.ToInt32(txtOct4.Text);
+            int Oct1;
+            int Oct2;
+            int Oct3;
+            int Oct4;
+
+
+            if (rdoDec.Checked)
+            {
+                Oct1 = Convert.ToInt32(txtOct1.Text);
+                Oct2 = Convert.ToInt32(txtOct2.Text);
+                Oct3 = Convert.ToInt32(txtOct3.Text);
+                Oct4 = Convert.ToInt32(txtOct4.Text);
+            }
+            else
+            {
+                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
+                Oct2 = Convert.ToInt32(ConvertDecimal(txtOct2.Text));
+                Oct3 = Convert.ToInt32(ConvertDecimal(txtOct3.Text));
+                Oct4 = Convert.ToInt32(ConvertDecimal(txtOct4.Text));
+            }
 
             if (Oct1 == 0 || Oct1 == 10 || Oct1 == 127 || Oct1 >= 224)
                 return false;
@@ -123,7 +204,12 @@ namespace cidr_cal
 
         private bool checkCidr()
         {
-            int Oct1 = Convert.ToInt32(txtOct1.Text);
+            int Oct1;
+            if (rdoDec.Checked)
+                Oct1 = Convert.ToInt32(txtOct1.Text);
+            else
+                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
+
             int valClass = Convert.ToInt32(txtCidr.Text);
 
             if (Oct1 < 128 && valClass >= 8)
@@ -137,12 +223,6 @@ namespace cidr_cal
 
         public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire de type string
         {
-
-            //if (decimale > 255 || decimale < 0)
-            //{
-            //    throw new Exception("Le nombre doit être compris entre 0 et 255");
-            //}
-
             string binaire = "";
             for (int i = 0; i < 8; i++)
             {
@@ -173,46 +253,7 @@ namespace cidr_cal
             return decimale.ToString();
         }
 
-        private void txtCidr_TextChanged(object sender, EventArgs e)
-        {
-            int val = Convert.ToInt32(txtCidr.Text);
-
-            if (val > 8)
-            {
-                string[] hexa = ["0", "0", "0", "0"];
-
-                int i = 0;
-                while (val > 0)
-                {
-                    if (val >= 8)
-                    {
-                        hexa[i] = (Math.Pow(2, 8) - 1).ToString();
-                        val -= 8;
-                }
-                    else
-                    {
-                        int val2 = 0;
-                        for (int j = 7; j >= 8 - val; j--)
-                        {
-                            val2 += (int)Math.Pow(2, j);
-                        }
-                        hexa[i] = val2.ToString();
-                        val = 0;
-                    }
-                    i++;
-                }
-                txtCidrOct1.Text = hexa[0];
-                txtCidrOct2.Text = hexa[1];
-                txtCidrOct3.Text = hexa[2];
-                txtCidrOct4.Text = hexa[3];
-            }
-            if (!string.IsNullOrEmpty(txtCidr.Text))
-            {
-                btnCalcul.Enabled = true;
-
-                //them border cho button
-            }
-        }
+        
 
         private void btnCalcul_Click(object sender, EventArgs e)
         {

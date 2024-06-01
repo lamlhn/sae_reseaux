@@ -74,6 +74,7 @@
             txtPreIp4 = new TextBox();
             txtOctBroad4 = new TextBox();
             txtOctNet4 = new TextBox();
+            lblErrorCidr = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -164,6 +165,7 @@
             txtCidr.TabIndex = 10;
             txtCidr.TextAlign = HorizontalAlignment.Center;
             txtCidr.TextChanged += txtCidr_TextChanged;
+            txtCidr.Leave += txtCidr_Leave;
             // 
             // txtOct2
             // 
@@ -623,11 +625,22 @@
             txtOctNet4.TabIndex = 33;
             txtOctNet4.TextAlign = HorizontalAlignment.Center;
             // 
+            // lblErrorCidr
+            // 
+            lblErrorCidr.AutoSize = true;
+            lblErrorCidr.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblErrorCidr.Location = new Point(269, 214);
+            lblErrorCidr.Name = "lblErrorCidr";
+            lblErrorCidr.Size = new Size(137, 17);
+            lblErrorCidr.TabIndex = 44;
+            lblErrorCidr.Text = "Doit etre entre 8 et 32";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(595, 633);
+            Controls.Add(lblErrorCidr);
             Controls.Add(txtDerIp4);
             Controls.Add(txtPreIp4);
             Controls.Add(txtOctBroad4);
@@ -730,5 +743,6 @@
         private TextBox txtPreIp4;
         private TextBox txtOctBroad4;
         private TextBox txtOctNet4;
+        private Label lblErrorCidr;
     }
 }
