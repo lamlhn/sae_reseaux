@@ -95,20 +95,6 @@ namespace cidr_cal
             return false;
         }
 
-        public string ConvertBinaire(int val)
-        {
-            char[] binaire = ['0', '0', '0', '0', '0', '0', '0', '0'];
-            for (int i = binaire.Length - 1; i >= 0; i--)
-            {
-                if (val % 2 == 1)
-                    binaire[i] = '1';
-                val /= 2;
-                if (val == 0) break;
-            }
-            return new string(binaire);
-        }
-
-
         private void txtCidr_TextChanged(object sender, EventArgs e)
         {
             int val = Convert.ToInt32(txtCidr.Text);
@@ -228,12 +214,30 @@ namespace cidr_cal
             txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
         }
 
-        private void CalculateNumberOfIPs()
+        public string ConvertBinaire(int val)
         {
-            int valCidr = Convert.ToInt32(txtCidr.Text);
-            int nbIps = (int)Math.Pow(2, 32 - valCidr);
-            txtNbIp.Text = nbIps.ToString();
-            txtNbMachine.Text = (nbIps - 2).ToString();
+            char[] binaire = ['0', '0', '0', '0', '0', '0', '0', '0'];
+            for (int i = binaire.Length - 1; i >= 0; i--)
+            {
+                if (val % 2 == 1)
+                    binaire[i] = '1';
+                val /= 2;
+                if (val == 0) break;
+            }
+            return new string(binaire);
+        }
+
+        public string ConvertDecimal(string binary)
+        {
+            int val = 0;
+            for (int i = 0; i < binary.Length; i++)
+            {
+                if (binary[i] == '1')
+                {
+                    val += (int)Math.Pow(2, 7 - i);
+                }
+            }
+            return val.ToString();
         }
 
         public string CalculateNet(string ip, string mask)
@@ -256,17 +260,12 @@ namespace cidr_cal
             return new string(result);
         }
 
-        public string ConvertDecimal(string binary)
+        private void CalculateNumberOfIPs()
         {
-            int val = 0;
-            for (int i = 0; i < binary.Length; i++)
-            {
-                if (binary[i] == '1')
-                {
-                    val += (int)Math.Pow(2, 7 - i);
-                }
-            }
-            return val.ToString();
+            int valCidr = Convert.ToInt32(txtCidr.Text);
+            int nbIps = (int)Math.Pow(2, 32 - valCidr);
+            txtNbIp.Text = nbIps.ToString();
+            txtNbMachine.Text = (nbIps - 2).ToString();
         }
     }
 }
