@@ -14,6 +14,9 @@ namespace cidr_cal
             txtOct4.Tag = txtOctCp4;
         }
 
+        //Sous-programme txtOctBinaire_TextChanged : transform la valeur de textBox de binaire en decimale et de decimal en bianaire
+        //Non parametre
+        // Non valeur retourne
         private void txtOctBinaire_TextChanged(object sender, EventArgs e)
         {
             TextBox textDec = (TextBox)sender;
@@ -42,6 +45,9 @@ namespace cidr_cal
             }
         }
 
+        //Sous-programme Radio_CheckedChanged : appeler methode pour supprimer toutes les valeur de textBox
+        //Non parametre
+        // Non valeur retourne
         private void Radio_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton rdoButton = (RadioButton)sender;
@@ -51,6 +57,9 @@ namespace cidr_cal
             }
         }
 
+        //Sous-programme ClearAllTextBox : supprimer toutes les valeur de textBox en cliquant sur un des radio button
+        //Non parametre
+        // Non valeur retourne
         private void ClearAllTextBox()
         {
             foreach (Control ctr in this.Controls)
@@ -60,6 +69,9 @@ namespace cidr_cal
             }
         }
 
+        //Sous-programme StyleError : mettre en place nouvelle style 
+        //Non parametre
+        // Non valeur retourne
         private void StyleError()
         {
             txtCidr.Font = new Font(txtCidr.Font, FontStyle.Bold);
@@ -68,6 +80,9 @@ namespace cidr_cal
             lblErrorCidr.Font = new Font(lblErrorCidr.Font, FontStyle.Italic);
         }
 
+        //Sous-programme ResetStyleError : reset style de lable 
+        //Non parametre
+        // Non valeur retourne
         private void ResetStyleError()
         {
             txtCidr.Font = new Font(txtCidr.Font, FontStyle.Regular);
@@ -76,6 +91,9 @@ namespace cidr_cal
             lblErrorCidr.Font = new Font(lblErrorCidr.Font, FontStyle.Regular);
         }
 
+        //Sous-programme GestionErreurIP : mettre la valeur defaut
+        //Non parametre
+        //Non valeur retourne
         private void GestionErreurIP(TextBox textDec)
         {
             try
@@ -104,12 +122,18 @@ namespace cidr_cal
             }
         }
 
+        //Sous-programme txtOctBinaire_Leave : appeler methode pour mettre la valeur defaut
+        //Non parametre
+        // Non valeur retourne
         private void txtOctBinaire_Leave(object sender, EventArgs e)
         {
             TextBox textDec = (TextBox)sender;
             GestionErreurIP(textDec);
         }
 
+        //Sous-programme txtCidr_TextChanged: transform Cidr en deciamle 
+        //Non parametre
+        // Non valeur retourne
         private void txtCidr_TextChanged(object sender, EventArgs e)
         {
             try
@@ -156,6 +180,9 @@ namespace cidr_cal
             }
         }
 
+        //Sous-programme txtCidr_Leave: mettre valeur defaut de Cidr 
+        //Non parametre
+        // Non valeur retourne 
         private async void txtCidr_Leave(object sender, EventArgs e)
         {
             try
@@ -177,6 +204,9 @@ namespace cidr_cal
             }
         }
 
+        //Sous-programme btnCalcul_Click: calcule classe de l'addresse ip 
+        //Non parametre
+        // Non valeur retourne 
         private void btnCalcul_Click(object sender, EventArgs e)
         {
             if (checkIp() && checkCidr())
@@ -209,6 +239,9 @@ namespace cidr_cal
                 MessageBox.Show("Invalid CIDR");
         }
 
+        //Sous-programme checkIp: verifie si l'addresse est valide
+        //Non parametre 
+        // Valeur retourne : booleen true or false
         private bool checkIp()
         {
             int Oct1;
@@ -248,6 +281,9 @@ namespace cidr_cal
             return true;
         }
 
+        //Sous-programme checkCidr: verifie si l'addresse ip et cidr est valide
+        //Non parametre: 
+        // Valeur retourne : booleen true or false
         private bool checkCidr()
         {
             int Oct1;
