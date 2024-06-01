@@ -347,6 +347,9 @@ namespace cidr_cal
             return decimale.ToString();
         }
 
+        //Sous-programme CalculateNetworkAndBroadcast : calcule l'adresse masque, net et premiere ip et dernier ip
+        //Non arametre: 
+        // Non valeur retourne : decimale en string
         private void CalculateNetworkAndBroadcast()
         {
             string valIpBi1; 
@@ -422,7 +425,7 @@ namespace cidr_cal
         // - net : adresse net (en entree)
         // - masque : adresse masque (en entree)
         // Valeur retourne : broadcast
-        public static string CalculateNet(string adrIp, string masque) // Calculer le net (ip ET masque)
+        public static string CalculateNet(string adrIp, string masque) 
         {
             string net = "";
 
