@@ -11,13 +11,11 @@ namespace cidr_cal
             txtOct2.Tag = txtOctCp2;
             txtOct3.Tag = txtOctCp3;
             txtOct4.Tag = txtOctCp4;
-            lblErrorCidr.Hide();
         }
 
         private void txtOctBinaire_TextChanged(object sender, EventArgs e)
         {
             TextBox textDec = (TextBox)sender;
-
             TextBox textBinaire = (TextBox)textDec.Tag;
 
             if (rdoDec.Checked)
@@ -37,7 +35,7 @@ namespace cidr_cal
             }
 
 
-            if (!string.IsNullOrEmpty(textDec.Text))
+            if (!string.IsNullOrEmpty(txtOct1.Text) && !string.IsNullOrEmpty(txtOct2.Text) && !string.IsNullOrEmpty(txtOct3.Text) && !string.IsNullOrEmpty(txtOct4.Text))
             {
                 txtCidr.Enabled = true;
             }
@@ -102,6 +100,7 @@ namespace cidr_cal
         {
             try
             {
+                lblErrorCidr.Hide();
                 int val = Convert.ToInt32(txtCidr.Text);
 
                 if (val >= 8 && val <= 32)
@@ -136,8 +135,6 @@ namespace cidr_cal
                 if (!string.IsNullOrEmpty(txtCidr.Text))
                 {
                     btnCalcul.Enabled = true;
-
-                    //them border cho button
                 }
             }
             catch (Exception)
@@ -236,6 +233,7 @@ namespace cidr_cal
         private bool checkCidr()
         {
             int Oct1;
+
             if (rdoDec.Checked)
                 Oct1 = Convert.ToInt32(txtOct1.Text);
             else
@@ -255,6 +253,7 @@ namespace cidr_cal
         public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire de type string
         {
             string binaire = "";
+
             for (int i = 0; i < 8; i++)
             {
                 if (decimale % 2 == 0)
@@ -274,6 +273,7 @@ namespace cidr_cal
         public static string ConvertDecimal(string binaire) // Convertit un nombre binaire en décimal
         {
             int decimale = 0;
+
             for (int i = 0; i < binaire.Length; i++)
             {
                 if (binaire[i] == '1')
@@ -281,6 +281,7 @@ namespace cidr_cal
                     decimale += Convert.ToInt32(Math.Pow(2, binaire.Length - 1 - i));
                 }
             }
+
             return decimale.ToString();
         }
 
@@ -320,7 +321,6 @@ namespace cidr_cal
             string valMasqueBi3 = ConvertBinaire(valMasque3);
 
             // octet 4
-
             int valMasque4 = Convert.ToInt32(txtCidrOct4.Text);
             string valMasqueBi4 = ConvertBinaire(valMasque4);
 
@@ -412,6 +412,7 @@ namespace cidr_cal
                     broadcast += "0";
                 }
             }
+
             return broadcast;
         }
     }

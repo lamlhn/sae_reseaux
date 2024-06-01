@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            groupBox1 = new GroupBox();
-            rdoDec = new RadioButton();
-            rdoBin = new RadioButton();
             btnCalcul = new Button();
             txtOct1 = new TextBox();
             lblTitreMasque = new Label();
@@ -75,50 +72,11 @@
             txtOctBroad4 = new TextBox();
             txtOctNet4 = new TextBox();
             lblErrorCidr = new Label();
+            rdoBin = new RadioButton();
+            rdoDec = new RadioButton();
+            groupBox1 = new GroupBox();
             groupBox1.SuspendLayout();
             SuspendLayout();
-            // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(rdoDec);
-            groupBox1.Controls.Add(rdoBin);
-            groupBox1.Location = new Point(172, 12);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(251, 48);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            // 
-            // rdoDec
-            // 
-            rdoDec.Appearance = Appearance.Button;
-            rdoDec.AutoSize = true;
-            rdoDec.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            rdoDec.Location = new Point(6, 7);
-            rdoDec.MinimumSize = new Size(110, 40);
-            rdoDec.Name = "rdoDec";
-            rdoDec.Size = new Size(110, 40);
-            rdoDec.TabIndex = 0;
-            rdoDec.TabStop = true;
-            rdoDec.Text = "DECIMAL";
-            rdoDec.TextAlign = ContentAlignment.MiddleCenter;
-            rdoDec.UseVisualStyleBackColor = true;
-            rdoDec.CheckedChanged += Radio_CheckedChanged;
-            // 
-            // rdoBin
-            // 
-            rdoBin.Appearance = Appearance.Button;
-            rdoBin.AutoSize = true;
-            rdoBin.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            rdoBin.Location = new Point(135, 7);
-            rdoBin.MinimumSize = new Size(110, 40);
-            rdoBin.Name = "rdoBin";
-            rdoBin.Size = new Size(110, 40);
-            rdoBin.TabIndex = 1;
-            rdoBin.TabStop = true;
-            rdoBin.Text = "BINAIRE";
-            rdoBin.TextAlign = ContentAlignment.MiddleCenter;
-            rdoBin.UseVisualStyleBackColor = true;
-            rdoBin.CheckedChanged += Radio_CheckedChanged;
             // 
             // btnCalcul
             // 
@@ -395,7 +353,7 @@
             // 
             lblCidr.AutoSize = true;
             lblCidr.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblCidr.Location = new Point(32, 214);
+            lblCidr.Location = new Point(32, 210);
             lblCidr.Name = "lblCidr";
             lblCidr.Size = new Size(44, 20);
             lblCidr.TabIndex = 11;
@@ -405,7 +363,7 @@
             // 
             lblStd.AutoSize = true;
             lblStd.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblStd.Location = new Point(32, 254);
+            lblStd.Location = new Point(32, 250);
             lblStd.Name = "lblStd";
             lblStd.Size = new Size(72, 20);
             lblStd.TabIndex = 12;
@@ -415,7 +373,7 @@
             // 
             lblClasse.AutoSize = true;
             lblClasse.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblClasse.Location = new Point(32, 380);
+            lblClasse.Location = new Point(32, 376);
             lblClasse.Name = "lblClasse";
             lblClasse.Size = new Size(61, 20);
             lblClasse.TabIndex = 19;
@@ -425,7 +383,7 @@
             // 
             lblNet.AutoSize = true;
             lblNet.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblNet.Location = new Point(32, 417);
+            lblNet.Location = new Point(32, 413);
             lblNet.Name = "lblNet";
             lblNet.Size = new Size(56, 20);
             lblNet.TabIndex = 20;
@@ -435,7 +393,7 @@
             // 
             lblBroadcast.AutoSize = true;
             lblBroadcast.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblBroadcast.Location = new Point(32, 455);
+            lblBroadcast.Location = new Point(32, 451);
             lblBroadcast.Name = "lblBroadcast";
             lblBroadcast.Size = new Size(117, 20);
             lblBroadcast.TabIndex = 39;
@@ -445,7 +403,7 @@
             // 
             lblPreIp.AutoSize = true;
             lblPreIp.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPreIp.Location = new Point(32, 494);
+            lblPreIp.Location = new Point(32, 490);
             lblPreIp.Name = "lblPreIp";
             lblPreIp.Size = new Size(99, 20);
             lblPreIp.TabIndex = 40;
@@ -455,7 +413,7 @@
             // 
             lblNbIps.AutoSize = true;
             lblNbIps.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblNbIps.Location = new Point(32, 573);
+            lblNbIps.Location = new Point(32, 569);
             lblNbIps.Name = "lblNbIps";
             lblNbIps.Size = new Size(99, 20);
             lblNbIps.TabIndex = 42;
@@ -465,7 +423,7 @@
             // 
             lblDerIp.AutoSize = true;
             lblDerIp.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblDerIp.Location = new Point(32, 532);
+            lblDerIp.Location = new Point(32, 528);
             lblDerIp.Name = "lblDerIp";
             lblDerIp.Size = new Size(99, 20);
             lblDerIp.TabIndex = 41;
@@ -475,7 +433,7 @@
             // 
             lblNbMachine.AutoSize = true;
             lblNbMachine.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblNbMachine.Location = new Point(312, 573);
+            lblNbMachine.Location = new Point(312, 569);
             lblNbMachine.Name = "lblNbMachine";
             lblNbMachine.Size = new Size(156, 20);
             lblNbMachine.TabIndex = 43;
@@ -629,11 +587,53 @@
             // 
             lblErrorCidr.AutoSize = true;
             lblErrorCidr.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblErrorCidr.Location = new Point(269, 214);
+            lblErrorCidr.Location = new Point(269, 210);
             lblErrorCidr.Name = "lblErrorCidr";
             lblErrorCidr.Size = new Size(137, 17);
             lblErrorCidr.TabIndex = 44;
             lblErrorCidr.Text = "Doit etre entre 8 et 32";
+            // 
+            // rdoBin
+            // 
+            rdoBin.Appearance = Appearance.Button;
+            rdoBin.AutoSize = true;
+            rdoBin.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rdoBin.Location = new Point(135, 7);
+            rdoBin.MinimumSize = new Size(110, 40);
+            rdoBin.Name = "rdoBin";
+            rdoBin.Size = new Size(110, 40);
+            rdoBin.TabIndex = 1;
+            rdoBin.TabStop = true;
+            rdoBin.Text = "BINAIRE";
+            rdoBin.TextAlign = ContentAlignment.MiddleCenter;
+            rdoBin.UseVisualStyleBackColor = true;
+            rdoBin.CheckedChanged += Radio_CheckedChanged;
+            // 
+            // rdoDec
+            // 
+            rdoDec.Appearance = Appearance.Button;
+            rdoDec.AutoSize = true;
+            rdoDec.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rdoDec.Location = new Point(6, 7);
+            rdoDec.MinimumSize = new Size(110, 40);
+            rdoDec.Name = "rdoDec";
+            rdoDec.Size = new Size(110, 40);
+            rdoDec.TabIndex = 0;
+            rdoDec.TabStop = true;
+            rdoDec.Text = "DECIMAL";
+            rdoDec.TextAlign = ContentAlignment.MiddleCenter;
+            rdoDec.UseVisualStyleBackColor = true;
+            rdoDec.CheckedChanged += Radio_CheckedChanged;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(rdoDec);
+            groupBox1.Controls.Add(rdoBin);
+            groupBox1.Location = new Point(172, 12);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(251, 48);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
             // 
             // Form1
             // 
@@ -696,13 +696,9 @@
         }
 
         #endregion
-
-        private GroupBox groupBox1;
-        private RadioButton rdoDec;
         private Button btnCalcul;
         private TextBox txtOct1;
         private Label lblTitreMasque;
-        private RadioButton rdoBin;
         private TextBox txtCidr;
         private TextBox txtOct2;
         private TextBox txtOct4;
@@ -744,5 +740,8 @@
         private TextBox txtOctBroad4;
         private TextBox txtOctNet4;
         private Label lblErrorCidr;
+        private RadioButton rdoBin;
+        private RadioButton rdoDec;
+        private GroupBox groupBox1;
     }
 }
