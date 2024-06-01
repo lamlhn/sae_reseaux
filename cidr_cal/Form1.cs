@@ -1,5 +1,6 @@
 using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
+
 namespace cidr_cal
 {
     public partial class Form1 : Form
@@ -113,7 +114,6 @@ namespace cidr_cal
         {
             try
             {
-                //lblErrorCidr.Hide();
                 int val = Convert.ToInt32(txtCidr.Text);
 
                 if (val >= 8 && val <= 32)
@@ -152,28 +152,27 @@ namespace cidr_cal
             }
             catch (Exception)
             {
-                //lblErrorCidr.Show();
                 txtCidr.Text = string.Empty;
             }
         }
 
-        private void txtCidr_Leave(object sender, EventArgs e)
+        private async void txtCidr_Leave(object sender, EventArgs e)
         {
             try
             {
                 if (int.Parse(txtCidr.Text) > 32 || int.Parse(txtCidr.Text) < 8)
                 {
-                    txtCidr.Text = "24";
                     StyleError();
-                    Task.Delay(2000);
+                    await Task.Delay(2000);
+                    txtCidr.Text = "24";
                     ResetStyleError();
                 }
             }
             catch
             {
-                txtCidr.Text = "24";
                 StyleError();
-                Task.Delay(2000);
+                await Task.Delay(2000);
+                txtCidr.Text = "24";
                 ResetStyleError();
             }
         }
@@ -269,7 +268,11 @@ namespace cidr_cal
             return false;
         }
 
-        public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire de type string
+        //Sous-programme ConvertBinaire: Convertit un nombre entier en binaire de type string
+        //Parametre: 
+        // - decimale : valeur en binaire (en entre)
+        // Valeur retourne : binaire en string
+        public static string ConvertBinaire(int decimale) 
         {
             string binaire = "";
 
@@ -289,7 +292,11 @@ namespace cidr_cal
             return binaire;
         }
 
-        public static string ConvertDecimal(string binaire) // Convertit un nombre binaire en décimal
+        //Sous-programme ConvertDecimal: Convertit un nombre binaire en décimal
+        //Parametre: 
+        // - binaire : valeur en binaire (en entre)
+        // Valeur retourne : decimale en string
+        public static string ConvertDecimal(string binaire) 
         {
             int decimale = 0;
 
@@ -327,19 +334,15 @@ namespace cidr_cal
             }
 
             // octet 1
-            //int valMasque1 = Convert.ToInt32(txtCidrOct1.Text);
             string valMasqueBi1 = ConvertBinaire(Convert.ToInt32(txtCidrOct1.Text));
 
             // octet 2
-            //int valMasque2 = Convert.ToInt32(txtCidrOct2.Text);
             string valMasqueBi2 = ConvertBinaire(Convert.ToInt32(txtCidrOct2.Text));
 
             // octet 3
-            //int valMasque3 = Convert.ToInt32(txtCidrOct3.Text);
             string valMasqueBi3 = ConvertBinaire(Convert.ToInt32(txtCidrOct3.Text));
 
             // octet 4
-            //int valMasque4 = Convert.ToInt32(txtCidrOct4.Text);
             string valMasqueBi4 = ConvertBinaire(Convert.ToInt32(txtCidrOct4.Text));
 
             // result octet 1
@@ -367,6 +370,9 @@ namespace cidr_cal
             txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
         }
 
+        //Sous-programme CalculateNumberOfIPs: calculer nombre d'Ips et de machines 
+        //Non parametre
+        // Non Valeur retourne 
         private void CalculateNumberOfIPs()
         {
             int valCidr = Convert.ToInt32(txtCidr.Text);
@@ -375,13 +381,18 @@ namespace cidr_cal
             txtNbMachine.Text = (nbIps - 2).ToString();
         }
 
-        public static string CalculateNet(string ip, string masque) // Calculer le net (ip ET masque)
+        //Sous-programme CalculateNet: retourne net (net ET masque)
+        //Parametre: 
+        // - net : adresse net (en entree)
+        // - masque : adresse masque (en entree)
+        // Valeur retourne : broadcast
+        public static string CalculateNet(string adrIp, string masque) // Calculer le net (ip ET masque)
         {
             string net = "";
 
-            for (int i = 0; i < ip.Length; i++)
+            for (int i = 0; i < adrIp.Length; i++)
             {
-                if (ip[i].Equals('1') && masque[i].Equals('1'))
+                if (adrIp[i].Equals('1') && masque[i].Equals('1'))
                 {
                     net += "1";
                 }
@@ -394,7 +405,11 @@ namespace cidr_cal
             return net;
         }
 
-        public static string non(string binaire) // Retourne le complément à 1 du binaire
+        //Sous-programme non: retourne le complément à 1 du binaire
+        //parametre: 
+        // - binaire : string binaire (en entree)
+        // Valeur retourne : nonBinaire 
+        public static string non(string binaire) 
         {
             string nonBinaire = "";
 
@@ -413,15 +428,20 @@ namespace cidr_cal
             return nonBinaire;
         }
 
-        public static string CalculateBroadcast(string net, string masque) // Calculer le broadcast (net OU non(masque))
+        //Sous-programme CalculateBroadcast: retourne broadcast (adresse IP OU non(masque))
+        //Parametre: 
+        // - adrIp : adresse Ip (en entree)
+        // - masque : adresse masque (en entree)
+        // Valeur retourne : broadcast
+        public static string CalculateBroadcast(string adrIp, string masque)
         {
             string broadcast = "";
 
             string nonMasque = non(masque);
 
-            for (int i = 0; i < net.Length; i++)
+            for (int i = 0; i < adrIp.Length; i++)
             {
-                if (net[i].Equals('1') || nonMasque[i].Equals('1'))
+                if (adrIp[i].Equals('1') || nonMasque[i].Equals('1'))
                 {
                     broadcast += "1";
                 }
