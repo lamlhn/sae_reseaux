@@ -46,19 +46,16 @@ namespace cidr_cal
             RadioButton rdoButton = (RadioButton)sender;
             if (rdoButton.Checked)
             {
-                txtOct1.Clear();
-                txtOct2.Clear();
-                txtOct3.Clear();
-                txtOct4.Clear();
-                txtOctCp1.Clear();
-                txtOctCp2.Clear();
-                txtOctCp3.Clear();
-                txtOctCp4.Clear();
-                txtCidr.Clear();
-                txtCidrOct1.Clear();
-                txtCidrOct2.Clear();
-                txtCidrOct3.Clear();
-                txtCidrOct4.Clear();
+                ClearAllTextBox();
+            }
+        }
+
+        private void ClearAllTextBox()
+        {
+            foreach (Control ctr in this.Controls)
+            {
+                if (ctr is TextBox textBox)
+                    textBox.Clear();
             }
         }
 
@@ -306,7 +303,6 @@ namespace cidr_cal
                 valIpBi3 = txtOct3.Text;
                 valIpBi4 = txtOct4.Text;
             }
-
 
             // octet 1
             int valMasque1 = Convert.ToInt32(txtCidrOct1.Text);
