@@ -14,10 +14,7 @@ namespace cidr_cal
             txtOct4.Tag = txtOctCp4;
         }
 
-        //Sous-programme txtOctBinaire_TextChanged : transform la valeur de textBox de binaire en decimale et de decimal en bianaire
-        //Non parametre
-        // Non valeur retourne
-        private void txtOctBinaire_TextChanged(object sender, EventArgs e)
+        private void txtOctBinaire_TextChanged(object sender, EventArgs e)// Transforme la valeur de l'IP de binaire à decimale et de decimal à bianaire
         {
             TextBox textDec = (TextBox)sender;
             TextBox textBinaire = (TextBox)textDec.Tag;
@@ -45,10 +42,101 @@ namespace cidr_cal
             }
         }
 
-        //Sous-programme Radio_CheckedChanged : appeler methode pour supprimer toutes les valeur de textBox
-        //Non parametre
-        // Non valeur retourne
-        private void Radio_CheckedChanged(object sender, EventArgs e)
+        private bool checkIp() // Vérifie si l'adresse IP est valide et renvoie un booléen
+        {
+            int Oct1;
+            int Oct2;
+            int Oct3;
+            int Oct4;
+
+            if (rdoDec.Checked)
+            {
+                Oct1 = Convert.ToInt32(txtOct1.Text);
+                Oct2 = Convert.ToInt32(txtOct2.Text);
+                Oct3 = Convert.ToInt32(txtOct3.Text);
+                Oct4 = Convert.ToInt32(txtOct4.Text);
+            }
+            else
+            {
+                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
+                Oct2 = Convert.ToInt32(ConvertDecimal(txtOct2.Text));
+                Oct3 = Convert.ToInt32(ConvertDecimal(txtOct3.Text));
+                Oct4 = Convert.ToInt32(ConvertDecimal(txtOct4.Text));
+            }
+
+            if (Oct1 == 0 || Oct1 == 10 || Oct1 == 127 || Oct1 >= 224)
+                return false;
+            else if (Oct1 == 100 && Oct2 >= 64 && Oct2 <= 127)
+                return false;
+            else if (Oct1 == 169 && Oct2 == 254)
+                return false;
+            else if (Oct1 == 172 && Oct2 >= 16 && Oct2 <= 31)
+                return false;
+            else if (Oct1 == 192 && Oct2 == 0 && (Oct3 == 2 || Oct3 == 0))
+                return false;
+            else if (Oct1 == 198 && (Oct2 == 18 || Oct2 == 19))
+                return false;
+            else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
+                return false;
+            return true;
+        }
+
+        private bool checkCidr() // Vérifie si l'adresse CIDR est valide et renvoie un booléen
+        {
+            int Oct1;
+
+            if (rdoDec.Checked)
+                Oct1 = Convert.ToInt32(txtOct1.Text);
+            else
+                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
+
+            int valClass = Convert.ToInt32(txtCidr.Text);
+
+            if (Oct1 < 128 && valClass >= 8)
+                return true;
+            else if (Oct1 < 192 && valClass >= 16)
+                return true;
+            else if (Oct1 < 224 && valClass >= 24)
+                return true;
+            return false;
+        }
+
+        public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire et retourne un string
+        {
+            string binaire = "";
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (decimale % 2 == 0)
+                {
+                    binaire = "0" + binaire;
+                }
+                else
+                {
+                    binaire = "1" + binaire;
+                }
+                decimale = decimale / 2;
+            }
+
+            return binaire;
+        }
+
+        public static string ConvertDecimal(string binaire) // Convertit un nombre binaire en décimal et retourne un string
+        {
+            int decimale = 0;
+
+            for (int i = 0; i < binaire.Length; i++)
+            {
+                if (binaire[i] == '1')
+                {
+                    decimale += Convert.ToInt32(Math.Pow(2, binaire.Length - 1 - i));
+                }
+            }
+
+            return decimale.ToString();
+        }
+
+        private void Radio_CheckedChanged(object sender, EventArgs e) // Appelle la fonction ClearAllTextBox en cliquant sur un les radio button
         {
             RadioButton rdoButton = (RadioButton)sender;
             if (rdoButton.Checked)
@@ -57,10 +145,7 @@ namespace cidr_cal
             }
         }
 
-        //Sous-programme ClearAllTextBox : supprimer toutes les valeur de textBox en cliquant sur un des radio button
-        //Non parametre
-        // Non valeur retourne
-        private void ClearAllTextBox()
+        private void ClearAllTextBox() // Supprime toutes les valeur des textBox
         {
             foreach (Control ctr in this.Controls)
             {
@@ -69,10 +154,7 @@ namespace cidr_cal
             }
         }
 
-        //Sous-programme StyleError : mettre en place nouvelle style 
-        //Non parametre
-        // Non valeur retourne
-        private void StyleError()
+        private void StyleError() // Change la police du texte lorqu'une erreur est détectée
         {
             txtCidr.Font = new Font(txtCidr.Font, FontStyle.Bold);
 
@@ -80,10 +162,7 @@ namespace cidr_cal
             lblErrorCidr.Font = new Font(lblErrorCidr.Font, FontStyle.Italic);
         }
 
-        //Sous-programme ResetStyleError : reset style de lable 
-        //Non parametre
-        // Non valeur retourne
-        private void ResetStyleError()
+        private void ResetStyleError() // Reset le style lorsque l'erreur est corrigée
         {
             txtCidr.Font = new Font(txtCidr.Font, FontStyle.Regular);
 
@@ -91,10 +170,7 @@ namespace cidr_cal
             lblErrorCidr.Font = new Font(lblErrorCidr.Font, FontStyle.Regular);
         }
 
-        //Sous-programme GestionErreurIP : mettre la valeur defaut
-        //Non parametre
-        //Non valeur retourne
-        private void GestionErreurIP(TextBox textDec)
+        private void GestionErreurIP(TextBox textDec) // Corrige la valeur de l'IP si elle est incorrecte
         {
             try
             {
@@ -122,19 +198,13 @@ namespace cidr_cal
             }
         }
 
-        //Sous-programme txtOctBinaire_Leave : appeler methode pour mettre la valeur defaut
-        //Non parametre
-        // Non valeur retourne
-        private void txtOctBinaire_Leave(object sender, EventArgs e)
+        private void txtOctBinaire_Leave(object sender, EventArgs e) // Met la valeur par défaut si l'IP est incorrecte
         {
             TextBox textDec = (TextBox)sender;
             GestionErreurIP(textDec);
         }
 
-        //Sous-programme txtCidr_TextChanged: transform Cidr en deciamle 
-        //Non parametre
-        // Non valeur retourne
-        private void txtCidr_TextChanged(object sender, EventArgs e)
+        private void txtCidr_TextChanged(object sender, EventArgs e) // Transforme la valeur de CIDR de binaire à decimale
         {
             try
             {
@@ -176,14 +246,11 @@ namespace cidr_cal
             }
             catch (Exception)
             {
-                txtCidr.Text = string.Empty;
+                txtCidr.Text = string.Empty; // Vide la textBox du CIDR
             }
         }
-
-        //Sous-programme txtCidr_Leave: mettre valeur defaut de Cidr 
-        //Non parametre
-        // Non valeur retourne 
-        private async void txtCidr_Leave(object sender, EventArgs e)
+ 
+        private async void txtCidr_Leave(object sender, EventArgs e) // Met la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
         {
             try
             {
@@ -204,10 +271,7 @@ namespace cidr_cal
             }
         }
 
-        //Sous-programme btnCalcul_Click: calcule classe de l'addresse ip 
-        //Non parametre
-        // Non valeur retourne 
-        private void btnCalcul_Click(object sender, EventArgs e)
+        private void btnCalcul_Click(object sender, EventArgs e) // Calcule la classe de l'adresse ip
         {
             if (checkIp() && checkCidr())
             {
@@ -239,118 +303,7 @@ namespace cidr_cal
                 MessageBox.Show("Invalid CIDR");
         }
 
-        //Sous-programme checkIp: verifie si l'addresse est valide
-        //Non parametre 
-        // Valeur retourne : booleen true or false
-        private bool checkIp()
-        {
-            int Oct1;
-            int Oct2;
-            int Oct3;
-            int Oct4;
-
-            if (rdoDec.Checked)
-            {
-                Oct1 = Convert.ToInt32(txtOct1.Text);
-                Oct2 = Convert.ToInt32(txtOct2.Text);
-                Oct3 = Convert.ToInt32(txtOct3.Text);
-                Oct4 = Convert.ToInt32(txtOct4.Text);
-            }
-            else
-            {
-                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
-                Oct2 = Convert.ToInt32(ConvertDecimal(txtOct2.Text));
-                Oct3 = Convert.ToInt32(ConvertDecimal(txtOct3.Text));
-                Oct4 = Convert.ToInt32(ConvertDecimal(txtOct4.Text));
-            }
-
-            if (Oct1 == 0 || Oct1 == 10 || Oct1 == 127 || Oct1 >= 224)
-                return false;
-            else if (Oct1 == 100 && Oct2 >= 64 && Oct2 <= 127)
-                return false;
-            else if (Oct1 == 169 && Oct2 == 254)
-                return false;
-            else if (Oct1 == 172 && Oct2 >= 16 && Oct2 <= 31)
-                return false;
-            else if (Oct1 == 192 && Oct2 == 0 && (Oct3 == 2 || Oct3 == 0))
-                return false;
-            else if (Oct1 == 198 && (Oct2 == 18 || Oct2 == 19))
-                return false;
-            else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
-                return false;
-            return true;
-        }
-
-        //Sous-programme checkCidr: verifie si l'addresse ip et cidr est valide
-        //Non parametre: 
-        // Valeur retourne : booleen true or false
-        private bool checkCidr()
-        {
-            int Oct1;
-
-            if (rdoDec.Checked)
-                Oct1 = Convert.ToInt32(txtOct1.Text);
-            else
-                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
-
-            int valClass = Convert.ToInt32(txtCidr.Text);
-
-            if (Oct1 < 128 && valClass >= 8)
-                return true;
-            else if (Oct1 < 192 && valClass >= 16)
-                return true;
-            else if (Oct1 < 224 && valClass >= 24)
-                return true;
-            return false;
-        }
-
-        //Sous-programme ConvertBinaire: Convertit un nombre entier en binaire de type string
-        //Parametre: 
-        // - decimale : valeur en binaire (en entre)
-        // Valeur retourne : binaire en string
-        public static string ConvertBinaire(int decimale) 
-        {
-            string binaire = "";
-
-            for (int i = 0; i < 8; i++)
-            {
-                if (decimale % 2 == 0)
-                {
-                    binaire = "0" + binaire;
-                }
-                else
-                {
-                    binaire = "1" + binaire;
-                }
-                decimale = decimale / 2;
-            }
-
-            return binaire;
-        }
-
-        //Sous-programme ConvertDecimal: Convertit un nombre binaire en décimal
-        //Parametre: 
-        // - binaire : valeur en binaire (en entre)
-        // Valeur retourne : decimale en string
-        public static string ConvertDecimal(string binaire) 
-        {
-            int decimale = 0;
-
-            for (int i = 0; i < binaire.Length; i++)
-            {
-                if (binaire[i] == '1')
-                {
-                    decimale += Convert.ToInt32(Math.Pow(2, binaire.Length - 1 - i));
-                }
-            }
-
-            return decimale.ToString();
-        }
-
-        //Sous-programme CalculateNetworkAndBroadcast : calcule l'adresse masque, net et premiere ip et dernier ip
-        //Non arametre: 
-        // Non valeur retourne : decimale en string
-        private void CalculateNetworkAndBroadcast()
+        private void CalculateNetworkAndBroadcast() // Calcule le masque, le net, la première et dernière IP
         {
             string valIpBi1; 
             string valIpBi2; 
@@ -372,47 +325,44 @@ namespace cidr_cal
                 valIpBi4 = txtOct4.Text;
             }
 
-            // octet 1
+            // Octet 1
             string valMasqueBi1 = ConvertBinaire(Convert.ToInt32(txtCidrOct1.Text));
 
-            // octet 2
+            // Octet 2
             string valMasqueBi2 = ConvertBinaire(Convert.ToInt32(txtCidrOct2.Text));
 
-            // octet 3
+            // Octet 3
             string valMasqueBi3 = ConvertBinaire(Convert.ToInt32(txtCidrOct3.Text));
 
-            // octet 4
+            // Octet 4
             string valMasqueBi4 = ConvertBinaire(Convert.ToInt32(txtCidrOct4.Text));
 
-            // result octet 1
+            // Resultat octet 1
             txtOctNet1.Text = ConvertDecimal(CalculateNet(valIpBi1, valMasqueBi1));
             txtOctBroad1.Text = ConvertDecimal(CalculateBroadcast(valIpBi1, valMasqueBi1));
             txtPreIp1.Text = txtOctNet1.Text;
             txtDerIp1.Text = txtOctBroad1.Text;
 
-            // result octet 2
+            // Resultat octet 2
             txtOctNet2.Text = ConvertDecimal(CalculateNet(valIpBi2, valMasqueBi2));
             txtOctBroad2.Text = ConvertDecimal(CalculateBroadcast(valIpBi2, valMasqueBi2));
             txtPreIp2.Text = txtOctNet2.Text;
             txtDerIp2.Text = txtOctBroad2.Text;
 
-            // result octet 3
+            // Resultat octet 3
             txtOctNet3.Text = ConvertDecimal(CalculateNet(valIpBi3, valMasqueBi3));
             txtOctBroad3.Text = ConvertDecimal(CalculateBroadcast(valIpBi3, valMasqueBi3));
             txtPreIp3.Text = txtOctNet3.Text;
             txtDerIp3.Text = txtOctBroad3.Text;
 
-            // result octet 4
+            // Resultat octet 4
             txtOctNet4.Text = ConvertDecimal(CalculateNet(valIpBi4, valMasqueBi4));
             txtOctBroad4.Text = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
             txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
             txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
         }
 
-        //Sous-programme CalculateNumberOfIPs: calculer nombre d'Ips et de machines 
-        //Non parametre
-        // Non Valeur retourne 
-        private void CalculateNumberOfIPs()
+        private void CalculateNumberOfIPs() // Calcule le nombre d'IP et de machines disponibles
         {
             int valCidr = Convert.ToInt32(txtCidr.Text);
             int nbIps = (int)Math.Pow(2, 32 - valCidr);
@@ -420,12 +370,7 @@ namespace cidr_cal
             txtNbMachine.Text = (nbIps - 2).ToString();
         }
 
-        //Sous-programme CalculateNet: retourne net (net ET masque)
-        //Parametre: 
-        // - net : adresse net (en entree)
-        // - masque : adresse masque (en entree)
-        // Valeur retourne : broadcast
-        public static string CalculateNet(string adrIp, string masque) 
+        public static string CalculateNet(string adrIp, string masque) // Calculer le net (ip ET masque)
         {
             string net = "";
 
@@ -443,12 +388,8 @@ namespace cidr_cal
 
             return net;
         }
-
-        //Sous-programme non: retourne le complément à 1 du binaire
-        //parametre: 
-        // - binaire : string binaire (en entree)
-        // Valeur retourne : nonBinaire 
-        public static string non(string binaire) 
+ 
+        public static string non(string binaire) // Retourne le complément à 1 du binaire
         {
             string nonBinaire = "";
 
@@ -467,12 +408,7 @@ namespace cidr_cal
             return nonBinaire;
         }
 
-        //Sous-programme CalculateBroadcast: retourne broadcast (adresse IP OU non(masque))
-        //Parametre: 
-        // - adrIp : adresse Ip (en entree)
-        // - masque : adresse masque (en entree)
-        // Valeur retourne : broadcast
-        public static string CalculateBroadcast(string adrIp, string masque)
+        public static string CalculateBroadcast(string adrIp, string masque) // Calculer le broadcast (net OU non(masque)
         {
             string broadcast = "";
 
