@@ -28,12 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            groupBox1 = new GroupBox();
-            radioButton1 = new RadioButton();
-            radioButton2 = new RadioButton();
             btnCalcul = new Button();
             txtOct1 = new TextBox();
-            label1 = new Label();
+            lblTitreMasque = new Label();
             txtCidr = new TextBox();
             txtOct2 = new TextBox();
             txtOct4 = new TextBox();
@@ -53,15 +50,15 @@
             txtDerIp1 = new TextBox();
             txtNbMachine = new TextBox();
             txtNbIp = new TextBox();
-            label3 = new Label();
-            label2 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            label6 = new Label();
-            label7 = new Label();
-            label8 = new Label();
-            label9 = new Label();
-            label10 = new Label();
+            lblCidr = new Label();
+            lblStd = new Label();
+            lblClasse = new Label();
+            lblNet = new Label();
+            lblBroadcast = new Label();
+            lblPreIp = new Label();
+            lblNbIps = new Label();
+            lblDerIp = new Label();
+            lblNbMachine = new Label();
             txtDerIp2 = new TextBox();
             txtPreIp2 = new TextBox();
             txtOctBroad2 = new TextBox();
@@ -75,49 +72,11 @@
             txtOctBroad4 = new TextBox();
             txtOctNet4 = new TextBox();
             lblErrorCidr = new Label();
-            lblErrorIP = new Label();
+            rdoBin = new RadioButton();
+            rdoDec = new RadioButton();
+            groupBox1 = new GroupBox();
             groupBox1.SuspendLayout();
             SuspendLayout();
-            // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(radioButton1);
-            groupBox1.Controls.Add(radioButton2);
-            groupBox1.Location = new Point(172, 12);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(251, 48);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            // 
-            // radioButton1
-            // 
-            radioButton1.Appearance = Appearance.Button;
-            radioButton1.AutoSize = true;
-            radioButton1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            radioButton1.Location = new Point(6, 7);
-            radioButton1.MinimumSize = new Size(110, 40);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(110, 40);
-            radioButton1.TabIndex = 0;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "DECIMAL";
-            radioButton1.TextAlign = ContentAlignment.MiddleCenter;
-            radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            radioButton2.Appearance = Appearance.Button;
-            radioButton2.AutoSize = true;
-            radioButton2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            radioButton2.Location = new Point(135, 7);
-            radioButton2.MinimumSize = new Size(110, 40);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(110, 40);
-            radioButton2.TabIndex = 1;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "BINAIRE";
-            radioButton2.TextAlign = ContentAlignment.MiddleCenter;
-            radioButton2.UseVisualStyleBackColor = true;
             // 
             // btnCalcul
             // 
@@ -141,16 +100,17 @@
             txtOct1.TabIndex = 1;
             txtOct1.TextAlign = HorizontalAlignment.Center;
             txtOct1.TextChanged += txtOctBinaire_TextChanged;
+            txtOct1.Leave += txtOctBinaire_Leave;
             // 
-            // label1
+            // lblTitreMasque
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(220, 168);
-            label1.Name = "label1";
-            label1.Size = new Size(174, 25);
-            label1.TabIndex = 9;
-            label1.Text = "Masque d'Adresse";
+            lblTitreMasque.AutoSize = true;
+            lblTitreMasque.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitreMasque.Location = new Point(220, 168);
+            lblTitreMasque.Name = "lblTitreMasque";
+            lblTitreMasque.Size = new Size(174, 25);
+            lblTitreMasque.TabIndex = 9;
+            lblTitreMasque.Text = "Masque d'Adresse";
             // 
             // txtCidr
             // 
@@ -163,6 +123,7 @@
             txtCidr.TabIndex = 10;
             txtCidr.TextAlign = HorizontalAlignment.Center;
             txtCidr.TextChanged += txtCidr_TextChanged;
+            txtCidr.Leave += txtCidr_Leave;
             // 
             // txtOct2
             // 
@@ -174,6 +135,7 @@
             txtOct2.TabIndex = 3;
             txtOct2.TextAlign = HorizontalAlignment.Center;
             txtOct2.TextChanged += txtOctBinaire_TextChanged;
+            txtOct2.Leave += txtOctBinaire_Leave;
             // 
             // txtOct4
             // 
@@ -185,6 +147,7 @@
             txtOct4.TabIndex = 7;
             txtOct4.TextAlign = HorizontalAlignment.Center;
             txtOct4.TextChanged += txtOctBinaire_TextChanged;
+            txtOct4.Leave += txtOctBinaire_Leave;
             // 
             // txtOct3
             // 
@@ -196,6 +159,7 @@
             txtOct3.TabIndex = 5;
             txtOct3.TextAlign = HorizontalAlignment.Center;
             txtOct3.TextChanged += txtOctBinaire_TextChanged;
+            txtOct3.Leave += txtOctBinaire_Leave;
             // 
             // txtOctCp4
             // 
@@ -208,6 +172,7 @@
             txtOctCp4.Size = new Size(110, 30);
             txtOctCp4.TabIndex = 8;
             txtOctCp4.TextAlign = HorizontalAlignment.Center;
+            txtOctCp4.Leave += txtOctBinaire_Leave;
             // 
             // txtOctCp3
             // 
@@ -220,6 +185,7 @@
             txtOctCp3.Size = new Size(110, 30);
             txtOctCp3.TabIndex = 6;
             txtOctCp3.TextAlign = HorizontalAlignment.Center;
+            txtOctCp3.Leave += txtOctBinaire_Leave;
             // 
             // txtOctCp2
             // 
@@ -232,6 +198,7 @@
             txtOctCp2.Size = new Size(110, 30);
             txtOctCp2.TabIndex = 4;
             txtOctCp2.TextAlign = HorizontalAlignment.Center;
+            txtOctCp2.Leave += txtOctBinaire_Leave;
             // 
             // txtOctCp1
             // 
@@ -244,6 +211,7 @@
             txtOctCp1.Size = new Size(110, 30);
             txtOctCp1.TabIndex = 2;
             txtOctCp1.TextAlign = HorizontalAlignment.Center;
+            txtOctCp1.Leave += txtOctBinaire_Leave;
             // 
             // txtCidrOct4
             // 
@@ -381,95 +349,95 @@
             txtNbIp.TabIndex = 37;
             txtNbIp.TextAlign = HorizontalAlignment.Center;
             // 
-            // label3
+            // lblCidr
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(32, 214);
-            label3.Name = "label3";
-            label3.Size = new Size(44, 20);
-            label3.TabIndex = 11;
-            label3.Text = "CIDR";
+            lblCidr.AutoSize = true;
+            lblCidr.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblCidr.Location = new Point(32, 210);
+            lblCidr.Name = "lblCidr";
+            lblCidr.Size = new Size(44, 20);
+            lblCidr.TabIndex = 11;
+            lblCidr.Text = "CIDR";
             // 
-            // label2
+            // lblStd
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(32, 254);
-            label2.Name = "label2";
-            label2.Size = new Size(72, 20);
-            label2.TabIndex = 12;
-            label2.Text = "Standard";
+            lblStd.AutoSize = true;
+            lblStd.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblStd.Location = new Point(32, 250);
+            lblStd.Name = "lblStd";
+            lblStd.Size = new Size(72, 20);
+            lblStd.TabIndex = 12;
+            lblStd.Text = "Standard";
             // 
-            // label4
+            // lblClasse
             // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(32, 380);
-            label4.Name = "label4";
-            label4.Size = new Size(61, 20);
-            label4.TabIndex = 19;
-            label4.Text = "CLASSE";
+            lblClasse.AutoSize = true;
+            lblClasse.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblClasse.Location = new Point(32, 376);
+            lblClasse.Name = "lblClasse";
+            lblClasse.Size = new Size(61, 20);
+            lblClasse.TabIndex = 19;
+            lblClasse.Text = "CLASSE";
             // 
-            // label5
+            // lblNet
             // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.Location = new Point(32, 417);
-            label5.Name = "label5";
-            label5.Size = new Size(56, 20);
-            label5.TabIndex = 20;
-            label5.Text = "@ NET";
+            lblNet.AutoSize = true;
+            lblNet.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblNet.Location = new Point(32, 413);
+            lblNet.Name = "lblNet";
+            lblNet.Size = new Size(56, 20);
+            lblNet.TabIndex = 20;
+            lblNet.Text = "@ NET";
             // 
-            // label6
+            // lblBroadcast
             // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label6.Location = new Point(32, 455);
-            label6.Name = "label6";
-            label6.Size = new Size(117, 20);
-            label6.TabIndex = 39;
-            label6.Text = "@ BROADCAST";
+            lblBroadcast.AutoSize = true;
+            lblBroadcast.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblBroadcast.Location = new Point(32, 451);
+            lblBroadcast.Name = "lblBroadcast";
+            lblBroadcast.Size = new Size(117, 20);
+            lblBroadcast.TabIndex = 39;
+            lblBroadcast.Text = "@ BROADCAST";
             // 
-            // label7
+            // lblPreIp
             // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(32, 494);
-            label7.Name = "label7";
-            label7.Size = new Size(99, 20);
-            label7.TabIndex = 40;
-            label7.Text = "PREMIERE IP";
+            lblPreIp.AutoSize = true;
+            lblPreIp.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPreIp.Location = new Point(32, 490);
+            lblPreIp.Name = "lblPreIp";
+            lblPreIp.Size = new Size(99, 20);
+            lblPreIp.TabIndex = 40;
+            lblPreIp.Text = "PREMIERE IP";
             // 
-            // label8
+            // lblNbIps
             // 
-            label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label8.Location = new Point(32, 573);
-            label8.Name = "label8";
-            label8.Size = new Size(99, 20);
-            label8.TabIndex = 42;
-            label8.Text = "NOMBRE IPs";
+            lblNbIps.AutoSize = true;
+            lblNbIps.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblNbIps.Location = new Point(32, 569);
+            lblNbIps.Name = "lblNbIps";
+            lblNbIps.Size = new Size(99, 20);
+            lblNbIps.TabIndex = 42;
+            lblNbIps.Text = "NOMBRE IPs";
             // 
-            // label9
+            // lblDerIp
             // 
-            label9.AutoSize = true;
-            label9.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label9.Location = new Point(32, 532);
-            label9.Name = "label9";
-            label9.Size = new Size(99, 20);
-            label9.TabIndex = 41;
-            label9.Text = "DERNIERE IP";
+            lblDerIp.AutoSize = true;
+            lblDerIp.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDerIp.Location = new Point(32, 528);
+            lblDerIp.Name = "lblDerIp";
+            lblDerIp.Size = new Size(99, 20);
+            lblDerIp.TabIndex = 41;
+            lblDerIp.Text = "DERNIERE IP";
             // 
-            // label10
+            // lblNbMachine
             // 
-            label10.AutoSize = true;
-            label10.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label10.Location = new Point(312, 573);
-            label10.Name = "label10";
-            label10.Size = new Size(156, 20);
-            label10.TabIndex = 43;
-            label10.Text = "NOMBRE MACHINES";
+            lblNbMachine.AutoSize = true;
+            lblNbMachine.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblNbMachine.Location = new Point(312, 569);
+            lblNbMachine.Name = "lblNbMachine";
+            lblNbMachine.Size = new Size(156, 20);
+            lblNbMachine.TabIndex = 43;
+            lblNbMachine.Text = "NOMBRE MACHINES";
             // 
             // txtDerIp2
             // 
@@ -618,33 +586,60 @@
             // lblErrorCidr
             // 
             lblErrorCidr.AutoSize = true;
-            lblErrorCidr.BackColor = Color.FromArgb(255, 128, 128);
-            lblErrorCidr.BorderStyle = BorderStyle.FixedSingle;
-            lblErrorCidr.Location = new Point(263, 214);
+            lblErrorCidr.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblErrorCidr.Location = new Point(269, 210);
             lblErrorCidr.Name = "lblErrorCidr";
-            lblErrorCidr.Size = new Size(324, 17);
+            lblErrorCidr.Size = new Size(137, 17);
             lblErrorCidr.TabIndex = 44;
-            lblErrorCidr.Text = "La valeur du CIDR doit être comprise entre 0 et 32 et sans '/'.";
-            lblErrorCidr.Visible = false;
+            lblErrorCidr.Text = "Doit etre entre 8 et 32";
             // 
-            // lblErrorIP
+            // rdoBin
             // 
-            lblErrorIP.AutoSize = true;
-            lblErrorIP.BackColor = Color.FromArgb(255, 128, 128);
-            lblErrorIP.BorderStyle = BorderStyle.FixedSingle;
-            lblErrorIP.Location = new Point(32, 62);
-            lblErrorIP.Name = "lblErrorIP";
-            lblErrorIP.Size = new Size(333, 17);
-            lblErrorIP.TabIndex = 45;
-            lblErrorIP.Text = "Chaque case doit être comprise entre 0 et 255 sans caractères.";
-            lblErrorIP.Visible = false;
+            rdoBin.Appearance = Appearance.Button;
+            rdoBin.AutoSize = true;
+            rdoBin.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rdoBin.Location = new Point(135, 7);
+            rdoBin.MinimumSize = new Size(110, 40);
+            rdoBin.Name = "rdoBin";
+            rdoBin.Size = new Size(110, 40);
+            rdoBin.TabIndex = 1;
+            rdoBin.TabStop = true;
+            rdoBin.Text = "BINAIRE";
+            rdoBin.TextAlign = ContentAlignment.MiddleCenter;
+            rdoBin.UseVisualStyleBackColor = true;
+            rdoBin.CheckedChanged += Radio_CheckedChanged;
+            // 
+            // rdoDec
+            // 
+            rdoDec.Appearance = Appearance.Button;
+            rdoDec.AutoSize = true;
+            rdoDec.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rdoDec.Location = new Point(6, 7);
+            rdoDec.MinimumSize = new Size(110, 40);
+            rdoDec.Name = "rdoDec";
+            rdoDec.Size = new Size(110, 40);
+            rdoDec.TabIndex = 0;
+            rdoDec.TabStop = true;
+            rdoDec.Text = "DECIMAL";
+            rdoDec.TextAlign = ContentAlignment.MiddleCenter;
+            rdoDec.UseVisualStyleBackColor = true;
+            rdoDec.CheckedChanged += Radio_CheckedChanged;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(rdoDec);
+            groupBox1.Controls.Add(rdoBin);
+            groupBox1.Location = new Point(172, 12);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(251, 48);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(595, 633);
-            Controls.Add(lblErrorIP);
             Controls.Add(lblErrorCidr);
             Controls.Add(txtDerIp4);
             Controls.Add(txtPreIp4);
@@ -658,15 +653,15 @@
             Controls.Add(txtPreIp2);
             Controls.Add(txtOctBroad2);
             Controls.Add(txtOctNet2);
-            Controls.Add(label10);
-            Controls.Add(label9);
-            Controls.Add(label8);
-            Controls.Add(label7);
-            Controls.Add(label6);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label2);
-            Controls.Add(label3);
+            Controls.Add(lblNbMachine);
+            Controls.Add(lblDerIp);
+            Controls.Add(lblNbIps);
+            Controls.Add(lblPreIp);
+            Controls.Add(lblBroadcast);
+            Controls.Add(lblNet);
+            Controls.Add(lblClasse);
+            Controls.Add(lblStd);
+            Controls.Add(lblCidr);
             Controls.Add(txtNbMachine);
             Controls.Add(txtNbIp);
             Controls.Add(txtDerIp1);
@@ -686,7 +681,7 @@
             Controls.Add(txtOct3);
             Controls.Add(txtOct2);
             Controls.Add(txtCidr);
-            Controls.Add(label1);
+            Controls.Add(lblTitreMasque);
             Controls.Add(txtOct1);
             Controls.Add(btnCalcul);
             Controls.Add(groupBox1);
@@ -701,13 +696,9 @@
         }
 
         #endregion
-
-        private GroupBox groupBox1;
-        private RadioButton radioButton1;
         private Button btnCalcul;
         private TextBox txtOct1;
-        private Label label1;
-        private RadioButton radioButton2;
+        private Label lblTitreMasque;
         private TextBox txtCidr;
         private TextBox txtOct2;
         private TextBox txtOct4;
@@ -727,15 +718,15 @@
         private TextBox txtDerIp1;
         private TextBox txtNbMachine;
         private TextBox txtNbIp;
-        private Label label3;
-        private Label label2;
-        private Label label4;
-        private Label label5;
-        private Label label6;
-        private Label label7;
-        private Label label8;
-        private Label label9;
-        private Label label10;
+        private Label lblCidr;
+        private Label lblStd;
+        private Label lblClasse;
+        private Label lblNet;
+        private Label lblBroadcast;
+        private Label lblPreIp;
+        private Label lblNbIps;
+        private Label lblDerIp;
+        private Label lblNbMachine;
         private TextBox txtDerIp2;
         private TextBox txtPreIp2;
         private TextBox txtOctBroad2;
@@ -749,6 +740,8 @@
         private TextBox txtOctBroad4;
         private TextBox txtOctNet4;
         private Label lblErrorCidr;
-        private Label lblErrorIP;
+        private RadioButton rdoBin;
+        private RadioButton rdoDec;
+        private GroupBox groupBox1;
     }
 }
