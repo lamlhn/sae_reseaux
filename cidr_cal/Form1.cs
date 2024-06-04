@@ -39,6 +39,11 @@ namespace cidr_cal
             if (!string.IsNullOrEmpty(txtOct1.Text) && !string.IsNullOrEmpty(txtOct2.Text) && !string.IsNullOrEmpty(txtOct3.Text) && !string.IsNullOrEmpty(txtOct4.Text))
             {
                 txtCidr.Enabled = true;
+                txtCidrOct1.Enabled = true;
+                txtCidrOct2.Enabled = true;
+                txtCidrOct3.Enabled = true;
+                txtCidrOct4.Enabled = true;
+
             }
         }
 
@@ -249,7 +254,7 @@ namespace cidr_cal
                 txtCidr.Text = string.Empty; // Vide la textBox du CIDR
             }
         }
- 
+
         private async void txtCidr_Leave(object sender, EventArgs e) // Met la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
         {
             try
@@ -305,8 +310,8 @@ namespace cidr_cal
 
         private void CalculateNetworkAndBroadcast() // Calcule le masque, le net, la première et dernière IP
         {
-            string valIpBi1; 
-            string valIpBi2; 
+            string valIpBi1;
+            string valIpBi2;
             string valIpBi3;
             string valIpBi4;
 
@@ -388,7 +393,7 @@ namespace cidr_cal
 
             return net;
         }
- 
+
         public static string non(string binaire) // Retourne le complément à 1 du binaire
         {
             string nonBinaire = "";
@@ -427,6 +432,11 @@ namespace cidr_cal
             }
 
             return broadcast;
+        }
+
+        private void txtCidr_Enter(object sender, EventArgs e)
+        {
+            TextBox sender = (TextBox)sender;
         }
     }
 }
