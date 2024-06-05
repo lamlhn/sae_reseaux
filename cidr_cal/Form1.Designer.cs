@@ -75,7 +75,9 @@
             rdoBin = new RadioButton();
             rdoDec = new RadioButton();
             groupBox1 = new GroupBox();
+            pnlCidrStd = new Panel();
             groupBox1.SuspendLayout();
+            pnlCidrStd.SuspendLayout();
             SuspendLayout();
             // 
             // btnCalcul
@@ -219,56 +221,56 @@
             txtCidrOct4.BackColor = SystemColors.Window;
             txtCidrOct4.Enabled = false;
             txtCidrOct4.Font = new Font("Segoe UI", 11.25F);
-            txtCidrOct4.Location = new Point(472, 244);
+            txtCidrOct4.Location = new Point(305, 0);
             txtCidrOct4.MinimumSize = new Size(90, 30);
             txtCidrOct4.Name = "txtCidrOct4";
-            txtCidrOct4.ReadOnly = true;
             txtCidrOct4.Size = new Size(90, 30);
             txtCidrOct4.TabIndex = 16;
             txtCidrOct4.TextAlign = HorizontalAlignment.Center;
-            txtCidrOct4.Enter += txtCidr_Enter;
+            txtCidrOct4.TextChanged += txtCidrOct_TextChanged;
+            txtCidrOct4.Enter += txtCidrOct_Enter;
             // 
             // txtCidrOct3
             // 
             txtCidrOct3.BackColor = SystemColors.Window;
             txtCidrOct3.Enabled = false;
             txtCidrOct3.Font = new Font("Segoe UI", 11.25F);
-            txtCidrOct3.Location = new Point(370, 244);
+            txtCidrOct3.Location = new Point(203, 0);
             txtCidrOct3.MinimumSize = new Size(90, 30);
             txtCidrOct3.Name = "txtCidrOct3";
-            txtCidrOct3.ReadOnly = true;
             txtCidrOct3.Size = new Size(90, 30);
             txtCidrOct3.TabIndex = 15;
             txtCidrOct3.TextAlign = HorizontalAlignment.Center;
-            txtCidrOct3.Enter += txtCidr_Enter;
+            txtCidrOct3.TextChanged += txtCidrOct_TextChanged;
+            txtCidrOct3.Enter += txtCidrOct_Enter;
             // 
             // txtCidrOct2
             // 
             txtCidrOct2.BackColor = SystemColors.Window;
             txtCidrOct2.Enabled = false;
             txtCidrOct2.Font = new Font("Segoe UI", 11.25F);
-            txtCidrOct2.Location = new Point(269, 244);
+            txtCidrOct2.Location = new Point(102, 0);
             txtCidrOct2.MinimumSize = new Size(90, 30);
             txtCidrOct2.Name = "txtCidrOct2";
-            txtCidrOct2.ReadOnly = true;
             txtCidrOct2.Size = new Size(90, 30);
             txtCidrOct2.TabIndex = 14;
             txtCidrOct2.TextAlign = HorizontalAlignment.Center;
-            txtCidrOct2.Enter += txtCidr_Enter;
+            txtCidrOct2.TextChanged += txtCidrOct_TextChanged;
+            txtCidrOct2.Enter += txtCidrOct_Enter;
             // 
             // txtCidrOct1
             // 
             txtCidrOct1.BackColor = SystemColors.Window;
             txtCidrOct1.Enabled = false;
             txtCidrOct1.Font = new Font("Segoe UI", 11.25F);
-            txtCidrOct1.Location = new Point(167, 244);
+            txtCidrOct1.Location = new Point(0, 0);
             txtCidrOct1.MinimumSize = new Size(90, 30);
             txtCidrOct1.Name = "txtCidrOct1";
-            txtCidrOct1.ReadOnly = true;
             txtCidrOct1.Size = new Size(90, 30);
             txtCidrOct1.TabIndex = 13;
             txtCidrOct1.TextAlign = HorizontalAlignment.Center;
-            txtCidrOct1.Enter += txtCidr_Enter;
+            txtCidrOct1.TextChanged += txtCidrOct_TextChanged;
+            txtCidrOct1.Enter += txtCidrOct_Enter;
             // 
             // txtClass
             // 
@@ -580,7 +582,7 @@
             // 
             txtOctNet4.BackColor = SystemColors.GradientActiveCaption;
             txtOctNet4.Font = new Font("Segoe UI", 11.25F);
-            txtOctNet4.Location = new Point(472, 407);
+            txtOctNet4.Location = new Point(466, 407);
             txtOctNet4.MinimumSize = new Size(90, 30);
             txtOctNet4.Name = "txtOctNet4";
             txtOctNet4.ReadOnly = true;
@@ -640,11 +642,23 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             // 
+            // pnlCidrStd
+            // 
+            pnlCidrStd.Controls.Add(txtCidrOct1);
+            pnlCidrStd.Controls.Add(txtCidrOct2);
+            pnlCidrStd.Controls.Add(txtCidrOct3);
+            pnlCidrStd.Controls.Add(txtCidrOct4);
+            pnlCidrStd.Location = new Point(167, 246);
+            pnlCidrStd.Name = "pnlCidrStd";
+            pnlCidrStd.Size = new Size(395, 31);
+            pnlCidrStd.TabIndex = 45;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(595, 633);
+            Controls.Add(pnlCidrStd);
             Controls.Add(lblErrorCidr);
             Controls.Add(txtDerIp4);
             Controls.Add(txtPreIp4);
@@ -674,10 +688,6 @@
             Controls.Add(txtOctBroad1);
             Controls.Add(txtOctNet1);
             Controls.Add(txtClass);
-            Controls.Add(txtCidrOct4);
-            Controls.Add(txtCidrOct3);
-            Controls.Add(txtCidrOct2);
-            Controls.Add(txtCidrOct1);
             Controls.Add(txtOctCp4);
             Controls.Add(txtOctCp3);
             Controls.Add(txtOctCp2);
@@ -696,6 +706,8 @@
             Text = "Form1";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            pnlCidrStd.ResumeLayout(false);
+            pnlCidrStd.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -748,5 +760,6 @@
         private RadioButton rdoBin;
         private RadioButton rdoDec;
         private GroupBox groupBox1;
+        private Panel pnlCidrStd;
     }
 }

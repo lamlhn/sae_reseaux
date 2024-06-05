@@ -209,62 +209,159 @@ namespace cidr_cal
             GestionErreurIP(textDec);
         }
 
+        private void txtCidrOct_Enter(object sender, EventArgs e)
+        {
+            TextBox textDec = (TextBox)sender;
+            txtCidr.Enabled = false;
+        }
+
+        private void txtCidr_Enter(object sender, EventArgs e)
+        {
+            txtCidrOct1.Enabled = false;
+            txtCidrOct2.Enabled = false;
+            txtCidrOct3.Enabled = false;
+            txtCidrOct4.Enabled = false;
+        }
+
         private void txtCidr_TextChanged(object sender, EventArgs e) // Transforme la valeur de CIDR de binaire à decimale
         {
-            try
+            if (txtCidr.Enabled)
             {
-                int val = Convert.ToInt32(txtCidr.Text);
-
-                if (val >= 8 && val <= 32)
+                try
                 {
-                    string[] hexa = ["0", "0", "0", "0"];
+                    int val = Convert.ToInt32(txtCidr.Text);
 
-                    int i = 0;
-                    while (val > 0)
+                    if (val >= 8 && val <= 32)
                     {
-                        if (val >= 8)
+                        string[] hexa = ["0", "0", "0", "0"];
+
+                        int i = 0;
+                        while (val > 0)
                         {
-                            hexa[i] = (Math.Pow(2, 8) - 1).ToString();
-                            val -= 8;
-                        }
-                        else
-                        {
-                            int val2 = 0;
-                            for (int j = 7; j >= 8 - val; j--)
+                            if (val >= 8)
                             {
-                                val2 += (int)Math.Pow(2, j);
+                                hexa[i] = (Math.Pow(2, 8) - 1).ToString();
+                                val -= 8;
                             }
-                            hexa[i] = val2.ToString();
-                            val = 0;
+                            else
+                            {
+                                int val2 = 0;
+                                for (int j = 7; j >= 8 - val; j--)
+                                {
+                                    val2 += (int)Math.Pow(2, j);
+                                }
+                                hexa[i] = val2.ToString();
+                                val = 0;
+                            }
+                            i++;
                         }
-                        i++;
+                        txtCidrOct1.Text = hexa[0];
+                        txtCidrOct2.Text = hexa[1];
+                        txtCidrOct3.Text = hexa[2];
+                        txtCidrOct4.Text = hexa[3];
                     }
-                    txtCidrOct1.Text = hexa[0];
-                    txtCidrOct2.Text = hexa[1];
-                    txtCidrOct3.Text = hexa[2];
-                    txtCidrOct4.Text = hexa[3];
+                    if (!string.IsNullOrEmpty(txtCidr.Text))
+                    {
+                        btnCalcul.Enabled = true;
+                    }
                 }
-                if (!string.IsNullOrEmpty(txtCidr.Text))
+                catch (Exception)
                 {
-                    btnCalcul.Enabled = true;
+                    txtCidr.Text = string.Empty; // Vide la textBox du CIDR
                 }
             }
-            catch (Exception)
+        }
+
+        private void txtCidrOct_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textMasque = (TextBox)sender;
+
+            if (rdoDec.Checked)
             {
-                txtCidr.Text = string.Empty; // Vide la textBox du CIDR
+                txtCidr.ReadOnly = true;
+                int val;
+                if (int.TryParse(textMasque.Text, out val))
+                {
+                    textMasque.Text = Convert.ToString(val);
+                    calculSumCidr();
+                }
+                else
+                    textMasque.Text = string.Empty;
             }
+            else
+            {
+                if (string.IsNullOrEmpty(textMasque.Text))
+                    textMasque.Text = string.Empty;
+            }
+        }
+
+        private void calculSumCidr()
+        {
+            if (!txtCidr.Enabled)
+            {
+                if(!string.IsNullOrEmpty(txtCidrOct1.Text) && !string.IsNullOrEmpty(txtCidrOct2.Text) && !string.IsNullOrEmpty(txtCidrOct3.Text) && !string.IsNullOrEmpty(txtCidrOct4.Text))
+                {
+                    int valOct1 = Convert.ToInt32(txtCidrOct1.Text);
+                    int valOct2 = Convert.ToInt32(txtCidrOct2.Text);
+                    int valOct3 = Convert.ToInt32(txtCidrOct3.Text);
+                    int valOct4 = Convert.ToInt32(txtCidrOct4.Text);
+                    int cpt = 0;
+                    int sum = 0;
+                    if (checkMasqueStandard(valOct1, out cpt))
+                    {
+                        sum += cpt;
+                    }
+                    if (checkMasqueStandard(valOct2, out cpt))
+                    {
+                        sum += cpt;
+                    }
+                    if (checkMasqueStandard(valOct3, out cpt))
+                    {
+                        sum += cpt;
+                    }
+                    if (checkMasqueStandard(valOct4, out cpt))
+                    {
+                        sum += cpt;
+                    }
+                    txtCidr.Text = Convert.ToString(sum);
+                }
+            }
+        }
+
+        private bool checkMasqueStandard(int valMasqueStd, out int cpt)
+        {
+            cpt = 0;
+            for (int i = 7; i >= 0; i--)
+            {
+                if (valMasqueStd >= (int)Math.Pow(2, i))
+                {
+                    valMasqueStd -= (int)Math.Pow(2, i);
+                    cpt++;
+                }
+                else
+                {
+                    if (valMasqueStd == 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            return true;
         }
 
         private async void txtCidr_Leave(object sender, EventArgs e) // Met la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
         {
             try
             {
-                if (int.Parse(txtCidr.Text) > 32 || int.Parse(txtCidr.Text) < 8)
+                if (txtCidr.Enabled)
                 {
-                    StyleError();
-                    await Task.Delay(2000);
-                    txtCidr.Text = "24";
-                    ResetStyleError();
+                    if (int.Parse(txtCidr.Text) > 32 || int.Parse(txtCidr.Text) < 8)
+                    {
+                        StyleError();
+                        await Task.Delay(2000);
+                        txtCidr.Text = "24";
+                        ResetStyleError();
+                    }
                 }
             }
             catch
@@ -299,6 +396,12 @@ namespace cidr_cal
 
                 CalculateNetworkAndBroadcast();
                 CalculateNumberOfIPs();
+                txtCidr.Enabled = true;
+                txtCidrOct1.Enabled = true;
+                txtCidrOct2.Enabled = true;
+                txtCidrOct3.Enabled = true;
+                txtCidrOct4.Enabled = true;
+
             }
             else if (!checkIp() && !checkCidr())
                 MessageBox.Show("Invalid Adresse IP et CIDR");
@@ -432,11 +535,6 @@ namespace cidr_cal
             }
 
             return broadcast;
-        }
-
-        private void txtCidr_Enter(object sender, EventArgs e)
-        {
-            TextBox sender = (TextBox)sender;
         }
     }
 }
