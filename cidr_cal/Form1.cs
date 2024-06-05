@@ -374,30 +374,62 @@ namespace cidr_cal
 
             // Octet 4
             string valMasqueBi4 = ConvertBinaire(Convert.ToInt32(txtCidrOct4.Text));
+            if (rdoDec.Checked)
+            {
+                // Resultat octet 1
+                txtOctNet1.Text = ConvertDecimal(CalculateNet(valIpBi1, valMasqueBi1));
+                txtOctBroad1.Text = ConvertDecimal(CalculateBroadcast(valIpBi1, valMasqueBi1));
+                txtPreIp1.Text = txtOctNet1.Text;
+                txtDerIp1.Text = txtOctBroad1.Text;
 
-            // Resultat octet 1
-            txtOctNet1.Text = ConvertDecimal(CalculateNet(valIpBi1, valMasqueBi1));
-            txtOctBroad1.Text = ConvertDecimal(CalculateBroadcast(valIpBi1, valMasqueBi1));
-            txtPreIp1.Text = txtOctNet1.Text;
-            txtDerIp1.Text = txtOctBroad1.Text;
+                // Resultat octet 2
+                txtOctNet2.Text = ConvertDecimal(CalculateNet(valIpBi2, valMasqueBi2));
+                txtOctBroad2.Text = ConvertDecimal(CalculateBroadcast(valIpBi2, valMasqueBi2));
+                txtPreIp2.Text = txtOctNet2.Text;
+                txtDerIp2.Text = txtOctBroad2.Text;
 
-            // Resultat octet 2
-            txtOctNet2.Text = ConvertDecimal(CalculateNet(valIpBi2, valMasqueBi2));
-            txtOctBroad2.Text = ConvertDecimal(CalculateBroadcast(valIpBi2, valMasqueBi2));
-            txtPreIp2.Text = txtOctNet2.Text;
-            txtDerIp2.Text = txtOctBroad2.Text;
+                // Resultat octet 3
+                txtOctNet3.Text = ConvertDecimal(CalculateNet(valIpBi3, valMasqueBi3));
+                txtOctBroad3.Text = ConvertDecimal(CalculateBroadcast(valIpBi3, valMasqueBi3));
+                txtPreIp3.Text = txtOctNet3.Text;
+                txtDerIp3.Text = txtOctBroad3.Text;
 
-            // Resultat octet 3
-            txtOctNet3.Text = ConvertDecimal(CalculateNet(valIpBi3, valMasqueBi3));
-            txtOctBroad3.Text = ConvertDecimal(CalculateBroadcast(valIpBi3, valMasqueBi3));
-            txtPreIp3.Text = txtOctNet3.Text;
-            txtDerIp3.Text = txtOctBroad3.Text;
+                // Resultat octet 4
+                txtOctNet4.Text = ConvertDecimal(CalculateNet(valIpBi4, valMasqueBi4));
+                txtOctBroad4.Text = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
+                txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
+                txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
+            }
+            else
+            {
+                // Resultat octet 1
+                txtOctNet1.Text = CalculateNet(valIpBi1, valMasqueBi1);
+                txtOctBroad1.Text = CalculateBroadcast(valIpBi1, valMasqueBi1);
+                txtPreIp1.Text = txtOctNet1.Text;
+                txtDerIp1.Text = txtOctBroad1.Text;
 
-            // Resultat octet 4
-            txtOctNet4.Text = ConvertDecimal(CalculateNet(valIpBi4, valMasqueBi4));
-            txtOctBroad4.Text = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
-            txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
-            txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
+                // Resultat octet 2
+                txtOctNet2.Text = CalculateNet(valIpBi2, valMasqueBi2);
+                txtOctBroad2.Text = CalculateBroadcast(valIpBi2, valMasqueBi2);
+                txtPreIp2.Text = txtOctNet2.Text;
+                txtDerIp2.Text = txtOctBroad2.Text;
+
+                // Resultat octet 3
+                txtOctNet3.Text = CalculateNet(valIpBi3, valMasqueBi3);
+                txtOctBroad3.Text = CalculateBroadcast(valIpBi3, valMasqueBi3);
+                txtPreIp3.Text = txtOctNet3.Text;
+                txtDerIp3.Text = txtOctBroad3.Text;
+
+                // Resultat octet 4
+                txtOctNet4.Text = CalculateNet(valIpBi4, valMasqueBi4);
+                txtOctBroad4.Text = CalculateBroadcast(valIpBi4, valMasqueBi4);
+                string octNet4 = ConvertDecimal(CalculateNet(valIpBi4, valMasqueBi4));
+                string octBroad4 = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
+
+                txtPreIp4.Text = ConvertBinaire((Convert.ToInt32(octNet4) + 1));
+                txtDerIp4.Text = ConvertBinaire((Convert.ToInt32(octBroad4) - 1));
+            }
+            
         }
 
         private void CalculateNumberOfIPs() // Calcule le nombre d'IP et de machines disponibles
