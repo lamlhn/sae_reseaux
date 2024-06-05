@@ -123,7 +123,6 @@
             txtCidr.TabIndex = 10;
             txtCidr.TextAlign = HorizontalAlignment.Center;
             txtCidr.TextChanged += txtCidr_TextChanged;
-            txtCidr.Enter += txtCidr_Enter;
             txtCidr.Leave += txtCidr_Leave;
             // 
             // txtOct2
@@ -226,7 +225,6 @@
             txtCidrOct4.Size = new Size(90, 30);
             txtCidrOct4.TabIndex = 16;
             txtCidrOct4.TextAlign = HorizontalAlignment.Center;
-            txtCidrOct4.Enter += txtCidr_Enter;
             // 
             // txtCidrOct3
             // 
@@ -240,7 +238,6 @@
             txtCidrOct3.Size = new Size(90, 30);
             txtCidrOct3.TabIndex = 15;
             txtCidrOct3.TextAlign = HorizontalAlignment.Center;
-            txtCidrOct3.Enter += txtCidr_Enter;
             // 
             // txtCidrOct2
             // 
@@ -254,7 +251,6 @@
             txtCidrOct2.Size = new Size(90, 30);
             txtCidrOct2.TabIndex = 14;
             txtCidrOct2.TextAlign = HorizontalAlignment.Center;
-            txtCidrOct2.Enter += txtCidr_Enter;
             // 
             // txtCidrOct1
             // 
@@ -268,7 +264,6 @@
             txtCidrOct1.Size = new Size(90, 30);
             txtCidrOct1.TabIndex = 13;
             txtCidrOct1.TextAlign = HorizontalAlignment.Center;
-            txtCidrOct1.Enter += txtCidr_Enter;
             // 
             // txtClass
             // 

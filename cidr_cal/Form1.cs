@@ -433,10 +433,5 @@ namespace cidr_cal
 
             return broadcast;
         }
-
-        private void txtCidr_Enter(object sender, EventArgs e)
-        {
-            TextBox sender = (TextBox)sender;
-        }
     }
 }
