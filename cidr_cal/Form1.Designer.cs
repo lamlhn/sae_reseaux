@@ -75,6 +75,7 @@
             rdoBin = new RadioButton();
             rdoDec = new RadioButton();
             groupBox1 = new GroupBox();
+            lblErrorIP = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -589,9 +590,9 @@
             lblErrorCidr.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblErrorCidr.Location = new Point(269, 210);
             lblErrorCidr.Name = "lblErrorCidr";
-            lblErrorCidr.Size = new Size(137, 17);
+            lblErrorCidr.Size = new Size(252, 17);
             lblErrorCidr.TabIndex = 44;
-            lblErrorCidr.Text = "Doit etre entre 8 et 32";
+            lblErrorCidr.Text = "Doit être un entier entre 8 et 32 et sans '/'";
             // 
             // rdoBin
             // 
@@ -635,11 +636,23 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             // 
+            // lblErrorIP
+            // 
+            lblErrorIP.AutoSize = true;
+            lblErrorIP.BackColor = Color.Tomato;
+            lblErrorIP.Location = new Point(32, 60);
+            lblErrorIP.Name = "lblErrorIP";
+            lblErrorIP.Size = new Size(55, 15);
+            lblErrorIP.TabIndex = 45;
+            lblErrorIP.Text = "lblErrorIP";
+            lblErrorIP.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(595, 633);
+            Controls.Add(lblErrorIP);
             Controls.Add(lblErrorCidr);
             Controls.Add(txtDerIp4);
             Controls.Add(txtPreIp4);
@@ -743,5 +756,6 @@
         private RadioButton rdoBin;
         private RadioButton rdoDec;
         private GroupBox groupBox1;
+        private Label lblErrorIP;
     }
 }
