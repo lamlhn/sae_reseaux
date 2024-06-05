@@ -19,20 +19,30 @@ namespace cidr_cal
             TextBox textDec = (TextBox)sender;
             TextBox textBinaire = (TextBox)textDec.Tag;
 
+            GestionErreurIP(textDec);
+
             if (rdoDec.Checked)
-            {
+            {   
                 int val;
                 if (int.TryParse(textDec.Text, out val))
+                {
                     textBinaire.Text = new string(ConvertBinaire(val));
+                }
                 else
+                {
                     textBinaire.Text = string.Empty;
+                }
             }
             else
             {
                 if (!string.IsNullOrEmpty(textDec.Text))
+                {
                     textBinaire.Text = ConvertDecimal(textDec.Text).ToString();
+                }
                 else
+                {
                     textBinaire.Text = string.Empty;
+                }
             }
 
 
@@ -178,20 +188,43 @@ namespace cidr_cal
         private void GestionErreurIP(TextBox textDec) // Corrige la valeur de l'IP si elle est incorrecte
         {
             try
-            {
+            {         
+                lblErrorIP.Hide();
                 if (rdoDec.Checked)
                 {
-                    if (int.Parse(textDec.Text) > 255)
-                        textDec.Text = "255";
-                    if (int.Parse(textDec.Text) < 0)
+                    if (string.IsNullOrWhiteSpace(textDec.Text))
+                    {
                         textDec.Text = "0";
+                    }
+                    if (int.Parse(textDec.Text) > 255)
+                    {
+                        textDec.Text = "255";
+                        lblErrorIP.Text = "Doit être compris entre 0 et 255";
+                        lblErrorIP.Show();
+                    }
+                    if (int.Parse(textDec.Text) < 0) 
+                    {
+                        textDec.Text = "0";
+                        lblErrorIP.Text = "Doit être compris entre 0 et 255";
+                        lblErrorIP.Show();
+                    }
                 }
                 else
                 {
                     string valBin = textDec.Text;
-                    for (int i = 0; i < valBin.Length; i++)
-                        if (valBin[i] != '0' && valBin[i] != '1')
-                            textDec.Text = "11111111";
+                    if (valBin.Length > 8)
+                    {
+                        textDec.Text = "11111111";
+                    }
+
+                    foreach (char bit in valBin)
+                    {
+                        if (bit != '0' && bit != '1')
+                        {
+                            lblErrorIP.Text = "Doit être composé de 0 et de 1";
+                            lblErrorIP.Show();
+                        }
+                    }
                 }
             }
             catch
