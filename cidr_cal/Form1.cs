@@ -239,9 +239,9 @@ namespace cidr_cal
             catch
             {
                 if (rdoDec.Checked)
-                    textDec.Text = "255";
+                    textDec.Text = "0";
                 else
-                    textDec.Text = "11111111";
+                    textDec.Text = "00000000";
             }
         }
 
