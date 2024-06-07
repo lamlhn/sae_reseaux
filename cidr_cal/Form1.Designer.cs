@@ -75,6 +75,8 @@
             rdoBin = new RadioButton();
             rdoDec = new RadioButton();
             groupBox1 = new GroupBox();
+            lblErrorIP = new Label();
+            lblAdrIpErreur = new Label();
             pnlCidrStd = new Panel();
             lblMasqueStdErreur = new Label();
             groupBox1.SuspendLayout();
@@ -126,7 +128,6 @@
             txtCidr.TabIndex = 10;
             txtCidr.TextAlign = HorizontalAlignment.Center;
             txtCidr.TextChanged += txtCidr_TextChanged;
-            txtCidr.Enter += txtCidr_Enter;
             txtCidr.Leave += txtCidr_Leave;
             // 
             // txtOct2
@@ -281,7 +282,7 @@
             // 
             txtClass.BackColor = SystemColors.ControlLight;
             txtClass.Font = new Font("Segoe UI", 11.25F);
-            txtClass.Location = new Point(167, 370);
+            txtClass.Location = new Point(167, 407);
             txtClass.MinimumSize = new Size(90, 30);
             txtClass.Name = "txtClass";
             txtClass.ReadOnly = true;
@@ -293,7 +294,7 @@
             // 
             txtOctNet1.BackColor = SystemColors.GradientActiveCaption;
             txtOctNet1.Font = new Font("Segoe UI", 11.25F);
-            txtOctNet1.Location = new Point(167, 407);
+            txtOctNet1.Location = new Point(167, 444);
             txtOctNet1.MinimumSize = new Size(90, 30);
             txtOctNet1.Name = "txtOctNet1";
             txtOctNet1.ReadOnly = true;
@@ -305,7 +306,7 @@
             // 
             txtOctBroad1.BackColor = SystemColors.GradientActiveCaption;
             txtOctBroad1.Font = new Font("Segoe UI", 11.25F);
-            txtOctBroad1.Location = new Point(167, 445);
+            txtOctBroad1.Location = new Point(167, 482);
             txtOctBroad1.MinimumSize = new Size(90, 30);
             txtOctBroad1.Name = "txtOctBroad1";
             txtOctBroad1.ReadOnly = true;
@@ -317,7 +318,7 @@
             // 
             txtPreIp1.BackColor = Color.LightBlue;
             txtPreIp1.Font = new Font("Segoe UI", 11.25F);
-            txtPreIp1.Location = new Point(167, 484);
+            txtPreIp1.Location = new Point(167, 521);
             txtPreIp1.MinimumSize = new Size(90, 30);
             txtPreIp1.Name = "txtPreIp1";
             txtPreIp1.ReadOnly = true;
@@ -329,7 +330,7 @@
             // 
             txtDerIp1.BackColor = Color.LightBlue;
             txtDerIp1.Font = new Font("Segoe UI", 11.25F);
-            txtDerIp1.Location = new Point(167, 522);
+            txtDerIp1.Location = new Point(167, 559);
             txtDerIp1.MinimumSize = new Size(90, 30);
             txtDerIp1.Name = "txtDerIp1";
             txtDerIp1.ReadOnly = true;
@@ -341,7 +342,7 @@
             // 
             txtNbMachine.BackColor = SystemColors.ControlLight;
             txtNbMachine.Font = new Font("Segoe UI", 11.25F);
-            txtNbMachine.Location = new Point(472, 563);
+            txtNbMachine.Location = new Point(472, 600);
             txtNbMachine.MinimumSize = new Size(90, 30);
             txtNbMachine.Name = "txtNbMachine";
             txtNbMachine.ReadOnly = true;
@@ -353,7 +354,7 @@
             // 
             txtNbIp.BackColor = SystemColors.ControlLight;
             txtNbIp.Font = new Font("Segoe UI", 11.25F);
-            txtNbIp.Location = new Point(167, 563);
+            txtNbIp.Location = new Point(167, 600);
             txtNbIp.MinimumSize = new Size(90, 30);
             txtNbIp.Name = "txtNbIp";
             txtNbIp.ReadOnly = true;
@@ -385,7 +386,7 @@
             // 
             lblClasse.AutoSize = true;
             lblClasse.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblClasse.Location = new Point(32, 376);
+            lblClasse.Location = new Point(32, 413);
             lblClasse.Name = "lblClasse";
             lblClasse.Size = new Size(61, 20);
             lblClasse.TabIndex = 19;
@@ -395,7 +396,7 @@
             // 
             lblNet.AutoSize = true;
             lblNet.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblNet.Location = new Point(32, 413);
+            lblNet.Location = new Point(32, 450);
             lblNet.Name = "lblNet";
             lblNet.Size = new Size(56, 20);
             lblNet.TabIndex = 20;
@@ -405,7 +406,7 @@
             // 
             lblBroadcast.AutoSize = true;
             lblBroadcast.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblBroadcast.Location = new Point(32, 451);
+            lblBroadcast.Location = new Point(32, 488);
             lblBroadcast.Name = "lblBroadcast";
             lblBroadcast.Size = new Size(117, 20);
             lblBroadcast.TabIndex = 39;
@@ -415,7 +416,7 @@
             // 
             lblPreIp.AutoSize = true;
             lblPreIp.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPreIp.Location = new Point(32, 490);
+            lblPreIp.Location = new Point(32, 527);
             lblPreIp.Name = "lblPreIp";
             lblPreIp.Size = new Size(99, 20);
             lblPreIp.TabIndex = 40;
@@ -425,7 +426,7 @@
             // 
             lblNbIps.AutoSize = true;
             lblNbIps.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblNbIps.Location = new Point(32, 569);
+            lblNbIps.Location = new Point(32, 606);
             lblNbIps.Name = "lblNbIps";
             lblNbIps.Size = new Size(99, 20);
             lblNbIps.TabIndex = 42;
@@ -435,7 +436,7 @@
             // 
             lblDerIp.AutoSize = true;
             lblDerIp.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblDerIp.Location = new Point(32, 528);
+            lblDerIp.Location = new Point(32, 565);
             lblDerIp.Name = "lblDerIp";
             lblDerIp.Size = new Size(99, 20);
             lblDerIp.TabIndex = 41;
@@ -445,7 +446,7 @@
             // 
             lblNbMachine.AutoSize = true;
             lblNbMachine.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblNbMachine.Location = new Point(312, 569);
+            lblNbMachine.Location = new Point(312, 606);
             lblNbMachine.Name = "lblNbMachine";
             lblNbMachine.Size = new Size(156, 20);
             lblNbMachine.TabIndex = 43;
@@ -455,7 +456,7 @@
             // 
             txtDerIp2.BackColor = Color.LightBlue;
             txtDerIp2.Font = new Font("Segoe UI", 11.25F);
-            txtDerIp2.Location = new Point(269, 522);
+            txtDerIp2.Location = new Point(269, 559);
             txtDerIp2.MinimumSize = new Size(90, 30);
             txtDerIp2.Name = "txtDerIp2";
             txtDerIp2.ReadOnly = true;
@@ -467,7 +468,7 @@
             // 
             txtPreIp2.BackColor = Color.LightBlue;
             txtPreIp2.Font = new Font("Segoe UI", 11.25F);
-            txtPreIp2.Location = new Point(269, 484);
+            txtPreIp2.Location = new Point(269, 521);
             txtPreIp2.MinimumSize = new Size(90, 30);
             txtPreIp2.Name = "txtPreIp2";
             txtPreIp2.ReadOnly = true;
@@ -479,7 +480,7 @@
             // 
             txtOctBroad2.BackColor = SystemColors.GradientActiveCaption;
             txtOctBroad2.Font = new Font("Segoe UI", 11.25F);
-            txtOctBroad2.Location = new Point(269, 445);
+            txtOctBroad2.Location = new Point(269, 482);
             txtOctBroad2.MinimumSize = new Size(90, 30);
             txtOctBroad2.Name = "txtOctBroad2";
             txtOctBroad2.ReadOnly = true;
@@ -491,7 +492,7 @@
             // 
             txtOctNet2.BackColor = SystemColors.GradientActiveCaption;
             txtOctNet2.Font = new Font("Segoe UI", 11.25F);
-            txtOctNet2.Location = new Point(269, 407);
+            txtOctNet2.Location = new Point(269, 444);
             txtOctNet2.MinimumSize = new Size(90, 30);
             txtOctNet2.Name = "txtOctNet2";
             txtOctNet2.ReadOnly = true;
@@ -503,7 +504,7 @@
             // 
             txtDerIp3.BackColor = Color.LightBlue;
             txtDerIp3.Font = new Font("Segoe UI", 11.25F);
-            txtDerIp3.Location = new Point(370, 522);
+            txtDerIp3.Location = new Point(370, 559);
             txtDerIp3.MinimumSize = new Size(90, 30);
             txtDerIp3.Name = "txtDerIp3";
             txtDerIp3.ReadOnly = true;
@@ -515,7 +516,7 @@
             // 
             txtPreIp3.BackColor = Color.LightBlue;
             txtPreIp3.Font = new Font("Segoe UI", 11.25F);
-            txtPreIp3.Location = new Point(370, 484);
+            txtPreIp3.Location = new Point(370, 521);
             txtPreIp3.MinimumSize = new Size(90, 30);
             txtPreIp3.Name = "txtPreIp3";
             txtPreIp3.ReadOnly = true;
@@ -527,7 +528,7 @@
             // 
             txtOctBroad3.BackColor = SystemColors.GradientActiveCaption;
             txtOctBroad3.Font = new Font("Segoe UI", 11.25F);
-            txtOctBroad3.Location = new Point(370, 445);
+            txtOctBroad3.Location = new Point(370, 482);
             txtOctBroad3.MinimumSize = new Size(90, 30);
             txtOctBroad3.Name = "txtOctBroad3";
             txtOctBroad3.ReadOnly = true;
@@ -539,7 +540,7 @@
             // 
             txtOctNet3.BackColor = SystemColors.GradientActiveCaption;
             txtOctNet3.Font = new Font("Segoe UI", 11.25F);
-            txtOctNet3.Location = new Point(370, 407);
+            txtOctNet3.Location = new Point(370, 444);
             txtOctNet3.MinimumSize = new Size(90, 30);
             txtOctNet3.Name = "txtOctNet3";
             txtOctNet3.ReadOnly = true;
@@ -551,7 +552,7 @@
             // 
             txtDerIp4.BackColor = Color.LightBlue;
             txtDerIp4.Font = new Font("Segoe UI", 11.25F);
-            txtDerIp4.Location = new Point(472, 522);
+            txtDerIp4.Location = new Point(472, 559);
             txtDerIp4.MinimumSize = new Size(90, 30);
             txtDerIp4.Name = "txtDerIp4";
             txtDerIp4.ReadOnly = true;
@@ -563,7 +564,7 @@
             // 
             txtPreIp4.BackColor = Color.LightBlue;
             txtPreIp4.Font = new Font("Segoe UI", 11.25F);
-            txtPreIp4.Location = new Point(472, 484);
+            txtPreIp4.Location = new Point(472, 521);
             txtPreIp4.MinimumSize = new Size(90, 30);
             txtPreIp4.Name = "txtPreIp4";
             txtPreIp4.ReadOnly = true;
@@ -575,7 +576,7 @@
             // 
             txtOctBroad4.BackColor = SystemColors.GradientActiveCaption;
             txtOctBroad4.Font = new Font("Segoe UI", 11.25F);
-            txtOctBroad4.Location = new Point(472, 445);
+            txtOctBroad4.Location = new Point(472, 482);
             txtOctBroad4.MinimumSize = new Size(90, 30);
             txtOctBroad4.Name = "txtOctBroad4";
             txtOctBroad4.ReadOnly = true;
@@ -587,7 +588,7 @@
             // 
             txtOctNet4.BackColor = SystemColors.GradientActiveCaption;
             txtOctNet4.Font = new Font("Segoe UI", 11.25F);
-            txtOctNet4.Location = new Point(472, 407);
+            txtOctNet4.Location = new Point(472, 444);
             txtOctNet4.MinimumSize = new Size(90, 30);
             txtOctNet4.Name = "txtOctNet4";
             txtOctNet4.ReadOnly = true;
@@ -601,9 +602,9 @@
             lblErrorCidr.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblErrorCidr.Location = new Point(269, 210);
             lblErrorCidr.Name = "lblErrorCidr";
-            lblErrorCidr.Size = new Size(137, 17);
+            lblErrorCidr.Size = new Size(252, 17);
             lblErrorCidr.TabIndex = 44;
-            lblErrorCidr.Text = "Doit etre entre 8 et 32";
+            lblErrorCidr.Text = "Doit être un entier entre 8 et 32 et sans '/'";
             // 
             // rdoBin
             // 
@@ -647,6 +648,28 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             // 
+            // lblErrorIP
+            // 
+            lblErrorIP.AutoSize = true;
+            lblErrorIP.BackColor = Color.Tomato;
+            lblErrorIP.Location = new Point(32, 60);
+            lblErrorIP.Name = "lblErrorIP";
+            lblErrorIP.Size = new Size(55, 15);
+            lblErrorIP.TabIndex = 45;
+            lblErrorIP.Text = "lblErrorIP";
+            lblErrorIP.Visible = false;
+            // 
+            // lblAdrIpErreur
+            // 
+            lblAdrIpErreur.AutoSize = true;
+            lblAdrIpErreur.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblAdrIpErreur.ForeColor = Color.Maroon;
+            lblAdrIpErreur.Location = new Point(220, 365);
+            lblAdrIpErreur.Name = "lblAdrIpErreur";
+            lblAdrIpErreur.Size = new Size(155, 20);
+            lblAdrIpErreur.TabIndex = 46;
+            lblAdrIpErreur.Text = "Adresse non routable";
+            // 
             // pnlCidrStd
             // 
             pnlCidrStd.Controls.Add(txtCidrOct1);
@@ -674,6 +697,9 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(595, 661);
+            Controls.Add(lblAdrIpErreur);
+            Controls.Add(lblErrorIP);
             ClientSize = new Size(595, 633);
             Controls.Add(lblMasqueStdErreur);
             Controls.Add(pnlCidrStd);
@@ -718,8 +744,8 @@
             Controls.Add(txtOct1);
             Controls.Add(btnCalcul);
             Controls.Add(groupBox1);
-            MaximumSize = new Size(611, 672);
-            MinimumSize = new Size(611, 672);
+            MaximumSize = new Size(611, 700);
+            MinimumSize = new Size(611, 700);
             Name = "Form1";
             Text = "Form1";
             groupBox1.ResumeLayout(false);
@@ -778,6 +804,8 @@
         private RadioButton rdoBin;
         private RadioButton rdoDec;
         private GroupBox groupBox1;
+        private Label lblErrorIP;
+        private Label lblAdrIpErreur;
         private Panel pnlCidrStd;
         private Label lblMasqueStdErreur;
     }
