@@ -99,6 +99,12 @@ namespace cidr_cal
 
             if (Oct1 == 0 || Oct1 == 127 || Oct1 >= 224) // Vérifie les valeurs non utilisables
                 return (false, "Adresse non utilisable");
+            else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 2)
+                return (false, "Adresse Test-Net 1 (RFC 5737)");
+            else if (Oct1 == 198 && Oct2 == 51 && Oct3 == 100)
+                return (false, "Adresse Test-Net 2 (RFC 5737)");
+            else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
+                return (false, "Adresse Test-Net 3 (RFC 5737)");
             else if (Oct1 == 10 || (Oct1 == 172 && (Oct2 >= 16 && Oct2 <= 31)) || (Oct1 == 192 && Oct2 == 168)) // Vérifie les valeurs non routables
                 return (false, "Adresse non routable");
             return (true, "");
@@ -585,11 +591,12 @@ namespace cidr_cal
                 txtPreIp3.Text = txtOctNet3.Text;
                 txtDerIp3.Text = txtOctBroad3.Text;
 
-            // Resultat octet 4
-            txtOctNet4.Text = ConvertDecimal(CalculateNet(valIpBi4, valMasqueBi4));
-            txtOctBroad4.Text = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
-            txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
-            txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
+                // Resultat octet 4
+                txtOctNet4.Text = ConvertDecimal(CalculateNet(valIpBi4, valMasqueBi4));
+                txtOctBroad4.Text = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
+                txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
+                txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
+            }
         }
 
         private void CalculateNumberOfIPs() // Calcule le nombre d'IP et de machines disponibles

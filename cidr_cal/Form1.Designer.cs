@@ -684,14 +684,14 @@
             // lblMasqueStdErreur
             // 
             lblMasqueStdErreur.AutoSize = true;
+            lblMasqueStdErreur.BackColor = Color.Tomato;
             lblMasqueStdErreur.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblMasqueStdErreur.Location = new Point(167, 279);
             lblMasqueStdErreur.Name = "lblMasqueStdErreur";
-            lblMasqueStdErreur.Size = new Size(153, 17);
+            lblMasqueStdErreur.Size = new Size(106, 17);
             lblMasqueStdErreur.TabIndex = 46;
-            lblMasqueStdErreur.Text = "Invalid Masque Standard";
+            lblMasqueStdErreur.Text = "Masque invalide.";
             lblMasqueStdErreur.Visible = false;
-            lblMasqueStdErreur.Click += label1_Click;
             // 
             // Form1
             // 
@@ -700,7 +700,6 @@
             ClientSize = new Size(595, 661);
             Controls.Add(lblAdrIpErreur);
             Controls.Add(lblErrorIP);
-            ClientSize = new Size(595, 633);
             Controls.Add(lblMasqueStdErreur);
             Controls.Add(pnlCidrStd);
             Controls.Add(lblErrorCidr);
