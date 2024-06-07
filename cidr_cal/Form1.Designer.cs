@@ -129,6 +129,7 @@
             txtCidr.TabIndex = 10;
             txtCidr.TextAlign = HorizontalAlignment.Center;
             txtCidr.TextChanged += txtCidr_TextChanged;
+            txtCidr.Enter += txtCidr_Enter;
             txtCidr.Leave += txtCidr_Leave;
             // 
             // txtOct2

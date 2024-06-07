@@ -71,7 +71,6 @@ namespace cidr_cal
             }
             else
             {
-
                 txtCidr.Enabled = false;
                 txtCidrOct1.Enabled = false;
                 txtCidrOct2.Enabled = false;
@@ -184,21 +183,8 @@ namespace cidr_cal
             if (rdoButton.Checked)
             {
                 ClearAllTextBox();
-            }
-
-            if (rdoDec.Checked)
-            {
-                txtOct1.MaxLength = 3;
-                txtOct2.MaxLength = 3;
-                txtOct3.MaxLength = 3;
-                txtOct4.MaxLength = 3;
-            }
-            else
-            {
-                txtOct1.MaxLength = 8;
-                txtOct2.MaxLength = 8;
-                txtOct3.MaxLength = 8;
-                txtOct4.MaxLength = 8;
+                lblAdrIpErreur.Hide();
+                btnCalcul.Enabled = false;
             }
         }
 
@@ -209,6 +195,7 @@ namespace cidr_cal
                 if (ctr is TextBox textBox)
                     textBox.Clear();
             }
+
             foreach(Control ctr in pnlCidrStd.Controls)
             {
                 if (ctr is TextBox textBox)
@@ -259,6 +246,7 @@ namespace cidr_cal
                 else
                 {
                     string valBin = textDec.Text;
+
                     if (valBin.Length > 8)
                     {
                         textDec.Text = "11111111";
@@ -320,6 +308,7 @@ namespace cidr_cal
                     if (val >= 8 && val <= 32)
                     {
                         string[] hexa = ["0", "0", "0", "0"];
+                        //string[] hexa = new string[8];
 
                         int i = 0;
                         while (val > 0)
@@ -341,10 +330,20 @@ namespace cidr_cal
                             }
                             i++;
                         }
-                        txtCidrOct1.Text = hexa[0];
-                        txtCidrOct2.Text = hexa[1];
-                        txtCidrOct3.Text = hexa[2];
-                        txtCidrOct4.Text = hexa[3];
+                        if (rdoDec.Checked)
+                        {
+                            txtCidrOct1.Text = hexa[0];
+                            txtCidrOct2.Text = hexa[1];
+                            txtCidrOct3.Text = hexa[2];
+                            txtCidrOct4.Text = hexa[3];
+                        }
+                        else
+                        {
+                            txtCidrOct1.Text = ConvertBinaire(Convert.ToInt32(hexa[0]));
+                            txtCidrOct2.Text = ConvertBinaire(Convert.ToInt32(hexa[1]));
+                            txtCidrOct3.Text = ConvertBinaire(Convert.ToInt32(hexa[2]));
+                            txtCidrOct4.Text = ConvertBinaire(Convert.ToInt32(hexa[3]));
+                        }
                     }
                     if (!string.IsNullOrEmpty(txtCidr.Text))
                     {
@@ -365,7 +364,8 @@ namespace cidr_cal
             if (!txtCidr.Enabled)
             {
                 TextBox textMasque = (TextBox)sender;
-                txtCidr.ReadOnly = true;
+                txtCidr.Text = string.Empty;
+                //txtCidr.ReadOnly = true;
 
                 if (rdoDec.Checked)
                 {
@@ -383,7 +383,13 @@ namespace cidr_cal
                     {
                         this.SelectNextControl((Control)sender, true, true, true, true);
                     }
-
+                } 
+                else
+                {
+                    if (textMasque.Text.Length == 8) // Passe à la case suivante si la longueur est de 8
+                    {
+                        this.SelectNextControl((Control)sender, true, true, true, true);
+                    }
                 }
                 calculSumCidr();
             }
@@ -399,6 +405,7 @@ namespace cidr_cal
                     int valOct2;
                     int valOct3;
                     int valOct4;
+
                     if (rdoDec.Checked)
                     {
                         valOct1 = Convert.ToInt32(txtCidrOct1.Text);
@@ -417,10 +424,12 @@ namespace cidr_cal
                         valOct3 = Convert.ToInt32(valOct3Dec);
                         valOct4 = Convert.ToInt32(valOct4Dec);
                     }
-                    int cpt = 0;
-                    int sum = 0;
-                    int checkSum = 0;
-                    bool checkVal = true;
+
+                    int cpt = 0; //compter masque CIDR
+                    int sum = 0; // somme de masque CIDR
+                    int checkSum = 0; //somme de masue CIDR sans condition
+                    bool checkVal = true; // verifier le sum et checksum
+
                     if (checkMasqueStandard(valOct1, out cpt))
                     {
                         sum += cpt;
