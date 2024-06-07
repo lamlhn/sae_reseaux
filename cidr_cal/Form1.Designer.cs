@@ -76,6 +76,7 @@
             rdoDec = new RadioButton();
             groupBox1 = new GroupBox();
             pnlCidrStd = new Panel();
+            lblMasqueStdErreur = new Label();
             groupBox1.SuspendLayout();
             pnlCidrStd.SuspendLayout();
             SuspendLayout();
@@ -229,6 +230,7 @@
             txtCidrOct4.TextAlign = HorizontalAlignment.Center;
             txtCidrOct4.TextChanged += txtCidrOct_TextChanged;
             txtCidrOct4.Enter += txtCidrOct_Enter;
+            txtCidrOct4.Leave += txtOctBinaire_Leave;
             // 
             // txtCidrOct3
             // 
@@ -243,6 +245,7 @@
             txtCidrOct3.TextAlign = HorizontalAlignment.Center;
             txtCidrOct3.TextChanged += txtCidrOct_TextChanged;
             txtCidrOct3.Enter += txtCidrOct_Enter;
+            txtCidrOct3.Leave += txtOctBinaire_Leave;
             // 
             // txtCidrOct2
             // 
@@ -257,6 +260,7 @@
             txtCidrOct2.TextAlign = HorizontalAlignment.Center;
             txtCidrOct2.TextChanged += txtCidrOct_TextChanged;
             txtCidrOct2.Enter += txtCidrOct_Enter;
+            txtCidrOct2.Leave += txtOctBinaire_Leave;
             // 
             // txtCidrOct1
             // 
@@ -271,6 +275,7 @@
             txtCidrOct1.TextAlign = HorizontalAlignment.Center;
             txtCidrOct1.TextChanged += txtCidrOct_TextChanged;
             txtCidrOct1.Enter += txtCidrOct_Enter;
+            txtCidrOct1.Leave += txtOctBinaire_Leave;
             // 
             // txtClass
             // 
@@ -582,7 +587,7 @@
             // 
             txtOctNet4.BackColor = SystemColors.GradientActiveCaption;
             txtOctNet4.Font = new Font("Segoe UI", 11.25F);
-            txtOctNet4.Location = new Point(466, 407);
+            txtOctNet4.Location = new Point(472, 407);
             txtOctNet4.MinimumSize = new Size(90, 30);
             txtOctNet4.Name = "txtOctNet4";
             txtOctNet4.ReadOnly = true;
@@ -653,11 +658,24 @@
             pnlCidrStd.Size = new Size(395, 31);
             pnlCidrStd.TabIndex = 45;
             // 
+            // lblMasqueStdErreur
+            // 
+            lblMasqueStdErreur.AutoSize = true;
+            lblMasqueStdErreur.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblMasqueStdErreur.Location = new Point(167, 279);
+            lblMasqueStdErreur.Name = "lblMasqueStdErreur";
+            lblMasqueStdErreur.Size = new Size(153, 17);
+            lblMasqueStdErreur.TabIndex = 46;
+            lblMasqueStdErreur.Text = "Invalid Masque Standard";
+            lblMasqueStdErreur.Visible = false;
+            lblMasqueStdErreur.Click += label1_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(595, 633);
+            Controls.Add(lblMasqueStdErreur);
             Controls.Add(pnlCidrStd);
             Controls.Add(lblErrorCidr);
             Controls.Add(txtDerIp4);
@@ -761,5 +779,6 @@
         private RadioButton rdoDec;
         private GroupBox groupBox1;
         private Panel pnlCidrStd;
+        private Label lblMasqueStdErreur;
     }
 }
