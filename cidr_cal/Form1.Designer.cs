@@ -673,6 +673,7 @@
             lblAdrIpErreur.Size = new Size(155, 20);
             lblAdrIpErreur.TabIndex = 46;
             lblAdrIpErreur.Text = "Adresse non routable";
+            lblAdrIpErreur.Visible = false;
             // 
             // pnlCidrStd
             // 
