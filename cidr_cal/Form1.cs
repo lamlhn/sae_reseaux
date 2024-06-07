@@ -14,7 +14,7 @@ namespace cidr_cal
             txtOct4.Tag = txtOctCp4;
         }
 
-        private void txtOctBinaire_TextChanged(object sender, EventArgs e)// Transforme la valeur de l'IP de binaire à decimale et de decimal à binaire
+        private void txtOctBinaire_TextChanged(object sender, EventArgs e) // Transforme la valeur de l'IP de binaire à decimale et de decimal à binaire
         {
             TextBox textDec = (TextBox)sender;
             TextBox textBinaire = (TextBox)textDec.Tag;
@@ -32,6 +32,11 @@ namespace cidr_cal
                 {
                     textBinaire.Text = string.Empty;
                 }
+
+                if (textDec.Text.Length == 3) // Passe à la case suivante si la longueur est de 3
+                {
+                    this.SelectNextControl((Control)sender, true, true, true, true);
+                }
             }
             else
             {
@@ -43,9 +48,13 @@ namespace cidr_cal
                 {
                     textBinaire.Text = string.Empty;
                 }
+                if (textDec.Text.Length == 8) // Passe à la case suivate si la longueur est de 8
+                {
+                    this.SelectNextControl((Control)sender, true, true, true, true);
+                }
             }
 
-
+            // Active ou désctive la possibilité d'entrer le CIDR si les textBox d'IP sont remplis
             if (!string.IsNullOrEmpty(txtOct1.Text) && !string.IsNullOrEmpty(txtOct2.Text) && !string.IsNullOrEmpty(txtOct3.Text) && !string.IsNullOrEmpty(txtOct4.Text))
             {
                 txtCidr.Enabled = true;
@@ -166,6 +175,21 @@ namespace cidr_cal
             if (rdoButton.Checked)
             {
                 ClearAllTextBox();
+            }
+
+            if (rdoDec.Checked)
+            {
+                txtOct1.MaxLength = 3;
+                txtOct2.MaxLength = 3;
+                txtOct3.MaxLength = 3;
+                txtOct4.MaxLength = 3;
+            }
+            else
+            {
+                txtOct1.MaxLength = 8;
+                txtOct2.MaxLength = 8;
+                txtOct3.MaxLength = 8;
+                txtOct4.MaxLength = 8;
             }
         }
 
@@ -297,7 +321,7 @@ namespace cidr_cal
             }
         }
 
-        private async void txtCidr_Leave(object sender, EventArgs e) // Met la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
+        private async void txtCidr_Leave(object sender, EventArgs e) // Corrige la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
         {
             try
             {
