@@ -655,9 +655,9 @@
             lblAdrIpErreur.ForeColor = Color.Maroon;
             lblAdrIpErreur.Location = new Point(220, 365);
             lblAdrIpErreur.Name = "lblAdrIpErreur";
-            lblAdrIpErreur.Size = new Size(158, 20);
+            lblAdrIpErreur.Size = new Size(155, 20);
             lblAdrIpErreur.TabIndex = 46;
-            lblAdrIpErreur.Text = "Adresse non utilisable";
+            lblAdrIpErreur.Text = "Adresse non routable";
             // 
             // Form1
             // 

@@ -23,7 +23,7 @@ namespace cidr_cal
             GestionErreurIP(textDec);
 
             if (rdoDec.Checked)
-            {   
+            {
                 int val;
                 if (int.TryParse(textDec.Text, out val))
                 {
@@ -68,7 +68,7 @@ namespace cidr_cal
             else
             {
 
-               txtCidr.Enabled = false;
+                txtCidr.Enabled = false;
                 txtCidrOct1.Enabled = false;
                 txtCidrOct2.Enabled = false;
                 txtCidrOct3.Enabled = false;
@@ -76,7 +76,7 @@ namespace cidr_cal
             }
         }
 
-        private bool checkIp() // Vérifie si l'adresse IP est valide et renvoie un booléen
+        private (bool, string) checkIp() // Vérifie si l'adresse IP est valide et renvoie un booléen et un string d'erreur
         {
             int Oct1;
             int Oct2;
@@ -98,23 +98,11 @@ namespace cidr_cal
                 Oct4 = Convert.ToInt32(ConvertDecimal(txtOct4.Text));
             }
 
-            if (Oct1 == 0 || Oct1 == 10 || Oct1 == 127 || Oct1 >= 224)
-                return false;
-            else if (Oct1 == 100 && Oct2 >= 64 && Oct2 <= 127)
-                return false;
-            else if (Oct1 == 169 && Oct2 == 254)
-                return false;
-            else if (Oct1 == 172 && Oct2 >= 16 && Oct2 <= 31)
-                return false;
-            else if (Oct1 == 192 && Oct2 == 0 && (Oct3 == 2 || Oct3 == 0))
-                return false;
-            else if (Oct1 == 192 && Oct2 == 168)
-                return false;
-            else if (Oct1 == 198 && (Oct2 == 18 || Oct2 == 19))
-                return false;
-            else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
-                return false;
-            return true;
+            if (Oct1 == 0 || Oct1 == 127 || Oct1 >= 224) // Vérifie les valeurs non utilisables
+                return (false, "Adresse non utilisable");
+            else if (Oct1 == 10 || (Oct1 == 172 && (Oct2 >= 16 && Oct2 <= 31)) || (Oct1 == 192 && Oct2 == 168)) // Vérifie les valeurs non routables
+                return (false, "Adresse non routable");
+            return (true, "");
         }
 
         private bool checkCidr() // Vérifie si l'adresse CIDR est valide et renvoie un booléen
@@ -224,7 +212,7 @@ namespace cidr_cal
         private void GestionErreurIP(TextBox textDec) // Corrige la valeur de l'IP si elle est incorrecte
         {
             try
-            {         
+            {
                 lblErrorIP.Hide();
                 if (rdoDec.Checked)
                 {
@@ -238,7 +226,7 @@ namespace cidr_cal
                         lblErrorIP.Text = "Doit être compris entre 0 et 255";
                         lblErrorIP.Show();
                     }
-                    if (int.Parse(textDec.Text) < 0) 
+                    if (int.Parse(textDec.Text) < 0)
                     {
                         textDec.Text = "0";
                         lblErrorIP.Text = "Doit être compris entre 0 et 255";
@@ -353,8 +341,14 @@ namespace cidr_cal
         {
             if (checkCidr())
             {
-                if (!checkIp())
+                bool verifIP = checkIp().Item1; // Si l'IP est utilisable/routable retourne True, sinon retourne False
+                string messageErreur = checkIp().Item2; // Message associé à l'erreur
+
+                if (!verifIP)
+                {
+                    lblAdrIpErreur.Text = messageErreur; // Assigne le message d'erreur à la zone de texte
                     lblAdrIpErreur.Show();
+                }
                 else
                     lblAdrIpErreur.Hide();
 
@@ -378,10 +372,6 @@ namespace cidr_cal
                 CalculateNetworkAndBroadcast();
                 CalculateNumberOfIPs();
             }
-            //else if (!checkIp() && !checkCidr())
-            //    MessageBox.Show("Adresse IP et CIDR invalide.");
-            //else if (!checkIp())
-            //    MessageBox.Show("Adresse IP invalide.");
             else
                 MessageBox.Show("CIDR invalide.");
         }
@@ -474,7 +464,7 @@ namespace cidr_cal
                 txtPreIp4.Text = ConvertBinaire((Convert.ToInt32(octNet4) + 1));
                 txtDerIp4.Text = ConvertBinaire((Convert.ToInt32(octBroad4) - 1));
             }
-            
+
         }
 
         private void CalculateNumberOfIPs() // Calcule le nombre d'IP et de machines disponibles
