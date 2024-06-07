@@ -63,7 +63,6 @@ namespace cidr_cal
                 txtCidrOct2.Enabled = true;
                 txtCidrOct3.Enabled = true;
                 txtCidrOct4.Enabled = true;
-
             }
             else
             {
@@ -191,6 +190,11 @@ namespace cidr_cal
                 if (ctr is TextBox textBox)
                     textBox.Clear();
             }
+            foreach(Control ctr in pnlCidrStd.Controls)
+            {
+                if (ctr is TextBox textBox)
+                    textBox.Clear();
+            }
         }
 
         private void StyleError() // Change la police du texte lorqu'une erreur est détectée
@@ -266,53 +270,199 @@ namespace cidr_cal
             GestionErreurIP(textDec);
         }
 
+        private void txtCidrOct_Enter(object sender, EventArgs e)
+        {
+            TextBox textDec = (TextBox)sender;
+            txtCidr.Enabled = false;
+        }
+
+        private void txtCidr_Enter(object sender, EventArgs e)
+        {
+            txtCidrOct1.Enabled = false;
+            txtCidrOct2.Enabled = false;
+            txtCidrOct3.Enabled = false;
+            txtCidrOct4.Enabled = false;
+        }
+
         private void txtCidr_TextChanged(object sender, EventArgs e) // Transforme la valeur de CIDR de binaire à decimale
         {
-            try
+            if (txtCidr.Enabled)
             {
-                int val = Convert.ToInt32(txtCidr.Text);
-
-                if (val >= 8 && val <= 32)
+                try
                 {
-                    string[] hexa = ["0", "0", "0", "0"];
+                    int val = Convert.ToInt32(txtCidr.Text);
 
-                    int i = 0;
-                    while (val > 0)
+                    if (val >= 8 && val <= 32)
                     {
-                        if (val >= 8)
+                        string[] hexa = ["0", "0", "0", "0"];
+
+                        int i = 0;
+                        while (val > 0)
                         {
-                            hexa[i] = (Math.Pow(2, 8) - 1).ToString();
-                            val -= 8;
-                        }
-                        else
-                        {
-                            int val2 = 0;
-                            for (int j = 7; j >= 8 - val; j--)
+                            if (val >= 8)
                             {
-                                val2 += (int)Math.Pow(2, j);
+                                hexa[i] = (Math.Pow(2, 8) - 1).ToString();
+                                val -= 8;
                             }
-                            hexa[i] = val2.ToString();
-                            val = 0;
+                            else
+                            {
+                                int val2 = 0;
+                                for (int j = 7; j >= 8 - val; j--)
+                                {
+                                    val2 += (int)Math.Pow(2, j);
+                                }
+                                hexa[i] = val2.ToString();
+                                val = 0;
+                            }
+                            i++;
                         }
-                        i++;
+                        txtCidrOct1.Text = hexa[0];
+                        txtCidrOct2.Text = hexa[1];
+                        txtCidrOct3.Text = hexa[2];
+                        txtCidrOct4.Text = hexa[3];
                     }
-                    txtCidrOct1.Text = hexa[0];
-                    txtCidrOct2.Text = hexa[1];
-                    txtCidrOct3.Text = hexa[2];
-                    txtCidrOct4.Text = hexa[3];
+                    if (!string.IsNullOrEmpty(txtCidr.Text))
+                    {
+                        btnCalcul.Enabled = true;
+                    }
+                    else
+                        btnCalcul.Enabled = false;
                 }
-                if (!string.IsNullOrEmpty(txtCidr.Text))
+                catch (Exception)
                 {
-                    btnCalcul.Enabled = true;
+                    txtCidr.Text = string.Empty; // Vide la textBox du CIDR
                 }
-            }
-            catch (Exception)
-            {
-                txtCidr.Text = string.Empty; // Vide la textBox du CIDR
             }
         }
 
-        private async void txtCidr_Leave(object sender, EventArgs e) // Corrige la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
+        private void txtCidrOct_TextChanged(object sender, EventArgs e)
+        {
+            if (!txtCidr.Enabled)
+            {
+                TextBox textMasque = (TextBox)sender;
+                txtCidr.ReadOnly = true;
+
+                if (rdoDec.Checked)
+                {
+                    int val;
+                    if (int.TryParse(textMasque.Text, out val))
+                    {
+                        textMasque.Text = Convert.ToString(val);
+                    }
+                    else
+                    {
+                        textMasque.Text = string.Empty;
+                    }
+                }
+                calculSumCidr();
+            }
+        }
+
+        private void calculSumCidr()
+        {
+            if (!txtCidr.Enabled)
+            {
+                if (!string.IsNullOrEmpty(txtCidrOct1.Text) && !string.IsNullOrEmpty(txtCidrOct2.Text) && !string.IsNullOrEmpty(txtCidrOct3.Text) && !string.IsNullOrEmpty(txtCidrOct4.Text))
+                {
+                    int valOct1;
+                    int valOct2;
+                    int valOct3;
+                    int valOct4;
+                    if (rdoDec.Checked)
+                    {
+                        valOct1 = Convert.ToInt32(txtCidrOct1.Text);
+                        valOct2 = Convert.ToInt32(txtCidrOct2.Text);
+                        valOct3 = Convert.ToInt32(txtCidrOct3.Text);
+                        valOct4 = Convert.ToInt32(txtCidrOct4.Text);
+                    }
+                    else
+                    {
+                        string valOct1Dec = ConvertDecimal(txtCidrOct1.Text);
+                        string valOct2Dec = ConvertDecimal(txtCidrOct2.Text);
+                        string valOct3Dec = ConvertDecimal(txtCidrOct3.Text);
+                        string valOct4Dec = ConvertDecimal(txtCidrOct4.Text);
+                        valOct1 = Convert.ToInt32(valOct1Dec);
+                        valOct2 = Convert.ToInt32(valOct2Dec);
+                        valOct3 = Convert.ToInt32(valOct3Dec);
+                        valOct4 = Convert.ToInt32(valOct4Dec);
+                    }
+                    int cpt = 0;
+                    int sum = 0;
+                    int checkSum = 0;
+                    bool checkVal = true;
+                    if (checkMasqueStandard(valOct1, out cpt))
+                    {
+                        sum += cpt;
+                        checkSum += cpt;
+                    }
+                    else
+                        checkVal = false;
+
+                    if (checkMasqueStandard(valOct2, out cpt))
+                    {
+                        checkSum += cpt;
+                        if (sum >= 8)
+                            sum += cpt;
+                    }
+                    else
+                        checkVal = false;
+
+                    if (checkMasqueStandard(valOct3, out cpt))
+                    {
+                        checkSum += cpt;
+                        if (sum >= 16)
+                            sum += cpt;
+                    }
+                    else
+                        checkVal = false;
+
+                    if (checkMasqueStandard(valOct4, out cpt))
+                    {
+                        checkSum += cpt;
+                        if (sum >= 24)
+                            sum += cpt;
+                    }
+                    else
+                        checkVal = false;
+
+                    if (checkSum == sum && checkVal)
+                    {
+                        txtCidr.Text = Convert.ToString(sum);
+                        btnCalcul.Enabled = true;
+                        lblMasqueStdErreur.Hide();
+                    }
+                    else
+                    {
+                        txtCidr.Text = string.Empty;
+                        btnCalcul.Enabled = false;
+                        lblMasqueStdErreur.Show();
+                    }
+                }
+            }
+        }
+
+        private bool checkMasqueStandard(int valMasqueStd, out int cpt)
+        {
+            cpt = 0;
+            for (int i = 7; i >= 0; i--)
+            {
+                if (valMasqueStd >= (int)Math.Pow(2, i))
+                {
+                    valMasqueStd -= (int)Math.Pow(2, i);
+                    cpt++;
+                }
+                else
+                {
+                    if (valMasqueStd == 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        private async void txtCidr_Leave(object sender, EventArgs e) // Met la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
         {
             try
             {
@@ -371,6 +521,12 @@ namespace cidr_cal
 
                 CalculateNetworkAndBroadcast();
                 CalculateNumberOfIPs();
+                txtCidr.Enabled = true;
+                txtCidrOct1.Enabled = true;
+                txtCidrOct2.Enabled = true;
+                txtCidrOct3.Enabled = true;
+                txtCidrOct4.Enabled = true;
+
             }
             else
                 MessageBox.Show("CIDR invalide.");
@@ -429,42 +585,11 @@ namespace cidr_cal
                 txtPreIp3.Text = txtOctNet3.Text;
                 txtDerIp3.Text = txtOctBroad3.Text;
 
-                // Resultat octet 4
-                txtOctNet4.Text = ConvertDecimal(CalculateNet(valIpBi4, valMasqueBi4));
-                txtOctBroad4.Text = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
-                txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
-                txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
-            }
-            else
-            {
-                // Resultat octet 1
-                txtOctNet1.Text = CalculateNet(valIpBi1, valMasqueBi1);
-                txtOctBroad1.Text = CalculateBroadcast(valIpBi1, valMasqueBi1);
-                txtPreIp1.Text = txtOctNet1.Text;
-                txtDerIp1.Text = txtOctBroad1.Text;
-
-                // Resultat octet 2
-                txtOctNet2.Text = CalculateNet(valIpBi2, valMasqueBi2);
-                txtOctBroad2.Text = CalculateBroadcast(valIpBi2, valMasqueBi2);
-                txtPreIp2.Text = txtOctNet2.Text;
-                txtDerIp2.Text = txtOctBroad2.Text;
-
-                // Resultat octet 3
-                txtOctNet3.Text = CalculateNet(valIpBi3, valMasqueBi3);
-                txtOctBroad3.Text = CalculateBroadcast(valIpBi3, valMasqueBi3);
-                txtPreIp3.Text = txtOctNet3.Text;
-                txtDerIp3.Text = txtOctBroad3.Text;
-
-                // Resultat octet 4
-                txtOctNet4.Text = CalculateNet(valIpBi4, valMasqueBi4);
-                txtOctBroad4.Text = CalculateBroadcast(valIpBi4, valMasqueBi4);
-                string octNet4 = ConvertDecimal(CalculateNet(valIpBi4, valMasqueBi4));
-                string octBroad4 = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
-
-                txtPreIp4.Text = ConvertBinaire((Convert.ToInt32(octNet4) + 1));
-                txtDerIp4.Text = ConvertBinaire((Convert.ToInt32(octBroad4) - 1));
-            }
-
+            // Resultat octet 4
+            txtOctNet4.Text = ConvertDecimal(CalculateNet(valIpBi4, valMasqueBi4));
+            txtOctBroad4.Text = ConvertDecimal(CalculateBroadcast(valIpBi4, valMasqueBi4));
+            txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
+            txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
         }
 
         private void CalculateNumberOfIPs() // Calcule le nombre d'IP et de machines disponibles
