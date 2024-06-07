@@ -12,6 +12,7 @@ namespace cidr_cal
             txtOct2.Tag = txtOctCp2;
             txtOct3.Tag = txtOctCp3;
             txtOct4.Tag = txtOctCp4;
+            lblAdrIpErreur.Hide();
         }
 
         private void txtOctBinaire_TextChanged(object sender, EventArgs e) // Transforme la valeur de l'IP de binaire à decimale et de decimal à binaire
@@ -350,8 +351,13 @@ namespace cidr_cal
 
         private void btnCalcul_Click(object sender, EventArgs e) // Calcule la classe de l'adresse ip
         {
-            if (checkIp() && checkCidr())
+            if (checkCidr())
             {
+                if (!checkIp())
+                    lblAdrIpErreur.Show();
+                else
+                    lblAdrIpErreur.Hide();
+
                 int valClass;
                 if (rdoDec.Checked)
                     valClass = Convert.ToInt32(txtOct1.Text);
@@ -372,10 +378,10 @@ namespace cidr_cal
                 CalculateNetworkAndBroadcast();
                 CalculateNumberOfIPs();
             }
-            else if (!checkIp() && !checkCidr())
-                MessageBox.Show("Adresse IP et CIDR invalide.");
-            else if (!checkIp())
-                MessageBox.Show("Adresse IP invalide.");
+            //else if (!checkIp() && !checkCidr())
+            //    MessageBox.Show("Adresse IP et CIDR invalide.");
+            //else if (!checkIp())
+            //    MessageBox.Show("Adresse IP invalide.");
             else
                 MessageBox.Show("CIDR invalide.");
         }
