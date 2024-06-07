@@ -107,6 +107,8 @@ namespace cidr_cal
                 return false;
             else if (Oct1 == 192 && Oct2 == 0 && (Oct3 == 2 || Oct3 == 0))
                 return false;
+            else if (Oct1 == 192 && Oct2 == 168)
+                return false;
             else if (Oct1 == 198 && (Oct2 == 18 || Oct2 == 19))
                 return false;
             else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
