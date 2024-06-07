@@ -14,7 +14,7 @@ namespace cidr_cal
             txtOct4.Tag = txtOctCp4;
         }
 
-        private void txtOctBinaire_TextChanged(object sender, EventArgs e)// Transforme la valeur de l'IP de binaire à decimale et de decimal à bianaire
+        private void txtOctBinaire_TextChanged(object sender, EventArgs e)// Transforme la valeur de l'IP de binaire à decimale et de decimal à binaire
         {
             TextBox textDec = (TextBox)sender;
             TextBox textBinaire = (TextBox)textDec.Tag;
@@ -54,6 +54,15 @@ namespace cidr_cal
                 txtCidrOct3.Enabled = true;
                 txtCidrOct4.Enabled = true;
 
+            }
+            else
+            {
+
+               txtCidr.Enabled = false;
+                txtCidrOct1.Enabled = false;
+                txtCidrOct2.Enabled = false;
+                txtCidrOct3.Enabled = false;
+                txtCidrOct4.Enabled = false;
             }
         }
 
@@ -295,16 +304,20 @@ namespace cidr_cal
                 if (int.Parse(txtCidr.Text) > 32 || int.Parse(txtCidr.Text) < 8)
                 {
                     StyleError();
+                    txtCidr.Text = "8";
+                    btnCalcul.Enabled = false;
                     await Task.Delay(2000);
-                    txtCidr.Text = "24";
+                    btnCalcul.Enabled = true;
                     ResetStyleError();
                 }
             }
             catch
             {
                 StyleError();
+                txtCidr.Text = "8";
+                btnCalcul.Enabled = false;
                 await Task.Delay(2000);
-                txtCidr.Text = "24";
+                btnCalcul.Enabled = true;
                 ResetStyleError();
             }
         }
@@ -334,11 +347,11 @@ namespace cidr_cal
                 CalculateNumberOfIPs();
             }
             else if (!checkIp() && !checkCidr())
-                MessageBox.Show("Invalid Adresse IP et CIDR");
+                MessageBox.Show("Adresse IP et CIDR invalide.");
             else if (!checkIp())
-                MessageBox.Show("Invalid Adresse IP");
+                MessageBox.Show("Adresse IP invalide.");
             else
-                MessageBox.Show("Invalid CIDR");
+                MessageBox.Show("CIDR invalide.");
         }
 
         private void CalculateNetworkAndBroadcast() // Calcule le masque, le net, la première et dernière IP
