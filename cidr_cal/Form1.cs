@@ -99,14 +99,22 @@ namespace cidr_cal
 
             if (Oct1 == 0 || Oct1 == 127 || Oct1 >= 224) // Vérifie les valeurs non utilisables
                 return (false, "Adresse non utilisable");
-            else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 2)
-                return (false, "Adresse Test-Net 1 (RFC 5737)");
-            else if (Oct1 == 198 && Oct2 == 51 && Oct3 == 100)
-                return (false, "Adresse Test-Net 2 (RFC 5737)");
-            else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
-                return (false, "Adresse Test-Net 3 (RFC 5737)");
             else if (Oct1 == 10 || (Oct1 == 172 && (Oct2 >= 16 && Oct2 <= 31)) || (Oct1 == 192 && Oct2 == 168)) // Vérifie les valeurs non routables
                 return (false, "Adresse non routable");
+            else if (Oct1 == 169 && Oct2 == 254)
+                return (false, "Link Local (RFC 5737)");
+            else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 0)
+                return (false, "IETF Protocol Assignments (RFC 5737)");
+            else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 2)
+                return (false, "Adresse TEST-NET 1 (RFC 5737)");
+            else if (Oct1 == 192 && Oct2 == 88 && Oct3 == 99)
+                return (false, "6to4 Relay Anycast (RFC 5737)");
+            else if (Oct1 == 198 && (Oct2 == 18 || Oct2 == 19))
+                return (false, "Network Interconnect (RFC 5737)");
+            else if (Oct1 == 198 && Oct2 == 51 && Oct3 == 100)
+                return (false, "Adresse TEST-NET 2 (RFC 5737)");
+            else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
+                return (false, "Adresse TEST-NET 3 (RFC 5737)");
             return (true, "");
         }
 
