@@ -105,6 +105,7 @@
             txtOct1.TabIndex = 1;
             txtOct1.TextAlign = HorizontalAlignment.Center;
             txtOct1.TextChanged += txtOctBinaire_TextChanged;
+            txtOct1.Enter += txtOctBinaire_Enter;
             txtOct1.Leave += txtOctBinaire_Leave;
             // 
             // lblTitreMasque
@@ -140,6 +141,7 @@
             txtOct2.TabIndex = 3;
             txtOct2.TextAlign = HorizontalAlignment.Center;
             txtOct2.TextChanged += txtOctBinaire_TextChanged;
+            txtOct2.Enter += txtOctBinaire_Enter;
             txtOct2.Leave += txtOctBinaire_Leave;
             // 
             // txtOct4
@@ -152,6 +154,7 @@
             txtOct4.TabIndex = 7;
             txtOct4.TextAlign = HorizontalAlignment.Center;
             txtOct4.TextChanged += txtOctBinaire_TextChanged;
+            txtOct4.Enter += txtOctBinaire_Enter;
             txtOct4.Leave += txtOctBinaire_Leave;
             // 
             // txtOct3
@@ -164,6 +167,7 @@
             txtOct3.TabIndex = 5;
             txtOct3.TextAlign = HorizontalAlignment.Center;
             txtOct3.TextChanged += txtOctBinaire_TextChanged;
+            txtOct3.Enter += txtOctBinaire_Enter;
             txtOct3.Leave += txtOctBinaire_Leave;
             // 
             // txtOctCp4

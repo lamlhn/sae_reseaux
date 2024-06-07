@@ -12,7 +12,12 @@ namespace cidr_cal
             txtOct2.Tag = txtOctCp2;
             txtOct3.Tag = txtOctCp3;
             txtOct4.Tag = txtOctCp4;
-            lblAdrIpErreur.Hide();
+            
+            foreach (Control ctr in pnlCidrStd.Controls) // Bloque la valeur à 3 caractères maximum
+            {
+                if (ctr is TextBox textBox)
+                    textBox.MaxLength = 3;
+            }
         }
 
         private void txtOctBinaire_TextChanged(object sender, EventArgs e) // Transforme la valeur de l'IP de binaire à decimale et de decimal à binaire
@@ -284,6 +289,12 @@ namespace cidr_cal
             GestionErreurIP(textDec);
         }
 
+        private void txtOctBinaire_Enter(object sender, EventArgs e)
+        {
+            TextBox textDec = (TextBox)sender;
+            textDec.Clear();
+        }
+    
         private void txtCidrOct_Enter(object sender, EventArgs e)
         {
             TextBox textDec = (TextBox)sender;
@@ -367,6 +378,12 @@ namespace cidr_cal
                     {
                         textMasque.Text = string.Empty;
                     }
+
+                    if (textMasque.Text.Length == 3) // Passe à la case suivante si la longueur est de 3
+                    {
+                        this.SelectNextControl((Control)sender, true, true, true, true);
+                    }
+
                 }
                 calculSumCidr();
             }
