@@ -605,7 +605,7 @@
             rdoBin.Appearance = Appearance.Button;
             rdoBin.AutoSize = true;
             rdoBin.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            rdoBin.Location = new Point(135, 7);
+            rdoBin.Location = new Point(141, 7);
             rdoBin.MinimumSize = new Size(110, 40);
             rdoBin.Name = "rdoBin";
             rdoBin.Size = new Size(110, 40);
@@ -621,7 +621,7 @@
             rdoDec.Appearance = Appearance.Button;
             rdoDec.AutoSize = true;
             rdoDec.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            rdoDec.Location = new Point(6, 7);
+            rdoDec.Location = new Point(0, 7);
             rdoDec.MinimumSize = new Size(110, 40);
             rdoDec.Name = "rdoDec";
             rdoDec.Size = new Size(110, 40);
@@ -636,7 +636,7 @@
             // 
             groupBox1.Controls.Add(rdoDec);
             groupBox1.Controls.Add(rdoBin);
-            groupBox1.Location = new Point(172, 12);
+            groupBox1.Location = new Point(167, 12);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(251, 48);
             groupBox1.TabIndex = 0;
