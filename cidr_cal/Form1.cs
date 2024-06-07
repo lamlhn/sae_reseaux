@@ -156,6 +156,11 @@ namespace cidr_cal
                 if (ctr is TextBox textBox)
                     textBox.Clear();
             }
+            foreach(Control ctr in pnlCidrStd.Controls)
+            {
+                if (ctr is TextBox textBox)
+                    textBox.Clear();
+            }
         }
 
         private void StyleError() // Change la police du texte lorqu'une erreur est détectée
