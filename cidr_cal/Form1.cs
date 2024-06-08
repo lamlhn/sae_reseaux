@@ -20,12 +20,23 @@ namespace cidr_cal
             }
         }
 
+
+        //radio bouton pour changer entre decimale et binaire
+        private void Radio_CheckedChanged(object sender, EventArgs e) // Appelle la fonction ClearAllTextBox en cliquant sur un les radio button
+        {
+            RadioButton rdoButton = (RadioButton)sender;
+            if (rdoButton.Checked)
+            {
+                ClearAllTextBox();
+                lblAdrIpErreur.Hide();
+                btnCalcul.Enabled = false;
+            }
+        }
+
         private void txtOctBinaire_TextChanged(object sender, EventArgs e) // Transforme la valeur de l'IP de binaire à decimale et de decimal à binaire
         {
             TextBox textDec = (TextBox)sender;
             TextBox textBinaire = (TextBox)textDec.Tag;
-
-            GestionErreurIP(textDec);
 
             if (rdoDec.Checked)
             {
@@ -46,6 +57,17 @@ namespace cidr_cal
             }
             else
             {
+                string valBin = textDec.Text;
+
+                foreach (char bit in valBin)
+                {
+                    if (bit != '0' && bit != '1')
+                    {
+                        lblErrorIP.Text = "Doit être composé de 0 et de 1";
+                        lblErrorIP.Show();
+                    }
+                }
+
                 if (!string.IsNullOrEmpty(textDec.Text))
                 {
                     textBinaire.Text = ConvertDecimal(textDec.Text).ToString();
@@ -54,6 +76,7 @@ namespace cidr_cal
                 {
                     textBinaire.Text = string.Empty;
                 }
+
                 if (textDec.Text.Length == 8) // Passe à la case suivate si la longueur est de 8
                 {
                     this.SelectNextControl((Control)sender, true, true, true, true);
@@ -79,129 +102,219 @@ namespace cidr_cal
             }
         }
 
-        private (bool, string) checkIp() // Vérifie si l'adresse IP est valide et renvoie un booléen et un string d'erreur
+        private void txtOctBinaire_Enter(object sender, EventArgs e)
         {
-            int Oct1;
-            int Oct2;
-            int Oct3;
-            int Oct4;
-
-            if (rdoDec.Checked)
-            {
-                Oct1 = Convert.ToInt32(txtOct1.Text);
-                Oct2 = Convert.ToInt32(txtOct2.Text);
-                Oct3 = Convert.ToInt32(txtOct3.Text);
-                Oct4 = Convert.ToInt32(txtOct4.Text);
-            }
-            else
-            {
-                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
-                Oct2 = Convert.ToInt32(ConvertDecimal(txtOct2.Text));
-                Oct3 = Convert.ToInt32(ConvertDecimal(txtOct3.Text));
-                Oct4 = Convert.ToInt32(ConvertDecimal(txtOct4.Text));
-            }
-
-            if (Oct1 == 0 || Oct1 == 127 || Oct1 >= 224) // Vérifie les valeurs non utilisables
-                return (false, "Adresse non utilisable");
-            else if (Oct1 == 10 || (Oct1 == 172 && (Oct2 >= 16 && Oct2 <= 31)) || (Oct1 == 192 && Oct2 == 168)) // Vérifie les valeurs non routables
-                return (false, "Adresse non routable");
-            else if (Oct1 == 169 && Oct2 == 254)
-                return (false, "Link Local (RFC 5737)");
-            else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 0)
-                return (false, "IETF Protocol Assignments (RFC 5737)");
-            else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 2)
-                return (false, "Adresse TEST-NET 1 (RFC 5737)");
-            else if (Oct1 == 192 && Oct2 == 88 && Oct3 == 99)
-                return (false, "6to4 Relay Anycast (RFC 5737)");
-            else if (Oct1 == 198 && (Oct2 == 18 || Oct2 == 19))
-                return (false, "Network Interconnect (RFC 5737)");
-            else if (Oct1 == 198 && Oct2 == 51 && Oct3 == 100)
-                return (false, "Adresse TEST-NET 2 (RFC 5737)");
-            else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
-                return (false, "Adresse TEST-NET 3 (RFC 5737)");
-            return (true, "");
+            TextBox textDec = (TextBox)sender;
+            textDec.Clear();
         }
 
-        private bool checkCidr() // Vérifie si l'adresse CIDR est valide et renvoie un booléen
+        private void txtOctBinaire_Leave(object sender, EventArgs e) // Met la valeur par défaut si l'IP est incorrecte
         {
-            int Oct1;
-
-            if (rdoDec.Checked)
-                Oct1 = Convert.ToInt32(txtOct1.Text);
-            else
-                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
-
-            int valClass = Convert.ToInt32(txtCidr.Text);
-
-            if (Oct1 < 128 && valClass >= 8)
-                return true;
-            else if (Oct1 < 192 && valClass >= 16)
-                return true;
-            else if (Oct1 <= 255 && valClass >= 24)
-                return true;
-            return false;
+            TextBox textDec = (TextBox)sender;
+            GestionErreurIP(textDec);
         }
 
-        public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire et retourne un string
+        //masque adresse
+        //masque standard entrer
+        private void txtCidrOct_Enter(object sender, EventArgs e)
         {
-            string binaire = "";
+            TextBox textDec = (TextBox)sender;
+            txtCidr.Enabled = false;
+            textDec.Clear();
+        }
+        
+        //masque cidr entrer
+        private void txtCidr_Enter(object sender, EventArgs e)
+        {
+            txtCidrOct1.Enabled = false;
+            txtCidrOct2.Enabled = false;
+            txtCidrOct3.Enabled = false;
+            txtCidrOct4.Enabled = false;
+        }
 
-            for (int i = 0; i < 8; i++)
+        //masque cidr change
+        private void txtCidr_TextChanged(object sender, EventArgs e) // Transforme la valeur de CIDR de binaire à decimale
+        {
+            if (txtCidr.Enabled)
             {
-                if (decimale % 2 == 0)
+                try
                 {
-                    binaire = "0" + binaire;
+                    int val = Convert.ToInt32(txtCidr.Text);
+
+                    if (val >= 8 && val <= 32)
+                    {
+                        string[] hexa = ["0", "0", "0", "0"];
+
+                        int i = 0;
+                        while (val > 0)
+                        {
+                            if (val >= 8)
+                            {
+                                hexa[i] = (Math.Pow(2, 8) - 1).ToString();
+                                val -= 8;
+                            }
+                            else
+                            {
+                                int val2 = 0;
+                                for (int j = 7; j >= 8 - val; j--)
+                                {
+                                    val2 += (int)Math.Pow(2, j);
+                                }
+                                hexa[i] = val2.ToString();
+                                val = 0;
+                            }
+                            i++;
+                        }
+                        if (rdoDec.Checked)
+                        {
+                            txtCidrOct1.Text = hexa[0];
+                            txtCidrOct2.Text = hexa[1];
+                            txtCidrOct3.Text = hexa[2];
+                            txtCidrOct4.Text = hexa[3];
+                        }
+                        else
+                        {
+                            txtCidrOct1.Text = ConvertBinaire(Convert.ToInt32(hexa[0]));
+                            txtCidrOct2.Text = ConvertBinaire(Convert.ToInt32(hexa[1]));
+                            txtCidrOct3.Text = ConvertBinaire(Convert.ToInt32(hexa[2]));
+                            txtCidrOct4.Text = ConvertBinaire(Convert.ToInt32(hexa[3]));
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(txtCidr.Text))
+                        btnCalcul.Enabled = true;
+                    else
+                        btnCalcul.Enabled = false;
+                }
+                catch (Exception)
+                {
+                    txtCidr.Text = string.Empty; // Vide la textBox du CIDR
+                }
+            }
+        }
+
+        //mettre valeur defaut
+        private async void txtCidr_Leave(object sender, EventArgs e) // Met la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
+        {
+            try
+            {
+                if (int.Parse(txtCidr.Text) > 32 || int.Parse(txtCidr.Text) < 8)
+                {
+                    StyleError();
+                    txtCidr.Text = "8";
+                    btnCalcul.Enabled = false;
+                    await Task.Delay(2000);
+                    btnCalcul.Enabled = true;
+                    ResetStyleError();
+                }
+            }
+            catch
+            {
+                StyleError();
+                txtCidr.Text = "8";
+                btnCalcul.Enabled = false;
+                await Task.Delay(2000);
+                btnCalcul.Enabled = true;
+                ResetStyleError();
+            }
+        }
+
+        //masque standard change
+        private void txtCidrOct_TextChanged(object sender, EventArgs e)
+        {
+            if (!txtCidr.Enabled)
+            {
+                TextBox textMasque = (TextBox)sender;
+                txtCidr.Text = string.Empty;
+
+                if (rdoDec.Checked)
+                {
+                    int val;
+                    if (int.TryParse(textMasque.Text, out val))
+                    {
+                        textMasque.Text = Convert.ToString(val);
+                    }
+                    else
+                    {
+                        textMasque.Text = string.Empty;
+                    }
+
+                    if (textMasque.Text.Length == 3) // Passe à la case suivante si la longueur est de 3
+                    {
+                        this.SelectNextControl((Control)sender, true, true, true, true);
+                    }
                 }
                 else
                 {
-                    binaire = "1" + binaire;
-                }
-                decimale = decimale / 2;
-            }
+                    string valBin = textMasque.Text;
 
-            return binaire;
+                    foreach (char bit in valBin)
+                    {
+                        if (bit != '0' && bit != '1')
+                        {
+                            lblErrorIP.Text = "Doit être composé de 0 et de 1";
+                            lblErrorIP.Show();
+                        }
+                    }
+
+                    if (textMasque.Text.Length == 8) // Passe à la case suivante si la longueur est de 8
+                    {
+                        this.SelectNextControl((Control)sender, true, true, true, true);
+                    }
+                }
+                calculSumCidr();
+            }
         }
 
-        public static string ConvertDecimal(string binaire) // Convertit un nombre binaire en décimal et retourne un string
+        //bouton calculer pour afficher des resultat
+        private void btnCalcul_Click(object sender, EventArgs e) // Calcule la classe de l'adresse ip
         {
-            int decimale = 0;
-
-            for (int i = 0; i < binaire.Length; i++)
+            if (checkCidr())
             {
-                if (binaire[i] == '1')
+                bool verifIP = checkIp().Item1; // Si l'IP est utilisable/routable retourne True, sinon retourne False
+                string messageErreur = checkIp().Item2; // Message associé à l'erreur
+
+                if (!verifIP)
                 {
-                    decimale += Convert.ToInt32(Math.Pow(2, binaire.Length - 1 - i));
+                    lblAdrIpErreur.Text = messageErreur; // Assigne le message d'erreur à la zone de texte
+                    lblAdrIpErreur.Show();
                 }
-            }
+                else
+                    lblAdrIpErreur.Hide();
 
-            return decimale.ToString();
+                int valClass;
+                if (rdoDec.Checked)
+                    valClass = Convert.ToInt32(txtOct1.Text);
+                else
+                    valClass = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
+
+                if (valClass >= 240 && valClass <= 255)
+                    txtClass.Text = "E";
+                else if (valClass >= 224)
+                    txtClass.Text = "D";
+                else if (valClass >= 192)
+                    txtClass.Text = "C";
+                else if (valClass >= 128)
+                    txtClass.Text = "B";
+                else if (valClass >= 0)
+                    txtClass.Text = "A";
+
+                CalculateNetworkAndBroadcast();
+                CalculateNumberOfIPs();
+                txtCidr.Enabled = true;
+                txtCidrOct1.Enabled = true;
+                txtCidrOct2.Enabled = true;
+                txtCidrOct3.Enabled = true;
+                txtCidrOct4.Enabled = true;
+
+            }
+            else
+                MessageBox.Show("CIDR invalide.");
         }
 
-        private void Radio_CheckedChanged(object sender, EventArgs e) // Appelle la fonction ClearAllTextBox en cliquant sur un les radio button
-        {
-            RadioButton rdoButton = (RadioButton)sender;
-            if (rdoButton.Checked)
-            {
-                ClearAllTextBox();
-                lblAdrIpErreur.Hide();
-                btnCalcul.Enabled = false;
-            }
-        }
-
-        private void ClearAllTextBox() // Supprime toutes les valeur des textBox
-        {
-            foreach (Control ctr in this.Controls)
-            {
-                if (ctr is TextBox textBox)
-                    textBox.Clear();
-            }
-
-            foreach(Control ctr in pnlCidrStd.Controls)
-            {
-                if (ctr is TextBox textBox)
-                    textBox.Clear();
-            }
-        }
+        /// <summary>
+        /// style erreur
+        /// </summary>
 
         private void StyleError() // Change la police du texte lorqu'une erreur est détectée
         {
@@ -247,10 +360,10 @@ namespace cidr_cal
                 {
                     string valBin = textDec.Text;
 
-                    if (valBin.Length > 8)
-                    {
-                        textDec.Text = "11111111";
-                    }
+                    //if (valBin.Length > 8)
+                    //{
+                    //    textDec.Text = "11111111";
+                    //}
 
                     foreach (char bit in valBin)
                     {
@@ -258,6 +371,7 @@ namespace cidr_cal
                         {
                             lblErrorIP.Text = "Doit être composé de 0 et de 1";
                             lblErrorIP.Show();
+                            textDec.Text = "11111111";
                         }
                     }
                 }
@@ -271,130 +385,26 @@ namespace cidr_cal
             }
         }
 
-        private void txtOctBinaire_Leave(object sender, EventArgs e) // Met la valeur par défaut si l'IP est incorrecte
-        {
-            TextBox textDec = (TextBox)sender;
-            GestionErreurIP(textDec);
-        }
+        /// <summary>
+        /// methode
+        /// </summary>
 
-        private void txtOctBinaire_Enter(object sender, EventArgs e)
+        private void ClearAllTextBox() // Supprime toutes les valeur des textBox
         {
-            TextBox textDec = (TextBox)sender;
-            textDec.Clear();
-        }
-    
-        private void txtCidrOct_Enter(object sender, EventArgs e)
-        {
-            TextBox textDec = (TextBox)sender;
-            txtCidr.Enabled = false;
-        }
-
-        private void txtCidr_Enter(object sender, EventArgs e)
-        {
-            txtCidrOct1.Enabled = false;
-            txtCidrOct2.Enabled = false;
-            txtCidrOct3.Enabled = false;
-            txtCidrOct4.Enabled = false;
-        }
-
-        private void txtCidr_TextChanged(object sender, EventArgs e) // Transforme la valeur de CIDR de binaire à decimale
-        {
-            if (txtCidr.Enabled)
+            foreach (Control ctr in this.Controls)
             {
-                try
-                {
-                    int val = Convert.ToInt32(txtCidr.Text);
+                if (ctr is TextBox textBox)
+                    textBox.Clear();
+            }
 
-                    if (val >= 8 && val <= 32)
-                    {
-                        string[] hexa = ["0", "0", "0", "0"];
-                        //string[] hexa = new string[8];
-
-                        int i = 0;
-                        while (val > 0)
-                        {
-                            if (val >= 8)
-                            {
-                                hexa[i] = (Math.Pow(2, 8) - 1).ToString();
-                                val -= 8;
-                            }
-                            else
-                            {
-                                int val2 = 0;
-                                for (int j = 7; j >= 8 - val; j--)
-                                {
-                                    val2 += (int)Math.Pow(2, j);
-                                }
-                                hexa[i] = val2.ToString();
-                                val = 0;
-                            }
-                            i++;
-                        }
-                        if (rdoDec.Checked)
-                        {
-                            txtCidrOct1.Text = hexa[0];
-                            txtCidrOct2.Text = hexa[1];
-                            txtCidrOct3.Text = hexa[2];
-                            txtCidrOct4.Text = hexa[3];
-                        }
-                        else
-                        {
-                            txtCidrOct1.Text = ConvertBinaire(Convert.ToInt32(hexa[0]));
-                            txtCidrOct2.Text = ConvertBinaire(Convert.ToInt32(hexa[1]));
-                            txtCidrOct3.Text = ConvertBinaire(Convert.ToInt32(hexa[2]));
-                            txtCidrOct4.Text = ConvertBinaire(Convert.ToInt32(hexa[3]));
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(txtCidr.Text))
-                    {
-                        btnCalcul.Enabled = true;
-                    }
-                    else
-                        btnCalcul.Enabled = false;
-                }
-                catch (Exception)
-                {
-                    txtCidr.Text = string.Empty; // Vide la textBox du CIDR
-                }
+            foreach (Control ctr in pnlCidrStd.Controls)
+            {
+                if (ctr is TextBox textBox)
+                    textBox.Clear();
             }
         }
 
-        private void txtCidrOct_TextChanged(object sender, EventArgs e)
-        {
-            if (!txtCidr.Enabled)
-            {
-                TextBox textMasque = (TextBox)sender;
-                txtCidr.Text = string.Empty;
-                //txtCidr.ReadOnly = true;
-
-                if (rdoDec.Checked)
-                {
-                    int val;
-                    if (int.TryParse(textMasque.Text, out val))
-                    {
-                        textMasque.Text = Convert.ToString(val);
-                    }
-                    else
-                    {
-                        textMasque.Text = string.Empty;
-                    }
-
-                    if (textMasque.Text.Length == 3) // Passe à la case suivante si la longueur est de 3
-                    {
-                        this.SelectNextControl((Control)sender, true, true, true, true);
-                    }
-                } 
-                else
-                {
-                    if (textMasque.Text.Length == 8) // Passe à la case suivante si la longueur est de 8
-                    {
-                        this.SelectNextControl((Control)sender, true, true, true, true);
-                    }
-                }
-                calculSumCidr();
-            }
-        }
-
+        //changer masque standard en masque cidr
         private void calculSumCidr()
         {
             if (!txtCidr.Enabled)
@@ -481,6 +491,7 @@ namespace cidr_cal
             }
         }
 
+        //check masque standard valide et variable sortie le masque en cidr
         private bool checkMasqueStandard(int valMasqueStd, out int cpt)
         {
             cpt = 0;
@@ -502,74 +513,67 @@ namespace cidr_cal
             return true;
         }
 
-        private async void txtCidr_Leave(object sender, EventArgs e) // Met la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
+        private (bool, string) checkIp() // Vérifie si l'adresse IP est valide et renvoie un booléen et un string d'erreur
         {
-            try
+            int Oct1;
+            int Oct2;
+            int Oct3;
+            int Oct4;
+
+            if (rdoDec.Checked)
             {
-                if (int.Parse(txtCidr.Text) > 32 || int.Parse(txtCidr.Text) < 8)
-                {
-                    StyleError();
-                    txtCidr.Text = "8";
-                    btnCalcul.Enabled = false;
-                    await Task.Delay(2000);
-                    btnCalcul.Enabled = true;
-                    ResetStyleError();
-                }
-            }
-            catch
-            {
-                StyleError();
-                txtCidr.Text = "8";
-                btnCalcul.Enabled = false;
-                await Task.Delay(2000);
-                btnCalcul.Enabled = true;
-                ResetStyleError();
-            }
-        }
-
-        private void btnCalcul_Click(object sender, EventArgs e) // Calcule la classe de l'adresse ip
-        {
-            if (checkCidr())
-            {
-                bool verifIP = checkIp().Item1; // Si l'IP est utilisable/routable retourne True, sinon retourne False
-                string messageErreur = checkIp().Item2; // Message associé à l'erreur
-
-                if (!verifIP)
-                {
-                    lblAdrIpErreur.Text = messageErreur; // Assigne le message d'erreur à la zone de texte
-                    lblAdrIpErreur.Show();
-                }
-                else
-                    lblAdrIpErreur.Hide();
-
-                int valClass;
-                if (rdoDec.Checked)
-                    valClass = Convert.ToInt32(txtOct1.Text);
-                else
-                    valClass = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
-
-                if (valClass >= 240 && valClass <= 255)
-                    txtClass.Text = "E";
-                else if (valClass >= 224)
-                    txtClass.Text = "D";
-                else if (valClass >= 192)
-                    txtClass.Text = "C";
-                else if (valClass >= 128)
-                    txtClass.Text = "B";
-                else if (valClass >= 0)
-                    txtClass.Text = "A";
-
-                CalculateNetworkAndBroadcast();
-                CalculateNumberOfIPs();
-                txtCidr.Enabled = true;
-                txtCidrOct1.Enabled = true;
-                txtCidrOct2.Enabled = true;
-                txtCidrOct3.Enabled = true;
-                txtCidrOct4.Enabled = true;
-
+                Oct1 = Convert.ToInt32(txtOct1.Text);
+                Oct2 = Convert.ToInt32(txtOct2.Text);
+                Oct3 = Convert.ToInt32(txtOct3.Text);
+                Oct4 = Convert.ToInt32(txtOct4.Text);
             }
             else
-                MessageBox.Show("CIDR invalide.");
+            {
+                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
+                Oct2 = Convert.ToInt32(ConvertDecimal(txtOct2.Text));
+                Oct3 = Convert.ToInt32(ConvertDecimal(txtOct3.Text));
+                Oct4 = Convert.ToInt32(ConvertDecimal(txtOct4.Text));
+            }
+
+            if (Oct1 == 0 || Oct1 == 127 || Oct1 >= 224) // Vérifie les valeurs non utilisables
+                return (false, "Adresse non utilisable");
+            else if (Oct1 == 10 || (Oct1 == 172 && (Oct2 >= 16 && Oct2 <= 31)) || (Oct1 == 192 && Oct2 == 168)) // Vérifie les valeurs non routables
+                return (false, "Adresse non routable");
+            else if (Oct1 == 169 && Oct2 == 254)
+                return (false, "Link Local (RFC 5737)");
+            else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 0)
+                return (false, "IETF Protocol Assignments (RFC 5737)");
+            else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 2)
+                return (false, "Adresse TEST-NET 1 (RFC 5737)");
+            else if (Oct1 == 192 && Oct2 == 88 && Oct3 == 99)
+                return (false, "6to4 Relay Anycast (RFC 5737)");
+            else if (Oct1 == 198 && (Oct2 == 18 || Oct2 == 19))
+                return (false, "Network Interconnect (RFC 5737)");
+            else if (Oct1 == 198 && Oct2 == 51 && Oct3 == 100)
+                return (false, "Adresse TEST-NET 2 (RFC 5737)");
+            else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
+                return (false, "Adresse TEST-NET 3 (RFC 5737)");
+            return (true, "");
+        }
+
+        private bool checkCidr() // Vérifie si l'adresse CIDR est valide et renvoie un booléen
+        {
+            int Oct1;
+
+            if (rdoDec.Checked)
+                Oct1 = Convert.ToInt32(txtOct1.Text);
+            else
+                Oct1 = Convert.ToInt32(ConvertDecimal(txtOct1.Text));
+
+            int valClass = Convert.ToInt32(txtCidr.Text);
+
+            if (Oct1 < 128 && valClass >= 8)
+                return true;
+            else if (Oct1 < 192 && valClass >= 16)
+                return true;
+            else if (Oct1 <= 255 && valClass >= 24)
+                return true;
+            return false;
         }
 
         private void CalculateNetworkAndBroadcast() // Calcule le masque, le net, la première et dernière IP
@@ -594,17 +598,26 @@ namespace cidr_cal
                 valIpBi4 = txtOct4.Text;
             }
 
-            // Octet 1
-            string valMasqueBi1 = ConvertBinaire(Convert.ToInt32(txtCidrOct1.Text));
+            string valMasqueBi1;
+            string valMasqueBi2;
+            string valMasqueBi3;
+            string valMasqueBi4;
+            if (rdoDec.Checked)
+            {
+                valMasqueBi1 = ConvertBinaire(Convert.ToInt32(txtCidrOct1.Text));
+                valMasqueBi2 = ConvertBinaire(Convert.ToInt32(txtCidrOct2.Text));
+                valMasqueBi3 = ConvertBinaire(Convert.ToInt32(txtCidrOct3.Text));
+                valMasqueBi4 = ConvertBinaire(Convert.ToInt32(txtCidrOct4.Text));
+            } 
+            else
+            {
+                valMasqueBi1 = txtCidrOct1.Text;
+                valMasqueBi2 = txtCidrOct2.Text;
+                valMasqueBi3 = txtCidrOct3.Text;
+                valMasqueBi4 = txtCidrOct4.Text;
 
-            // Octet 2
-            string valMasqueBi2 = ConvertBinaire(Convert.ToInt32(txtCidrOct2.Text));
+            }
 
-            // Octet 3
-            string valMasqueBi3 = ConvertBinaire(Convert.ToInt32(txtCidrOct3.Text));
-
-            // Octet 4
-            string valMasqueBi4 = ConvertBinaire(Convert.ToInt32(txtCidrOct4.Text));
             if (rdoDec.Checked)
             {
                 // Resultat octet 1
@@ -660,6 +673,41 @@ namespace cidr_cal
                 txtPreIp4.Text = ConvertBinaire((Convert.ToInt32(octNet4) + 1));
                 txtDerIp4.Text = ConvertBinaire((Convert.ToInt32(octBroad4) - 1));
             }
+        }
+
+        public static string ConvertBinaire(int decimale) // Convertit un nombre entier en binaire et retourne un string
+        {
+            string binaire = "";
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (decimale % 2 == 0)
+                {
+                    binaire = "0" + binaire;
+                }
+                else
+                {
+                    binaire = "1" + binaire;
+                }
+                decimale = decimale / 2;
+            }
+
+            return binaire;
+        }
+
+        public static string ConvertDecimal(string binaire) // Convertit un nombre binaire en décimal et retourne un string
+        {
+            int decimale = 0;
+
+            for (int i = 0; i < binaire.Length; i++)
+            {
+                if (binaire[i] == '1')
+                {
+                    decimale += Convert.ToInt32(Math.Pow(2, binaire.Length - 1 - i));
+                }
+            }
+
+            return decimale.ToString();
         }
 
         private void CalculateNumberOfIPs() // Calcule le nombre d'IP et de machines disponibles
