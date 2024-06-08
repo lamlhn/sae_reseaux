@@ -578,10 +578,17 @@ namespace cidr_cal
 
         private void CalculateNetworkAndBroadcast() // Calcule le masque, le net, la première et dernière IP
         {
+            //valeur adresse ip en binaire
             string valIpBi1;
             string valIpBi2;
             string valIpBi3;
             string valIpBi4;
+
+            //valeur adresse masque en binaire
+            string valMasqueBi1;
+            string valMasqueBi2;
+            string valMasqueBi3;
+            string valMasqueBi4;
 
             if (rdoDec.Checked)
             {
@@ -589,37 +596,12 @@ namespace cidr_cal
                 valIpBi2 = txtOctCp2.Text;
                 valIpBi3 = txtOctCp3.Text;
                 valIpBi4 = txtOctCp4.Text;
-            }
-            else
-            {
-                valIpBi1 = txtOct1.Text;
-                valIpBi2 = txtOct2.Text;
-                valIpBi3 = txtOct3.Text;
-                valIpBi4 = txtOct4.Text;
-            }
 
-            string valMasqueBi1;
-            string valMasqueBi2;
-            string valMasqueBi3;
-            string valMasqueBi4;
-            if (rdoDec.Checked)
-            {
                 valMasqueBi1 = ConvertBinaire(Convert.ToInt32(txtCidrOct1.Text));
                 valMasqueBi2 = ConvertBinaire(Convert.ToInt32(txtCidrOct2.Text));
                 valMasqueBi3 = ConvertBinaire(Convert.ToInt32(txtCidrOct3.Text));
                 valMasqueBi4 = ConvertBinaire(Convert.ToInt32(txtCidrOct4.Text));
-            } 
-            else
-            {
-                valMasqueBi1 = txtCidrOct1.Text;
-                valMasqueBi2 = txtCidrOct2.Text;
-                valMasqueBi3 = txtCidrOct3.Text;
-                valMasqueBi4 = txtCidrOct4.Text;
 
-            }
-
-            if (rdoDec.Checked)
-            {
                 // Resultat octet 1
                 txtOctNet1.Text = ConvertDecimal(CalculateNet(valIpBi1, valMasqueBi1));
                 txtOctBroad1.Text = ConvertDecimal(CalculateBroadcast(valIpBi1, valMasqueBi1));
@@ -646,6 +628,16 @@ namespace cidr_cal
             }
             else
             {
+                valIpBi1 = txtOct1.Text;
+                valIpBi2 = txtOct2.Text;
+                valIpBi3 = txtOct3.Text;
+                valIpBi4 = txtOct4.Text;
+
+                valMasqueBi1 = txtCidrOct1.Text;
+                valMasqueBi2 = txtCidrOct2.Text;
+                valMasqueBi3 = txtCidrOct3.Text;
+                valMasqueBi4 = txtCidrOct4.Text;
+
                 // Resultat octet 1
                 txtOctNet1.Text = CalculateNet(valIpBi1, valMasqueBi1);
                 txtOctBroad1.Text = CalculateBroadcast(valIpBi1, valMasqueBi1);
