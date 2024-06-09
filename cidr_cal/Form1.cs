@@ -18,11 +18,11 @@ namespace cidr_cal
                 if (ctr is TextBox textBox)
                     textBox.MaxLength = 8;
             }
+
+            txtCidr.MaxLength = 2; // Bloque la valeur du CIDR à 2 caractères maximum
         }
 
-
-        //radio bouton pour changer entre decimale et binaire
-        private void Radio_CheckedChanged(object sender, EventArgs e) // Appelle la fonction ClearAllTextBox en cliquant sur un les radio button
+        private void Radio_CheckedChanged(object sender, EventArgs e) // Appelle la fonction ClearAllTextBox en cliquant sur un les radio button de changement entre décimal et binaire
         {
             RadioButton rdoButton = (RadioButton)sender;
             if (rdoButton.Checked)
@@ -38,7 +38,7 @@ namespace cidr_cal
             TextBox textDec = (TextBox)sender;
             TextBox textBinaire = (TextBox)textDec.Tag;
 
-            if (rdoDec.Checked)
+            if (rdoDec.Checked) // Si le mode décimal est activé
             {
                 int val;
                 if (int.TryParse(textDec.Text, out val))
@@ -55,7 +55,7 @@ namespace cidr_cal
                     this.SelectNextControl((Control)sender, true, true, true, true);
                 }
             }
-            else
+            else // Si le mode binaire est activé
             {
                 string valBin = textDec.Text;
 
@@ -102,7 +102,7 @@ namespace cidr_cal
             }
         }
 
-        private void txtOctBinaire_Enter(object sender, EventArgs e)
+        private void txtOctBinaire_Enter(object sender, EventArgs e) // Vide une textBox si on entre dans celle-ci
         {
             TextBox textDec = (TextBox)sender;
             textDec.Clear();
@@ -114,9 +114,7 @@ namespace cidr_cal
             GestionErreurIP(textDec);
         }
 
-        //masque adresse
-        //masque standard entrer
-        private void txtCidrOct_Enter(object sender, EventArgs e)
+        private void txtCidrOct_Enter(object sender, EventArgs e) // Désactive la textBox du CIDR si on entre dans la textBox du masque standard
         {
             TextBox textDec = (TextBox)sender;
             txtCidr.Enabled = false;
@@ -124,7 +122,7 @@ namespace cidr_cal
         }
         
         //masque cidr entrer
-        private void txtCidr_Enter(object sender, EventArgs e)
+        private void txtCidr_Enter(object sender, EventArgs e) // Désactive la textBox du masque standard si on entre dans la textBox du CIDR
         {
             txtCidrOct1.Enabled = false;
             txtCidrOct2.Enabled = false;
@@ -132,7 +130,6 @@ namespace cidr_cal
             txtCidrOct4.Enabled = false;
         }
 
-        //masque cidr change
         private void txtCidr_TextChanged(object sender, EventArgs e) // Transforme la valeur de CIDR de binaire à decimale
         {
             if (txtCidr.Enabled)
@@ -193,7 +190,6 @@ namespace cidr_cal
             }
         }
 
-        //mettre valeur defaut
         private async void txtCidr_Leave(object sender, EventArgs e) // Met la valeur par défaut du CIDR si elle est incorrecte (<0 ou >32)
         {
             try
@@ -219,8 +215,7 @@ namespace cidr_cal
             }
         }
 
-        //masque standard change
-        private void txtCidrOct_TextChanged(object sender, EventArgs e)
+        private void txtCidrOct_TextChanged(object sender, EventArgs e) // Quand le masque standard est modifié
         {
             if (!txtCidr.Enabled)
             {
@@ -266,7 +261,6 @@ namespace cidr_cal
             }
         }
 
-        //bouton calculer pour afficher des resultat
         private void btnCalcul_Click(object sender, EventArgs e) // Calcule la classe de l'adresse ip
         {
             if (checkCidr())
@@ -312,10 +306,6 @@ namespace cidr_cal
                 MessageBox.Show("CIDR invalide.");
         }
 
-        /// <summary>
-        /// style erreur
-        /// </summary>
-
         private void StyleError() // Change la police du texte lorqu'une erreur est détectée
         {
             txtCidr.Font = new Font(txtCidr.Font, FontStyle.Bold);
@@ -360,12 +350,17 @@ namespace cidr_cal
                 {
                     string valBin = textDec.Text;
 
-                    //if (valBin.Length > 8)
-                    //{
-                    //    textDec.Text = "11111111";
-                    //}
+                    if (valBin.Length < 8) // Évite les erreurs de calcul en s'assurant que la string possède bien 8 caractères
+                    {
+                        for (int i = 0; i < 8 - valBin.Length; i++)
+                        {
+                            valBin += "0";
+                        }
+                    }
 
-                    foreach (char bit in valBin)
+                    textDec.Text = valBin;
+
+                    foreach (char bit in valBin) // Vérifie si la string est bien composée de 1 et de 0
                     {
                         if (bit != '0' && bit != '1')
                         {
@@ -385,10 +380,6 @@ namespace cidr_cal
             }
         }
 
-        /// <summary>
-        /// methode
-        /// </summary>
-
         private void ClearAllTextBox() // Supprime toutes les valeur des textBox
         {
             foreach (Control ctr in this.Controls)
@@ -404,8 +395,7 @@ namespace cidr_cal
             }
         }
 
-        //changer masque standard en masque cidr
-        private void calculSumCidr()
+        private void calculSumCidr() // Calcule la somme binaire du CIDR avec le masque standard
         {
             if (!txtCidr.Enabled)
             {
@@ -437,7 +427,7 @@ namespace cidr_cal
 
                     int cpt = 0; //compter masque CIDR
                     int sum = 0; // somme de masque CIDR
-                    int checkSum = 0; //somme de masue CIDR sans condition
+                    int checkSum = 0; //somme de masque CIDR sans condition
                     bool checkVal = true; // verifier le sum et checksum
 
                     if (checkMasqueStandard(valOct1, out cpt))
@@ -491,8 +481,7 @@ namespace cidr_cal
             }
         }
 
-        //check masque standard valide et variable sortie le masque en cidr
-        private bool checkMasqueStandard(int valMasqueStd, out int cpt)
+        private bool checkMasqueStandard(int valMasqueStd, out int cpt) // Vérifie le masque standard et retourne un booléen si il est correcte ou non
         {
             cpt = 0;
             for (int i = 7; i >= 0; i--)
@@ -513,7 +502,7 @@ namespace cidr_cal
             return true;
         }
 
-        private (bool, string) checkIp() // Vérifie si l'adresse IP est valide et renvoie un booléen et un string d'erreur
+        private (bool, string) checkIp() // Vérifie si l'adresse IP est valide et renvoie un booléen et une string d'erreur
         {
             int Oct1;
             int Oct2;
@@ -540,19 +529,19 @@ namespace cidr_cal
             else if (Oct1 == 10 || (Oct1 == 172 && (Oct2 >= 16 && Oct2 <= 31)) || (Oct1 == 192 && Oct2 == 168)) // Vérifie les valeurs non routables
                 return (false, "Adresse non routable");
             else if (Oct1 == 169 && Oct2 == 254)
-                return (false, "Link Local (RFC 5737)");
+                return (false, "Adresse non utilisable (RFC 5737)");
             else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 0)
-                return (false, "IETF Protocol Assignments (RFC 5737)");
+                return (false, "Adresse non utilisable (RFC 5737)");
             else if (Oct1 == 192 && Oct2 == 0 && Oct3 == 2)
-                return (false, "Adresse TEST-NET 1 (RFC 5737)");
+                return (false, "Adresse non utilisable (RFC 5737)");
             else if (Oct1 == 192 && Oct2 == 88 && Oct3 == 99)
-                return (false, "6to4 Relay Anycast (RFC 5737)");
+                return (false, "Adresse non utilisable (RFC 5737)");
             else if (Oct1 == 198 && (Oct2 == 18 || Oct2 == 19))
-                return (false, "Network Interconnect (RFC 5737)");
+                return (false, "Adresse non utilisable (RFC 5737)");
             else if (Oct1 == 198 && Oct2 == 51 && Oct3 == 100)
-                return (false, "Adresse TEST-NET 2 (RFC 5737)");
+                return (false, "Adresse non utilisable (RFC 5737)");
             else if (Oct1 == 203 && Oct2 == 0 && Oct3 == 113)
-                return (false, "Adresse TEST-NET 3 (RFC 5737)");
+                return (false, "Adresse non utilisable (RFC 5737)");
             return (true, "");
         }
 
@@ -578,19 +567,19 @@ namespace cidr_cal
 
         private void CalculateNetworkAndBroadcast() // Calcule le masque, le net, la première et dernière IP
         {
-            //valeur adresse ip en binaire
+            // Valeur adresse ip en binaire
             string valIpBi1;
             string valIpBi2;
             string valIpBi3;
             string valIpBi4;
 
-            //valeur adresse masque en binaire
+            // Valeur adresse masque en binaire
             string valMasqueBi1;
             string valMasqueBi2;
             string valMasqueBi3;
             string valMasqueBi4;
 
-            if (rdoDec.Checked)
+            if (rdoDec.Checked) // Pour le décimal
             {
                 valIpBi1 = txtOctCp1.Text;
                 valIpBi2 = txtOctCp2.Text;
@@ -626,7 +615,7 @@ namespace cidr_cal
                 txtPreIp4.Text = (Convert.ToInt32(txtOctNet4.Text) + 1).ToString();
                 txtDerIp4.Text = (Convert.ToInt32(txtOctBroad4.Text) - 1).ToString();
             }
-            else
+            else // Pour le binaire
             {
                 valIpBi1 = txtOct1.Text;
                 valIpBi2 = txtOct2.Text;
